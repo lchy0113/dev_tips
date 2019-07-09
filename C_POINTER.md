@@ -1,7 +1,6 @@
 C Pointer  
 ====
   
-----  
 int a = 0;		//	int형 변수 두개 정의.
 int b = 0;
 
