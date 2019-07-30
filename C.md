@@ -76,28 +76,28 @@ int main(void)
 	}
 
 	/* 열 동적 메모리 할당 */
-	for (i=0; i<rows; i++)	{
+	for (i = 0; i < rows; i++)	{
 		array[i] = (char *)malloc(sizeof(char) * cols);
 		if (array[i] == NULL)	{
 			printf("Not enought memory \n");
 			return;
 		}
 		/* 배열에 값 저장 */
-		for (j=0; j<cols; j++)
+		for (j = 0; j < cols; j++)
 			array[i][j] = 'a';
 	}
 
 	array[3][3] = 'b';
 
 	/* 값 출력 */	
-	for(i=0; i<rows; i++)	{
-		for(j=0; j<cols; j++)	
+	for(i = 0; i < rows; i++)	{
+		for(j = 0; j < cols; j++)	
 			printf("%c", array[i][j]);
 		printf("\n");
 	}
 
 	/* 메모리 해제 */
-	for(i=0; i<rows; i++)
+	for(i = 0; i < rows; i++)
 		free(array[i]);
 	free(array);
 
