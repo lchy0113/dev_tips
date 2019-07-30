@@ -50,3 +50,58 @@ p4 = &b						//	Err! 다른 객체를 가리키게 바꿀 수도 없고
 | 13 	| ? :                                           	| 오른쪽 우선 	|
 | 14 	| = 복합대입                                    	| 오른쪽 우선 	|
 | 15 	| ,                                             	| 왼쪽 우선   	|
+
+
+
+C double pointer 
+====
+
+<pre>
+<code>
+#include <stdio.h>
+
+#define rows 5
+#define cols 10
+
+int main(void)
+{
+	char **array;
+	unsigned int i, j;
+
+	/* 행 동적 메모리 할당 */
+	array = (char **)malloc(sizeof(char*) * rows);
+	if (array == NULL)	{
+		printf("Not enought memory \n");
+		return;
+	}
+
+	/* 열 동적 메모리 할당 */
+	for (i=0; i<rows; i++)	{
+		array[i] = (char *)malloc(sizeof(char) * cols);
+		if (array[i] == NULL)	{
+			printf("Not enought memory \n");
+			return;
+		}
+		/* 배열에 값 저장 */
+		for (j=0; j<cols; j++)
+			array[i][j] = 'a';
+	}
+
+	array[3][3] = 'b';
+
+	/* 값 출력 */	
+	for(i=0; i<rows; i++)	{
+		for(j=0; j<cols; j++)	
+			printf("%c", array[i][j]);
+		printf("\n");
+	}
+
+	/* 메모리 해제 */
+	for(i=0; i<rows; i++)
+		free(array[i]);
+	free(array);
+
+	return 0;
+}
+</code>
+</pre>
