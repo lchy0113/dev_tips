@@ -40,3 +40,26 @@ Look at the comments in mx6_usb_work.conf for (a bit) more details on the variou
 
 Also, note that all the absolute addresses mentioned above are what u-boot needed at the time of writing. 
 Hopefully this should be fairly stable. 
+
+
+## Boot through USB
+----
+We are all set for booting now. 
+Connect to the USB to UART port with a serial terminal set to 115200 baud, no parity, 8bit data. 
+Connect also your PC to the USB OTG port of the Sabre SD, and make sure you have no SD card inserted and power up the platform. 
+The Sabre SD should not boot into an operating system, but rather wait for a payload to download through USB. 
+You might want to verify that it is indeed waiting with the following command:
+```bash
+$ lsusb
+```
+
+In the resulting output, there should be a line like the following:
+```bash
+Bus 001 Device 098: ID 15a2:0054 Freescale Semiconductor, Inc. i.MX 6Dual/6Quad SystemOnChip in RecoveryMode
+```
+
+On your PC, start the download of our "payload" to your board with:
+```bash
+$ sudo ./imx_usb
+```
+
