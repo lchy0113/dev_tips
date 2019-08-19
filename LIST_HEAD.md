@@ -10,6 +10,5 @@ struct list_head {
 	struct list_head *next, *prev;
 };
 ```
-
-![Alt text](https://drive.google.com/file/d/11VjGGYRArsJ0fThsPuyhZ9wl8uMbn525/view?usp=sharing)
-![Alt text](https://photos.app.goo.gl/U3paGMWRvbC2pzvD6)
+![](./image/LIST_HEAD_1.png)
+![](./image/LIST_HEAD_22.png)
