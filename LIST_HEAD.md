@@ -173,4 +173,4 @@ clean:
 ```
 
 수행 화면
-![](./image/LIST_HEAD_333.png)
+![](./image/LIST_HEAD_3.png)
