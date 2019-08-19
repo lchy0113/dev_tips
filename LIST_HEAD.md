@@ -12,4 +12,4 @@ struct list_head {
 ```
 
 ![Alt text](https://drive.google.com/file/d/11VjGGYRArsJ0fThsPuyhZ9wl8uMbn525/view?usp=sharing)
-
+![Alt text](https://photos.app.goo.gl/U3paGMWRvbC2pzvD6)
