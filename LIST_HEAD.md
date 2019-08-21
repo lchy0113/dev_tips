@@ -147,7 +147,7 @@ MODULE_LICENSE("GPL");
 ```
 
 Makefile
-```Makefile
+```makefile
 KERNELDIR = /lib/modules/$(shell uname -r)/build
 
 obj-m = list.o
@@ -173,4 +173,5 @@ clean:
 ```
 
 수행 화면
+
 ![](./image/LIST_HEAD_3.png)
