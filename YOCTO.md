@@ -3,10 +3,12 @@
 
 Yocto Project 의 전체 구조를 한마디로 요약해 표현하기에는 매우 어렵다. 아래 그림은 Yocto Project 를 구성하는 여러 요소를 하나의 그림으로 표현한 것인데, 그 중심에는 Poky (reference system) 와 OpenEmbedded Core (build system)가 있다.
 
+Yocto 의 주요 구성 요소를 간략히 소개해 보면 다음과 같다.
+
 ![](./image/YOCTO_1.png)
 
-Yocto 의 주요 구성 요소를 간략히 소개해 보면 다음과 같다.
 <Yocto Project 의 주요 구성 요소>
+
 - OpenEmbedded-Core(중요1) : OpenEmbedded project 와 공유되는 core meta data, base layer 묶음.
  참고) OpenEmbedded project 는 http://openembedded.org 를 home page 로 하는 별도의 build system 으로, 이것만 가지고 linux 배포판을 만들 수 있을 정도로 매우 강력함. yocto 의 핵심.
 
@@ -38,11 +40,11 @@ Yocto 의 주요 구성 요소를 간략히 소개해 보면 다음과 같다.
 
 ![](./image/YOCTO_3.png)
 
-Yocto Project 의 동작 방식 1.
+<Yocto Project 의 동작 방식 1.>
 
 ![](./image/YOCTO_2.png)
 
-Yocto Project 의 동작 방식 2.
+<Yocto Project 의 동작 방식 2.>
 
 
 # 2. Poky 소개.
@@ -51,9 +53,10 @@ Yocto project 의 reference system 인 poky 의 source 를 내려받아 build �
 
 ![](./image/YOCTO_4.png)
 
-YP Core releases
+<YP Core releases>
 
-<Poky build 절차 소개>
+Poky build 절차 소개
+
 ```
 $ mkdir yocto ; cd yocto
 
