@@ -48,9 +48,8 @@ Yocto 의 주요 구성 요소를 간략히 소개해 보면 다음과 같다.
 
 Yocto project 의 reference system 인 poky 의 source 를 내려받아 build 해봄으로써, yocto project 가 어떤 형태로 이루어져 있는지 가늠해 보자.
 
-![](./image/YOCTO_4.png)
+![YP Core releases](./image/YOCTO_4.png)
 
-<YP Core releases>
 
 Poky build 절차 소개
 
