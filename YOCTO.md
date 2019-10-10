@@ -40,7 +40,7 @@ Yocto 의 주요 구성 요소를 간략히 소개해 보면 다음과 같다.
 ![Yocto Project 의 동작 방식 1.](./image/YOCTO_3.png)
 
 
-![<Yocto Project 의 동작 방식 2.](./image/YOCTO_2.png)
+![Yocto Project 의 동작 방식 2.](./image/YOCTO_2.png)
 
 
 
@@ -60,6 +60,8 @@ $ git clone -b morty git://git.yoctoproject.org/poky.git
 -> morty 는 2.2 최신 version(branch) 임.
 
 $ cd poky ;  ls -l
+========================================
+
 total 72
 drwxrwxr-x  6 lchy0113 lchy0113  4096 Oct  8 19:21 bitbake
 drwxrwxr-x  3 lchy0113 lchy0113  4096 Oct  8 19:22 build
@@ -81,6 +83,8 @@ $ source oe-init-build-env
 -> 기본 환경 설정을 진행한다.
 -> build 라는 directory 를 생성하고, build 를 current directory 로 만든다.
 -> oe-init-build-env 다음에 아무 값도 지정하지 않을 경우, ARM QEMU emulator 가 만들어 진다. 
+========================================
+
 You had no conf/local.conf file. This configuration file has therefore been
 created for you with some default values. You may wish to edit it to, for
 example, select a different MACHINE (target hardware). See conf/local.conf
@@ -110,6 +114,7 @@ Common targets are:
 
 You can also run generated qemu images with a command like 'runqemu qemux86'
 
+========================================
 위의 명령 실행 후, build/conf 디렉토리 아래에 몇가지 파일이 자동으로 생성되게 되는데, 각각의 파일이 의미하는 바를 자세히 따져볼 필요가 있다.(실제로 추후, 자신의 board 에 맞도록 해당 파일의 내용을 수정해 주어야 함.)
 
 $ ls -al 
@@ -121,6 +126,24 @@ drwxrwxr-x  2 lchy0113 lchy0113 4096 Oct  8 19:47 conf
 $ cd conf 
 $ ls
 bblayers.conf  local.conf  templateconf.cfg
+-> bblayers.conf : layer 관련 디렉토리 목록을 정의하고 있음. 자신의 device 에 맞게 수정해야 함.
+-> local.conf : build 하려는 device 관련 spec 을 정의하고, build 환경을 담고 있음. (이 내용을 자신의 device 에 맞게 수정해야 함.)
+-> templateconf.cfg : 여러 conf file 이 위치한 디렉토리를 정의하고있음. default 는 meta-yocto/conf 임.
+========================================
+
+$ bitbake core-image-minimal
+Parsing recipes:   1% |#                                                                           | ETA:  0:02:47
+...
+
+-> bitbake task scheduler 를 이용하여 실제 build 를 진행하여, 최종적으로 bootloader, kernel, root file system 등의 이미지 및 패키지(rpm, deb, or ipk)를 만들어 낸다.
+-> bitbake 다음에 입력 가능한 root image 생성 방식으로는 다음과 같은 것들이 있다.
+<build 가능한 image 형태>
+core-image-minimal : small image 생성(recipes-core/images/core-image-minimal.bb).
+core-image-minimal-initramfs : initramfs 용 이미지 생성.
+core-image-x11 : X11 기능이 포함된 이미지 생성.
+core-image-sato : GNOME이 포함된 이미지 생성.
+
+
 ```
 
 ----
