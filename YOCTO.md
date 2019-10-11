@@ -142,9 +142,42 @@ core-image-minimal : small image 생성(recipes-core/images/core-image-minimal.b
 core-image-minimal-initramfs : initramfs 용 이미지 생성.
 core-image-x11 : X11 기능이 포함된 이미지 생성.
 core-image-sato : GNOME이 포함된 이미지 생성.
-
+...
 
 ```
+<결과물>
+build/tmp/deplay/images/*
+```
+$ ls -al tmp/deploy/images/
+total 12
+drwxrwxr-x 3 lchy0113 lchy0113 4096 Oct 11 09:49 .
+drwxr-xr-x 5 lchy0113 lchy0113 4096 Oct 11 09:49 ..
+drwxr-xr-x 2 lchy0113 lchy0113 4096 Oct 11 09:54 qemux86
+lchy0113@KdVM:~/Private/yocto_develop/yocto/poky/build$ ls -al tmp/deploy/images/qemux86/
+total 20352
+drwxr-xr-x 2 lchy0113 lchy0113    4096 Oct 11 09:54 .
+drwxrwxr-x 3 lchy0113 lchy0113    4096 Oct 11 09:49 ..
+lrwxrwxrwx 2 lchy0113 lchy0113      72 Oct 11 09:49 bzImage -> bzImage--4.8.26+git0+1c60e003c7_27efc3ba68-r0-qemux86-20191011000817.bin
+-rw-r--r-- 2 lchy0113 lchy0113 7047488 Oct 11 09:49 bzImage--4.8.26+git0+1c60e003c7_27efc3ba68-r0-qemux86-20191011000817.bin
+lrwxrwxrwx 2 lchy0113 lchy0113      72 Oct 11 09:49 bzImage-qemux86.bin -> bzImage--4.8.26+git0+1c60e003c7_27efc3ba68-r0-qemux86-20191011000817.bin
+-rw-r--r-- 1 lchy0113 lchy0113    1365 Oct 11 09:54 core-image-minimal-qemux86-20191011000817.qemuboot.conf
+-rw-r--r-- 2 lchy0113 lchy0113 9723904 Oct 11 11:52 core-image-minimal-qemux86-20191011000817.rootfs.ext4
+-rw-r--r-- 2 lchy0113 lchy0113     788 Oct 11 09:54 core-image-minimal-qemux86-20191011000817.rootfs.manifest
+-rw-r--r-- 2 lchy0113 lchy0113 2620633 Oct 11 09:54 core-image-minimal-qemux86-20191011000817.rootfs.tar.bz2
+lrwxrwxrwx 2 lchy0113 lchy0113      53 Oct 11 09:54 core-image-minimal-qemux86.ext4 -> core-image-minimal-qemux86-20191011000817.rootfs.ext4
+lrwxrwxrwx 2 lchy0113 lchy0113      57 Oct 11 09:54 core-image-minimal-qemux86.manifest -> core-image-minimal-qemux86-20191011000817.rootfs.manifest
+lrwxrwxrwx 1 lchy0113 lchy0113      55 Oct 11 09:54 core-image-minimal-qemux86.qemuboot.conf -> core-image-minimal-qemux86-20191011000817.qemuboot.conf
+lrwxrwxrwx 2 lchy0113 lchy0113      56 Oct 11 09:54 core-image-minimal-qemux86.tar.bz2 -> core-image-minimal-qemux86-20191011000817.rootfs.tar.bz2
+-rw-rw-r-- 2 lchy0113 lchy0113 4567379 Oct 11 09:49 modules--4.8.26+git0+1c60e003c7_27efc3ba68-r0-qemux86-20191011000817.tgz
+lrwxrwxrwx 2 lchy0113 lchy0113      72 Oct 11 09:49 modules-qemux86.tgz -> modules--4.8.26+git0+1c60e003c7_27efc3ba68-r0-qemux86-20191011000817.tgz
+
+```
+
+여기까지,  Yocto project의 reference system인 poky를 내려 받아 전체 build를 진행하여, ARM QEMU emulator용 이미지를 생성하는 과정을 살펴 보았다.
+
+
+ARM QEMU emulator 용 image를 실행하기 위해서는 "runqemu qemuarm" 명령을 실행하면 된다.
+
 
 ----
 ( 작성중 )
