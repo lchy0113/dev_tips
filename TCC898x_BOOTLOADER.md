@@ -1,17 +1,20 @@
 ## [ BOARD ]
------
+----------
 SMP8985_OTT_D4152_V1.0
 
+
 ## [ DT ]
------
+----------
 tcc8985-android-ott-v02.dtb
 
+
 ## [ Toolchain ]
------
+----------
 /prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-
 
+
 ## [ boot image structure. ]
------
+----------
 |-------------------|  
 |Boot img header    |  
 |-------------------|  
@@ -25,10 +28,11 @@ tcc8985-android-ott-v02.dtb
 
 
 ## [ Bootloader (LK) ]
-=====
+----------
+
 
 # LK call flow
------
+----------
 * The sequence starts with arch/arm/crt0.S: _start.
 a. Set up CPU.
 b. Call __cpu_early_init() if necessary (platform-specific initialization sequence)
@@ -85,7 +89,8 @@ e. app/aboot/aboot.c -aboot_init()
 
 
 ## [ Code snippet ]
------
+----------
+
 # [ boot_linux_from_mmc() ]
 
 
@@ -100,7 +105,7 @@ update_device_tree((void *)tags, (const char *)final_cmdline, ramdisk, ramdisk_s
 ```
 
 # [ LK fastboot mode ]
------
+----------
 
 * about_init checks if:
 	boot.img not present, or
@@ -120,14 +125,14 @@ update_device_tree((void *)tags, (const char *)final_cmdline, ramdisk, ramdisk_s
 	udc_start()
 
 # [ Fastboot commands ]
------
+----------
 
 ```
 struct fastboot_cmd_desc cmd_list[]
 ```
 
 # [ LK recovery mode ]
------
+----------
 
 * about_init checks if KEY_HOME or VOLUME UP is pressed.
 * Checks reasonfor reboot -check_reboot_mode().
