@@ -12,16 +12,16 @@ tcc8985-android-ott-v02.dtb
 
 ## [ boot image structure. ]
 -----
-|-------------------|
-|Boot img header    |
-|-------------------|
-|Kernel             |
-|-------------------|
-|Ramdisk            |
-|-------------------|
-|Device tree table  |
-|-------------------|
-
+|-------------------|  
+|Boot img header    |  
+|-------------------|  
+|Kernel             |  
+|-------------------|  
+|Ramdisk            |  
+|-------------------|  
+|Device tree table  |  
+|-------------------|  
+  
 
 ### [ Bootloader (LK) ]
 =====
