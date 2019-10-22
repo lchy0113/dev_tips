@@ -23,7 +23,8 @@ tcc8985-android-ott-v02.dtb
 |-------------------|  
   
 
-### [ Bootloader (LK) ]
+
+## [ Bootloader (LK) ]
 =====
 
 # LK call flow
