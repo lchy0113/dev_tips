@@ -41,9 +41,10 @@ a. /makefile includes project/tcc898x_android_stb.mk
 b. /project/$PRJECTNAME.mk includes target/tcc898x_stb/rules.mk  
 c. /target$TARGET/rules.mk includes platform/tcc898x/rules.mk  
 d. modules to include (under /app)  
-e board-level settings: membase, memsize, linux_machinetype, gpio keypad.  
+e. board-level settings: membase, memsize, linux_machinetype, gpio keypad.  
 f. CPU-level settings : ARCH, ARM_CPU, CPU  
-  
+ 
+ 
 # LK call flow
 ----------
 * The sequence starts with arch/arm/crt0.S: _start.
