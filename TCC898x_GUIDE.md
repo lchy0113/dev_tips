@@ -47,3 +47,33 @@ for example about how to download v15.04 patch code
 ```
 $ git clone ssh://android.telechips.com/androidce/android/telechips/sdk_patch.git -b v15.04_r1
 ```
+
+## [ Build Guide ]
+----------  
+1. Build code.
+Set environment variables.
+```
+$> source build/environment
+$> lunch full_tcc898x-eng
+```
+1.1 bootloader
+1.1.1 move to lk directory.(bootable/bootloader/lk)
+1.1.2 build.
+```
+$> make tcc898x_android_stb
+```
+
+1.2 kernel
+1.2.1 move to kernel directory.(kernel)
+1.2.2 build.
+```
+$> make tcc898x_android_stb_defconfig DDR=4
+$> make 
+```
+
+1.3 android build.
+```
+$> make
+```
+
+
