@@ -77,3 +77,6 @@ $> make
 ```
 
 
+## [ Firmware Download Guide ]
+----------  
+See the "TCC898x Consumer Android SDK-Getting Started V1.00 [A] .pdf" document in the Telechips Android SDK repo vendor directory.
