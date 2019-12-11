@@ -6,97 +6,96 @@ Android source tree
 -  build - 빌드 관련 스크립트를 저장  
 	-  envsetup.sh  
 		-  build shell script들이 있음, 툴체인 경로 설정등 환경설정  
- · generic board에 대한 configuration  
-  ‥ build/target/board/generic/device.mk  
-   … root filesystem의 구성을 어떻게 해야하는가에 대한 방향을 지정하는 파일  
-   … android 최종 결과물 구성시 자동으로 포함하고 싶은 binary들에 대한 install을 결정  
-  ‥ build/target/board/generic/BoardConfig.mk  
-   … Android의 makefile인 Android.mk에 기본적으로 포함되는 최상위 Makefile  
-   … 주로 HAL 혹은 기능들에 대한 enable/disable과 관련이 깊음  
-   … Android.mk 파일에 영향을 주고 Android.mk 파일에서 define을 제어할 수 있도록 설정하는 경우가 많음  
-   … ex> BoardConfig.mk의 BOARD_USES_GENERIC_AUDIO := true 의 경우  
-• frameworks/base/services/audioflinger/Android.mk  
-• frameworks/base/services/audioflinger/AudioHardwareInterface.cpp  
-• 파일의 해당 부분을 참조  
-＊ CTS – Compatibility Test Suite관련 소스 디렉토리  
-＊ dalvik - dalvik VM 관련 소스코드  
-＊ development – 개발용 app등…  
-＊ device  
-· 각 vendor에서 만드는 vendor별 device들에 대한 설정파일  
-· 자체 device와 product를 만들기 위해서는 이 디렉토리에서 관련 파일들을 작성하는 것이 좋음  
-· 작성되는 주요 파일 리스트  
-‥ AndroidProducts.mk  
-… Product, device 관련 이름들을 지정  
-‥ BoardConfig.mk, device.mk  
-… generic board에서와 마찬가지 역할을 한다.  
-＊ external  
-· Android 고유의 library가 아닌 linux 혹은 기존에 작성된 library/binary 소스  
-· 작성된 library 중 shared library(*.so) 파일은 root filesystem의 system/lib 로 install  
-· 작성된 library 중 binary 파일은 root filesystem의 system/bin 으로 install  
-· framework test app와 library등은 이 디렉토리에서 작업하는게 좋음  
-＊ frameworks  
-· base/policy  
-‥ PhoneWindowManager 소스  
-‥ Android 전체 시스템을 background에서 제어하는 최상위 application인 PhoneWindowManager는 다음과 같은 기능을 갖는다  
-… KeyGuard관련 – LockScreen  
-… 화면 전체 동작 제어(ex> Rotation)  
-… event 관리 – Key event등  
-· base – android framework source  
-‥ libs/ui  
-… Android framework에서 JNI를 통해서 호출되는 android client part  
-… HAL – Input device(key, touch)의 경우  
-‥ libs/utils  
-… Wrapping class, 압축관련 유틸리티 등…  
-‥ libs/binder  
-… Android binder & Anonymous shared memory 제어 클래스  
-‥ cmds  
-… binder관련 binary인 servicemanager 소스와 여러가지 command들  
-‥ media  
-… media관련 JAVA, JNI, Client, Service, Media engine(libstagefright)등의 소스  
-… media관련은 너무 크고, 독립적이기 때문에 따로 디렉토리를 만들어 관련 소스를 하나의 디렉토리에 넣음  
-＊ hardware  
-· HAL source & header file – HAL Class의 prototype  
-· 일반적으로 android에서 사용되는 hardware 관련 소스들을 포함, 반드시 이 디렉토리에만 위치하는 것은 아님  
-‥ device, vendor 디렉토리에 존재하는 경우가 많음  
-· libhardware  
-‥ board hardware dependency가 높은 하드웨어 모듈들의 example 및 header  
-‥ 일반적으로 안드로이드 폰에 기본적으로 탑재되지 않고, cpu혹은 제조사의 모듈에 의존성이 높은 부분들에 관련된 class prototype 코드가 있음  
-‥ 안드로이드 소스 전체를 컴파일 하지 않는 경우도 있고, 모듈단위로 직접 컴파일해서 안드로이드 root filesystem에 install하는 경우도 있음  
-‥ Android framework에서 동적으로 module(*.so 파일 형태)을 loading하는 hw_get_module() 함수에 대한 소스가 있음  
-… hw_get_module()함수는 다음과 같은 순서로 동적 module을 loading한다.  
-• $(MODULE_NAME).%ro.hardware%.so -> ex> sensors.origen.so  
-• $(MODULE_NAME).%ro.product.board%.so -> ex> sensors.origenboard.so  
-• $(MODULE_NAME).%ro.board.platform%.so -> ex> sensors.insignal_origen.so  
-• $(MODULE_NAME).%ro.arch%.so -> ex> sensors.exynos4.so  
-… hw_get_module()함수는 rootfs의 system/lib/hw, vendor/lib/hw 디렉토리를 검색  
-· libhardware_legacy  
-‥ 일반적으로 android phone에 존재해야 하는 hardware에 대한 제어 코드들이 들어 있음  
-‥ Android compile시 같이 컴파일 된다  
-‥ ex> wifi/wifi.c  
-‥ include/*  
-… Android built-in HAL의 일부 prototype이 선언되어 있음  
-… ex> Audio  
-＊ packages  
-· android 기본 application source  
-· 주의해야할 점은 모든 app가 컴파일 되지 않는다.  
-· 컴파일 되는 패키지들은 각 device별 device.mk에 지정이 되는 PRODUCT_PACKAGES 변수에 포함되어야 함  
-· ex> build/target/product/generic-no-telephony.mk  
-＊ prebuilt  
-· toolchain & 필요한 binary  
-＊ system  
-· android의 root filesystem에 포함되는 기본 binary 소스(ex> init)  
-· /core/init – android init source  
-· /vold – vold2, android 2.3 버전서부터 사용됨  
-＊ vendor  
-· device 디렉토리와 같은 역할  
-· Android 2.1/2.2 버전에서는 이 디렉토리를 기본 device들에 대한 디렉토리로 사용  
-· 현재(Ice Cream Sandwich)도 이 디렉토리를 사용하는 경우 있음  
-＊ out  
-· android compile 결과물 디렉토리  
-＊ ndk  
-· Native Development Kit 관련 파일들이 있음  
-· docs/ANDROID-MK.html  
-‥ Android에서 사용되는 makefile인 Android.mk 파일을 어떻게 작성해야 하는지에 대해서 설명되어 있음  
-‥ PDK(Platform Development Kit – Android 소스)에 적용되는 부분에 대한 설명보다는 NDK용  
-Android.mk 파일에 대한 설명임  
-‥ 하지만, PDK용 문서로 참고하기 좋음  
+	-  generic board에 대한 configuration  
+		-  build/target/board/generic/device.mk  
+			-  root filesystem의 구성을 어떻게 해야하는가에 대한 방향을 지정하는 파일  
+			-  android 최종 결과물 구성시 자동으로 포함하고 싶은 binary들에 대한 install을 결정  
+		-  build/target/board/generic/BoardConfig.mk  
+			-  Android의 makefile인 Android.mk에 기본적으로 포함되는 최상위 Makefile  
+			-  주로 HAL 혹은 기능들에 대한 enable/disable과 관련이 깊음  
+			-  Android.mk 파일에 영향을 주고 Android.mk 파일에서 define을 제어할 수 있도록 설정하는 경우가 많음  
+			-  ex> BoardConfig.mk의 BOARD_USES_GENERIC_AUDIO := true 의 경우  
+				- • frameworks/base/services/audioflinger/Android.mk  
+				- • frameworks/base/services/audioflinger/AudioHardwareInterface.cpp  
+				- • 파일의 해당 부분을 참조  
+-  CTS – Compatibility Test Suite관련 소스 디렉토리  
+-  dalvik - dalvik VM 관련 소스코드  
+-  development – 개발용 app등…  
+-  device  
+	-  각 vendor에서 만드는 vendor별 device들에 대한 설정파일  
+	-  자체 device와 product를 만들기 위해서는 이 디렉토리에서 관련 파일들을 작성하는 것이 좋음  
+	-  작성되는 주요 파일 리스트  
+		-  AndroidProducts.mk  
+			-  Product, device 관련 이름들을 지정  
+		-  BoardConfig.mk, device.mk  
+			-  generic board에서와 마찬가지 역할을 한다.  
+-  external  
+	-  Android 고유의 library가 아닌 linux 혹은 기존에 작성된 library/binary 소스  
+	-  작성된 library 중 shared library(*.so) 파일은 root filesystem의 system/lib 로 install  
+	-  작성된 library 중 binary 파일은 root filesystem의 system/bin 으로 install  
+	-  framework test app와 library등은 이 디렉토리에서 작업하는게 좋음  
+-  frameworks  
+	-  base/policy  
+		-  PhoneWindowManager 소스  
+		-  Android 전체 시스템을 background에서 제어하는 최상위 application인 PhoneWindowManager는 다음과 같은 기능을 갖는다  
+			-  KeyGuard관련 – LockScreen  
+			-  화면 전체 동작 제어(ex> Rotation)  
+			-  event 관리 – Key event등  
+		-  base – android framework source  
+			-  libs/ui  
+				-  Android framework에서 JNI를 통해서 호출되는 android client part  
+				-  HAL – Input device(key, touch)의 경우  
+			-  libs/utils  
+				-  Wrapping class, 압축관련 유틸리티 등…  
+			-  libs/binder  
+				-  Android binder & Anonymous shared memory 제어 클래스  
+			-  cmds  
+				-  binder관련 binary인 servicemanager 소스와 여러가지 command들  
+			-  media  
+				-  media관련 JAVA, JNI, Client, Service, Media engine(libstagefright)등의 소스  
+				-  media관련은 너무 크고, 독립적이기 때문에 따로 디렉토리를 만들어 관련 소스를 하나의 디렉토리에 넣음  
+-  hardware  
+	-  HAL source & header file – HAL Class의 prototype  
+	-  일반적으로 android에서 사용되는 hardware 관련 소스들을 포함, 반드시 이 디렉토리에만 위치하는 것은 아님  
+		-  device, vendor 디렉토리에 존재하는 경우가 많음  
+	-  libhardware  
+		-  board hardware dependency가 높은 하드웨어 모듈들의 example 및 header  
+		-  일반적으로 안드로이드 폰에 기본적으로 탑재되지 않고, cpu혹은 제조사의 모듈에 의존성이 높은 부분들에 관련된 class prototype 코드가 있음  
+		-  안드로이드 소스 전체를 컴파일 하지 않는 경우도 있고, 모듈단위로 직접 컴파일해서 안드로이드 root filesystem에 install하는 경우도 있음  
+		-  Android framework에서 동적으로 module(*.so 파일 형태)을 loading하는 hw_get_module() 함수에 대한 소스가 있음  
+			-  hw_get_module()함수는 다음과 같은 순서로 동적 module을 loading한다.  
+				- • $(MODULE_NAME).%ro.hardware%.so -> ex> sensors.origen.so  
+				- • $(MODULE_NAME).%ro.product.board%.so -> ex> sensors.origenboard.so  
+				- • $(MODULE_NAME).%ro.board.platform%.so -> ex> sensors.insignal_origen.so  
+				- • $(MODULE_NAME).%ro.arch%.so -> ex> sensors.exynos4.so  
+			-  hw_get_module()함수는 rootfs의 system/lib/hw, vendor/lib/hw 디렉토리를 검색  
+	-  libhardware_legacy  
+		-  일반적으로 android phone에 존재해야 하는 hardware에 대한 제어 코드들이 들어 있음  
+		-  Android compile시 같이 컴파일 된다  
+		-  ex> wifi/wifi.c  
+		-  include/*  
+			-  Android built-in HAL의 일부 prototype이 선언되어 있음  
+			-  ex> Audio  
+-  packages  
+	-  android 기본 application source  
+	-  주의해야할 점은 모든 app가 컴파일 되지 않는다.  
+	-  컴파일 되는 패키지들은 각 device별 device.mk에 지정이 되는 PRODUCT_PACKAGES 변수에 포함되어야 함  
+	-  ex> build/target/product/generic-no-telephony.mk  
+-  prebuilt  
+	-  toolchain & 필요한 binary  
+-  system  
+	-  android의 root filesystem에 포함되는 기본 binary 소스(ex> init)  
+	-  /core/init – android init source  
+	-  /vold – vold2, android 2.3 버전서부터 사용됨  
+-  vendor  
+	-  device 디렉토리와 같은 역할  
+	-  Android 2.1/2.2 버전에서는 이 디렉토리를 기본 device들에 대한 디렉토리로 사용  
+	-  현재(Ice Cream Sandwich)도 이 디렉토리를 사용하는 경우 있음  
+-  out  
+	-  android compile 결과물 디렉토리  
+-  ndk  
+	-  Native Development Kit 관련 파일들이 있음  
+	-  docs/ANDROID-MK.html  
+		-  Android에서 사용되는 makefile인 Android.mk 파일을 어떻게 작성해야 하는지에 대해서 설명되어 있음  
+		-  PDK(Platform Development Kit – Android 소스)에 적용되는 부분에 대한 설명보다는 NDK용 Android.mk 파일에 대한 설명임  
+		-  하지만, PDK용 문서로 참고하기 좋음  
