@@ -80,3 +80,21 @@ $> make
 ## [ Firmware Download Guide ]
 ----------  
 See the "TCC898x Consumer Android SDK-Getting Started V1.00 [A] .pdf" document in the Telechips Android SDK repo vendor directory.
+
+
+
+## [ Partition Info ]
+----------  
+|    | NAME     | DEVICE | START ADDR | END ADDR | LENGTH   | SIZE (KB) |
+|:--:|----------|--------|------------|----------|----------|-----------|
+| 1  | boot     |        | 34         |          | 30720    | 15360     |
+| 2  | system   |        | 30754      |          | 1638400  | 819200    |
+| 3  | cache    |        | 1669154    |          | 307200   | 153600    |
+| 4  | recovery |        | 1976354    |          | 30720    | 15360     |
+| 5  | dtb      |        | 2007074    |          | 4096     | 2048      |
+| 6  | splash   |        | 2011170    |          | 10240    | 5120      |
+| 7  | misc     |        | 2021410    |          | 2048     | 1024      |
+| 8  | tcc      |        | 2023458    |          | 2048     | 1024      |
+| 9  | vendor   |        | 2025506    |          | 204800   | 102400    |
+| 10 | sest     |        | 2230306    |          | 16384    | 8192      |
+| 11 | userdata |        | 2246690    |          | 13023164 | 6511582   |
