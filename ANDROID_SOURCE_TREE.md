@@ -1,9 +1,9 @@
 
 Android source tree
 =====
-＊ bionic – bionic libc(BSD의 libc 수정)를 포함  
-＊ bootable - bootloader, recovery mode 관련 코드  
-＊ build - 빌드 관련 스크립트를 저장  
+-  bionic – bionic libc(BSD의 libc 수정)를 포함  
+-  bootable - bootloader, recovery mode 관련 코드  
+-  build - 빌드 관련 스크립트를 저장  
  · envsetup.sh  
   ‥ build shell script들이 있음, 툴체인 경로 설정등 환경설정  
  · generic board에 대한 configuration  
