@@ -4,8 +4,8 @@ Android source tree
 -  bionic – bionic libc(BSD의 libc 수정)를 포함  
 -  bootable - bootloader, recovery mode 관련 코드  
 -  build - 빌드 관련 스크립트를 저장  
- · envsetup.sh  
-  ‥ build shell script들이 있음, 툴체인 경로 설정등 환경설정  
+  -  envsetup.sh  
+    -  build shell script들이 있음, 툴체인 경로 설정등 환경설정  
  · generic board에 대한 configuration  
   ‥ build/target/board/generic/device.mk  
    … root filesystem의 구성을 어떻게 해야하는가에 대한 방향을 지정하는 파일  
