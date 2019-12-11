@@ -2,8 +2,8 @@
 Android source tree
 =====
 -  **bionic** – bionic libc(BSD의 libc 수정)를 포함  
--  bootable - bootloader, recovery mode 관련 코드  
--  build - 빌드 관련 스크립트를 저장  
+-  **bootable** - bootloader, recovery mode 관련 코드  
+-  **build** - 빌드 관련 스크립트를 저장  
 	-  envsetup.sh  
 		-  build shell script들이 있음, 툴체인 경로 설정등 환경설정  
 	-  generic board에 대한 configuration  
@@ -18,10 +18,10 @@ Android source tree
 				- • frameworks/base/services/audioflinger/Android.mk  
 				- • frameworks/base/services/audioflinger/AudioHardwareInterface.cpp  
 				- • 파일의 해당 부분을 참조  
--  CTS – Compatibility Test Suite관련 소스 디렉토리  
--  dalvik - dalvik VM 관련 소스코드  
--  development – 개발용 app등…  
--  device  
+-  **CTS** – Compatibility Test Suite관련 소스 디렉토리  
+-  **dalvik** - dalvik VM 관련 소스코드  
+-  **development** – 개발용 app등…  
+-  **device**  
 	-  각 vendor에서 만드는 vendor별 device들에 대한 설정파일  
 	-  자체 device와 product를 만들기 위해서는 이 디렉토리에서 관련 파일들을 작성하는 것이 좋음  
 	-  작성되는 주요 파일 리스트  
@@ -29,12 +29,12 @@ Android source tree
 			-  Product, device 관련 이름들을 지정  
 		-  BoardConfig.mk, device.mk  
 			-  generic board에서와 마찬가지 역할을 한다.  
--  external  
+-  **external**  
 	-  Android 고유의 library가 아닌 linux 혹은 기존에 작성된 library/binary 소스  
 	-  작성된 library 중 shared library(*.so) 파일은 root filesystem의 system/lib 로 install  
 	-  작성된 library 중 binary 파일은 root filesystem의 system/bin 으로 install  
 	-  framework test app와 library등은 이 디렉토리에서 작업하는게 좋음  
--  frameworks  
+-  **frameworks**  
 	-  base/policy  
 		-  PhoneWindowManager 소스  
 		-  Android 전체 시스템을 background에서 제어하는 최상위 application인 PhoneWindowManager는 다음과 같은 기능을 갖는다  
@@ -54,7 +54,7 @@ Android source tree
 			-  media  
 				-  media관련 JAVA, JNI, Client, Service, Media engine(libstagefright)등의 소스  
 				-  media관련은 너무 크고, 독립적이기 때문에 따로 디렉토리를 만들어 관련 소스를 하나의 디렉토리에 넣음  
--  hardware  
+-  **hardware**  
 	-  HAL source & header file – HAL Class의 prototype  
 	-  일반적으로 android에서 사용되는 hardware 관련 소스들을 포함, 반드시 이 디렉토리에만 위치하는 것은 아님  
 		-  device, vendor 디렉토리에 존재하는 경우가 많음  
@@ -76,24 +76,24 @@ Android source tree
 		-  include/*  
 			-  Android built-in HAL의 일부 prototype이 선언되어 있음  
 			-  ex> Audio  
--  packages  
+-  **packages**  
 	-  android 기본 application source  
 	-  주의해야할 점은 모든 app가 컴파일 되지 않는다.  
 	-  컴파일 되는 패키지들은 각 device별 device.mk에 지정이 되는 PRODUCT_PACKAGES 변수에 포함되어야 함  
 	-  ex> build/target/product/generic-no-telephony.mk  
--  prebuilt  
+-  **prebuilt**  
 	-  toolchain & 필요한 binary  
--  system  
+-  **system**  
 	-  android의 root filesystem에 포함되는 기본 binary 소스(ex> init)  
 	-  /core/init – android init source  
 	-  /vold – vold2, android 2.3 버전서부터 사용됨  
--  vendor  
+-  **vendor**  
 	-  device 디렉토리와 같은 역할  
 	-  Android 2.1/2.2 버전에서는 이 디렉토리를 기본 device들에 대한 디렉토리로 사용  
 	-  현재(Ice Cream Sandwich)도 이 디렉토리를 사용하는 경우 있음  
--  out  
+-  **out**  
 	-  android compile 결과물 디렉토리  
--  ndk  
+-  **ndk**  
 	-  Native Development Kit 관련 파일들이 있음  
 	-  docs/ANDROID-MK.html  
 		-  Android에서 사용되는 makefile인 Android.mk 파일을 어떻게 작성해야 하는지에 대해서 설명되어 있음  
