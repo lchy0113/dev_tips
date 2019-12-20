@@ -158,3 +158,8 @@ struct fastboot_cmd_desc cmd_list[]
 * Gets image from recovery partition.
 	gned int target_freq, unsigned int relation);
 
+# [ LK Reference Memory ]
+----------
+
+* check_reboot_mode.
+SRAM_ADDR = 0xF0009FFC
