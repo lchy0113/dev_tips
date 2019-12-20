@@ -105,3 +105,43 @@ int main(void)
 }
 </code>
 </pre>
+
+
+Debug define
+====
+<pre>
+<code>
+#include <stdio.h>
+#include <unistd.h>
+#ifdef DEBUG
+#define ANSI_COLOR_RED "\x1b[31m"
+#define ANSI_COLOR_RESET "\x1b[0m"
+#define DEBUG_PREFIX ANSI_COLOR_RED " << RICHGOLD >> "
+#define DEGMSG(msg,...) fprintf(stderr, DEBUG_PREFIX "[%s %s %d] : " msg "\n" ANSI_COLOR_RESET, \
+                                        __FILE__, __func__, __LINE__, ##__VA_ARGS__)
+				
+#else
+#define DEGMSG(...)
+#endif
+
+void example(int e) {
+	e += 20;
+	DEGMSG("e : %d\n", e);
+}
+
+int main(void)  {
+	int val1 = 2;
+	int val2 = 10;
+	
+	DEGMSG("Let's start!");
+	printf("val1+val2:%d\n", val1+val2);
+	
+	DEGMSG("val1 : %d, val2 : %d\n", val1, val2);
+	example(val1);
+
+	return 0;
+	
+}
+</code>
+</pre>
+
