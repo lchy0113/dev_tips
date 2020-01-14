@@ -20,13 +20,13 @@ Java가 C/C++ 같은 네이티브 코드 언어로 작성된 어플리케이션�
 
 
 
-##0. 목표
+## 0. 목표
 -----
 리눅스에서 C 언어로 작성된 프로그램을 안드로이드에서 실행
 
 
 
-##1. Android NDK 다운로드
+## 1. Android NDK 다운로드
 -----
 https://developer.android.com/ndk/ 에 접근하여 NDK 다운로드
 
@@ -34,7 +34,7 @@ Linux 64비트 (x86): android-ndk-r14b-linux-x86_64.zip
 
 
 
-##2. jni 디렉터리 생성
+## 2. jni 디렉터리 생성
 -----
 압축 풀고 android-ndk-r14b 디렉터리로 이동하여 jni 디렉터리 생성
 ```
@@ -44,7 +44,7 @@ $ mkdir jni
 ```
 
 
-##3. 소스코드 파일 생성
+## 3. 소스코드 파일 생성
 -----
 간단한 hello, world 문자열을 출력하는 C 코드 파일 생성
 ```
@@ -58,7 +58,7 @@ int main() {
 ```
 
 
-##4. Android.mk 파일 생성
+## 4. Android.mk 파일 생성
 -----
 ```
 $ cat > Android.mk
@@ -91,7 +91,7 @@ LOCAL_SRC_FILES := hello.c
 include $(BUILD_EXECUTABLE)
 ```
 
-##5. ndk-build로 빌드
+## 5. ndk-build로 빌드
 -----
 상위 디렉터리로 이동 후 ndk-build 바이너리를 이용해서 빌드
 ```
@@ -106,7 +106,7 @@ $ ./ndk-build APP_ABI=arm64-v8a
 ```
 
 
-##6. 바이너리 실행
+## 6. 바이너리 실행
 -----
 빌드가 완료되면 libs 디렉터리에 아키텍처 별로 바이너리가 생성
 
