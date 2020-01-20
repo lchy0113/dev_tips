@@ -85,16 +85,17 @@ See the "TCC898x Consumer Android SDK-Getting Started V1.00 [A] .pdf" document i
 
 ## [ Partition Info ]
 ----------  
-|    | NAME     | DEVICE | START ADDR | END ADDR | LENGTH   | SIZE (KB) |
-|:--:|----------|--------|------------|----------|----------|-----------|
-| 1  | boot     |        | 34         |          | 30720    | 15360     |
-| 2  | system   |        | 30754      |          | 1638400  | 819200    |
-| 3  | cache    |        | 1669154    |          | 307200   | 153600    |
-| 4  | recovery |        | 1976354    |          | 30720    | 15360     |
-| 5  | dtb      |        | 2007074    |          | 4096     | 2048      |
-| 6  | splash   |        | 2011170    |          | 10240    | 5120      |
-| 7  | misc     |        | 2021410    |          | 2048     | 1024      |
-| 8  | tcc      |        | 2023458    |          | 2048     | 1024      |
-| 9  | vendor   |        | 2025506    |          | 204800   | 102400    |
-| 10 | sest     |        | 2230306    |          | 16384    | 8192      |
-| 11 | userdata |        | 2246690    |          | 13023164 | 6511582   |
+|    | NAME      | DEVICE     | START ADDR | END ADDR | LENGTH   | SIZE (KB) | FILE SYSTEM |
+|:--:|-----------|------------|------------|----------|----------|-----------|-------------|
+|    | bootloader|mmcblk0boot0|            |          | 4096     | 2048      | N/A         |
+| 1  | boot      |mmclbk0p1   | 34         |          | 30720    | 15360     | N/A         |
+| 2  | system    |mmcblk0p2   | 30754      |          | 1638400  | 819200    | ext4        |
+| 3  | cache     |mmcblk0p3   | 1669154    |          | 307200   | 153600    | ext4        |
+| 4  | recovery  |mmcblk0p4   | 1976354    |          | 30720    | 15360     | N/A         |
+| 5  | dtb       |mmcblk0p5   | 2007074    |          | 4096     | 2048      | N/A         |
+| 6  | splash    |mmcblk0p6   | 2011170    |          | 10240    | 5120      | N/A         |
+| 7  | misc      |mmcblk0p7   | 2021410    |          | 2048     | 1024      | N/A         |
+| 8  | tcc       |mmbclk0p8   | 2023458    |          | 2048     | 1024      | N/A         |
+| 9  | vendor    |mmcblk0p9   | 2025506    |          | 204800   | 102400    | ext4        |
+| 10 | sest      |mmcblk0p10  | 2230306    |          | 16384    | 8192      | ext4        |
+| 11 | userdata  |mmcblk0p11  | 2246690    |          | 13023164 | 6511582   | ext4        |
