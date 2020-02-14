@@ -89,3 +89,23 @@ BA0, BA2을 프로세서의 어떤 핀에 연결해야 되는 지는 프로세�
 ChipSelect 를 같이 쓰는 동일한 메모리들을 말한다. 왜 동일한 것을 써야하는지는 아래의 환경을 읽어보면 알수 있다.   
 (뱅크의 개념은 앞의 메모리 덩어리가 병렬로 4개가 존재한다고 생각하면 된다. 이 뱅크 개념은 DRAM의 특성한 전하충전시간이 필요한데 이러한 충전시간을 각각의 뱅크로 분산시켜 좀 더 빠른 응답속도를 갖기 위해서 이다.)  
 
+
+
+# [QnA]
+=====
+
+- Addressing 은 무엇이고 어떻게 하나요?
+-----
+ 데이터를 읽거나 써넣기 위한 저장 공간인 메모리 Cell을 지정하는 것을 Addressing 이라고 한다.  
+ Addressing은 Clock Generator라는 메모리 외부 Device에서 생성된   
+ RAS(Row Address Strobe)와 CAS(Column Address Stobe)로 Cell 을 지정한다.   
+
+- SDRAM Component 의 Organization 란 무엇을 말하는 것인가 ? 
+-----
+ 일반적으로 제품의 Data Input 과 Output 의 처리 능력에 따른 제품의 분류를 의미한다.  
+ 같은 메모리 Density를 갖고 있는 제품일지라도 하나의 Address를 받았을 때 동시에  
+ Input & Output 이 가능한 Data의 bit 수량에 따라서 Organization 에 차이가 있다.  
+ 64M bit component의 경우,  
+ x4, x8, x16 이 있는데, 한번에 4bit, 8bit, 16bit의 데이터를 처리할 수 있음을 의미한다.  
+ 여기서 64M bit Component라는 의미는 한번에 64M bit를 저장할 수 있음을 의미하는 것이지,   
+ 한번에 64M bit 데이터를 내보낸다는 것을 의미하는 것은 아니다.  
