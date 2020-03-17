@@ -1,6 +1,7 @@
 Curl  
 ====
 
+
 1. curl 이란?
 -----
 * curl = Client URL
@@ -13,28 +14,32 @@ Curl
 * url을 가지고 할 수 있는 것들은 다할 수 있다. 예를 들면, http 프로토콜을 이용해 웹 페이지의 소스를 가져온다거나 파일을 다운받을 수 있다. ftp 프로토콜을 이용해서는 파일을받을 수 있을 뿐 아니라 올릴 수도 있다. 심지어 SMTP 프로토콜을 이용하면 메일도 보낼 수 있다.
 
 
+
 2. 사용법.
 -----
 * curl [-option] http://lchy0113.github.io 을 하게 되면 소스가 화면으로 출력된다.
 * 이 외에 옵션을 이용하여 사용할 수 있다.
 
+
 3. 주요 옵션.
 -----
 
-| -O : |파일 다운로드 |> curl -O http://lchy0113.github.io/file.zip |
-| -i : |헤더값 확인 |> curl -i http://lchy0113.github.io |
-| -I : |사이트의 Header와 바디 정보를 함께 가져오기. ||
-| -v : |request, response이 어떻게 오는지 확인.(헤더, 바디) ||
-| -k : |HTTPS 사이트를 SSL certificate 검증없이 연결. ||
-| -s : |정숙 모드. 진행 내역이나 메시지등을 출력하지 않음. ||
-| -H : |헤더 설정. 헤더 정보 전달. ||
-| -d : |HTTP Post data(FORM을 POST하는 HTTP나 JSON으로 데이터를 주고받는 REST 기반의 웹서비스 디버깅시 유용한 옵션)||
+| -O : | 파일 다운로드 | > curl -O http://lchy0113.github.io/file.zip |
+| -i : |  헤더값 확인 | > curl -i http://lchy0113.github.io |
+| -I : | 사이트의 Header와 바디 정보를 함께 가져오기. | |
+| -v : | request, response이 어떻게 오는지 확인.(헤더, 바디) | |
+| -k : | HTTPS 사이트를 SSL certificate 검증없이 연결. | |
+| -s : | 정숙 모드. 진행 내역이나 메시지등을 출력하지 않음. | |
+| -H : | 헤더 설정. 헤더 정보 전달. | |
+| -d : | HTTP Post data(FORM을 POST하는 HTTP나 JSON으로 데이터를 주고받는 REST 기반의 웹서비스 디버깅시 유용한 옵션) | |
+
 
 4. 같이 읽어보면 좋은 자료.
 -----
 * Link: [커맨드라인 환경에서 REST API(HTTP)요청 보내기 (cURL, resty, httpie, Vim REST Control)](https://bakyeono.net/post/2016-05-02-rest-api-client-for-cli.html)
 * Link: [cURL!](http://khanrc.tistory.com/entry/cURL)
 
+	
 5. Links.
 -----
 * [Curl이란?](http://jokergt.tistory.com/83)
