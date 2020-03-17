@@ -23,15 +23,16 @@ Curl
 
 3. 주요 옵션.
 -----
-
-| -O : | 파일 다운로드 | > curl -O http://lchy0113.github.io/file.zip |
-| -i : |  헤더값 확인 | > curl -i http://lchy0113.github.io |
-| -I : | 사이트의 Header와 바디 정보를 함께 가져오기. | |
-| -v : | request, response이 어떻게 오는지 확인.(헤더, 바디) | |
-| -k : | HTTPS 사이트를 SSL certificate 검증없이 연결. | |
-| -s : | 정숙 모드. 진행 내역이나 메시지등을 출력하지 않음. | |
-| -H : | 헤더 설정. 헤더 정보 전달. | |
-| -d : | HTTP Post data(FORM을 POST하는 HTTP나 JSON으로 데이터를 주고받는 REST 기반의 웹서비스 디버깅시 유용한 옵션) | |
+| option | 설명                                                                                                        | 비고                                       |
+|--------|-------------------------------------------------------------------------------------------------------------|--------------------------------------------|
+| -O     | 파일 다운로드                                                                                               | curl -O http://lchy0113.github.io/file.zip |
+| -i     | 헤더값 확인                                                                                                 | curl -i http://lchy0113.github.io          |
+| -I     | 사이트의 Header와 바디 정보를 함께 가져오기.                                                                |                                            |
+| -v     | request, response이 어떻게 오는지 확인.(헤더, 바디)                                                         |                                            |
+| -k     | HTTPS 사이트를 SSL certificate 검증없이 연결.                                                               |                                            |
+| -s     | 정숙 모드. 진행 내역이나 메시지등을 출력하지 않음.                                                          |                                            |
+| -H     | 헤더 설정. 헤더 정보 전달.                                                                                  |                                            |
+| -d     | HTTP Post data(FORM을 POST하는 HTTP나 JSON으로 데이터를 주고받는 REST 기반의 웹서비스 디버깅시 유용한 옵션) |                                            |
 
 
 4. 같이 읽어보면 좋은 자료.
