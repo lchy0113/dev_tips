@@ -4,6 +4,9 @@ Curl
 
 # 1. curl 이란?
 -----
+
+## 1.1. curl 소개.
+-----
 * curl = Client URL
 * 다양한 프로토콜로 데이터를 전송해볼 수 있는 명령어 기반의 컴퓨터 프로그램.
 * 클라이언트에서 커맨드 라인이나 소스코드로 손 쉽게 웹 브라우저 처럼 활동할 수 있도록 해주는 기술(커맨드라인 Tool 혹은 라이브러리)
@@ -15,13 +18,13 @@ Curl
 
 
 
-# 2. 사용법.
+## 1.2. 사용법.
 -----
 * curl [-option] http://lchy0113.github.io 을 하게 되면 소스가 화면으로 출력된다.
 * 이 외에 옵션을 이용하여 사용할 수 있다.
 
 
-# 3. 주요 옵션.
+## 1.3. 주요 옵션.
 -----
 | option | 설명                                                                                                        | 비고                                       |
 |--------|-------------------------------------------------------------------------------------------------------------|--------------------------------------------|
@@ -35,13 +38,13 @@ Curl
 | -d     | HTTP Post data(FORM을 POST하는 HTTP나 JSON으로 데이터를 주고받는 REST 기반의 웹서비스 디버깅시 유용한 옵션) |                                            |
 
 
-# 4. 같이 읽어보면 좋은 자료.
+## 1.4. 같이 읽어보면 좋은 자료.
 -----
 * Link: [커맨드라인 환경에서 REST API(HTTP)요청 보내기 (cURL, resty, httpie, Vim REST Control)](https://bakyeono.net/post/2016-05-02-rest-api-client-for-cli.html)
 * Link: [cURL!](http://khanrc.tistory.com/entry/cURL)
 
 	
-# 5. Links.
+## 1.5. Links.
 -----
 * [Curl이란?](http://jokergt.tistory.com/83)
 * [cURL](http://sunphiz.me/wp/archives/491)
