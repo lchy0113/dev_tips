@@ -15,13 +15,13 @@ Curl
 
 
 
-#2. 사용법.
+# 2. 사용법.
 -----
 * curl [-option] http://lchy0113.github.io 을 하게 되면 소스가 화면으로 출력된다.
 * 이 외에 옵션을 이용하여 사용할 수 있다.
 
 
-3. 주요 옵션.
+# 3. 주요 옵션.
 -----
 | option | 설명                                                                                                        | 비고                                       |
 |--------|-------------------------------------------------------------------------------------------------------------|--------------------------------------------|
@@ -35,13 +35,13 @@ Curl
 | -d     | HTTP Post data(FORM을 POST하는 HTTP나 JSON으로 데이터를 주고받는 REST 기반의 웹서비스 디버깅시 유용한 옵션) |                                            |
 
 
-4. 같이 읽어보면 좋은 자료.
+# 4. 같이 읽어보면 좋은 자료.
 -----
 * Link: [커맨드라인 환경에서 REST API(HTTP)요청 보내기 (cURL, resty, httpie, Vim REST Control)](https://bakyeono.net/post/2016-05-02-rest-api-client-for-cli.html)
 * Link: [cURL!](http://khanrc.tistory.com/entry/cURL)
 
 	
-5. Links.
+# 5. Links.
 -----
 * [Curl이란?](http://jokergt.tistory.com/83)
 * [cURL](http://sunphiz.me/wp/archives/491)
