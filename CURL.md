@@ -50,3 +50,14 @@ Curl
 * [cURL](http://sunphiz.me/wp/archives/491)
 * [curl 설치 및 사용법 - HTTP GET/POST, REST API 연계등](https://www.lesstif.com/pages/viewpage.action?pageId=14745703)
 
+# 2. cURL, Client URL Library Functions
+-----
+* curl_init : 세션 초기화, 핸들값 리턴.
+* curl_setopt : 옵션 세팅.
+* curl_exec : curl을 실행.
+* curl_errno : 에러 번호를 가져온다.
+* curl_error : 에러 메시지를 가져온다.
+* curl_getinfo : 상태 정보를 리턴한다.
+* curl_close : curl 세션을 닫는다.
+
+
