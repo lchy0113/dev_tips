@@ -10,6 +10,6 @@
 
 
 
-# [참고 사이트]
+## 참고 사이트
 -----
-https://hub.docker.com/r/gerritcodereview/gerrit
+- [gerrit docker](https://hub.docker.com/r/gerritcodereview/gerrit)
