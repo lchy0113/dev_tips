@@ -180,6 +180,30 @@ $ docker-compose up -d
 ```
 
 
+5. Test.
+-----
+
+5.1. Testing Connections.
+-----
+아래 명령어를 입력하여 연결을 시험한다.
+```
+lchy0113@AOA:~$ ssh -p 20001 192.168.27.12
+Enter passphrase for key '/home/lchy0113/.ssh/id_rsa': 
+
+  ****    Welcome to Gerrit Code Review    ****
+
+  Hi lchy0113, you have successfully connected over SSH.
+
+  Unfortunately, interactive shells are disabled.
+  To clone a hosted Git repository, use:
+
+  git clone ssh://lchy0113@192.168.27.12:29418/REPOSITORY_NAME.git
+
+Connection to 192.168.27.12 closed by remote host.
+Connection to 192.168.27.12 closed.
+```
+
+
 ## 참고 사이트
 -----
 - [gerrit docker](https://hub.docker.com/r/gerritcodereview/gerrit)
