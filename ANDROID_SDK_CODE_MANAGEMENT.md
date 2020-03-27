@@ -204,6 +204,11 @@ Connection to 192.168.27.12 closed.
 ```
 
 
+5.2. Create Projects
+-----
+아래 링크를 참조.
+- [linux-script](https://github.com/lchy0113/linux-script)
+
 ## 참고 사이트
 -----
 - [gerrit docker](https://hub.docker.com/r/gerritcodereview/gerrit)
