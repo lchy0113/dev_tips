@@ -126,15 +126,7 @@ hello, world
 
 (example)
 ```
-lchy0113@KDIWIN-NB:~/Develop/Telechips/Android_SDK/external/richgold$ ls -al
-total 24
-drwxr-xr-x   2 lchy0113 lchy0113  4096  4월 24 10:10 .
-drwxr-xr-x 275 lchy0113 lchy0113 12288  4월 24 10:02 ..
--rw-r--r--   1 lchy0113 lchy0113   666  4월 24 10:10 Android.mk
--rw-r--r--   1 lchy0113 lchy0113    74  4월 24 10:10 richgold.c
-
-
-lchy0113@KDIWIN-NB:~/Develop/Telechips/Android_SDK/external/richgold$ cat Android.mk
+lchy0113@KDIWIN-NB:~/Develop/Telechips/Android_SDK/external/richgold$ cat Android.mk 
 # $(call my-dir): 현재 위치를 반환.
 LOCAL_PATH := $(call my-dir)
 # $(CLEAR_VARS): LOCAL_PATH를 제외한 LOCAL_MODULE, LOCAL_SRC_FILES와 수 많은  LOCAL_XXX 변수를 초기화.
@@ -151,17 +143,34 @@ LOCAL_SRC_FILES := richgold.c
 include $(BUILD_EXECUTABLE)
 
 
-lchy0113@KDIWIN-NB:~/Develop/Telechips/Android_SDK/external/richgold$ cat richgold.c
-#include <stdio.h>
-int main(void)
-{
-	printf("RICHGOLD\n");
+lchy0113@KDIWIN-NB:~/Develop/Telechips/Android_SDK/external/richgold$ cat richgold.c 
+#include "richgold.h"
 
+int main(void)	
+{
+	DEGMSG("START");
+
+	DEGMSG("END");
 	return 0;
 }
 
 
-lchy0113@df84ee6e4231:~/Develop/Telechips/Android_SDK/external/richgold$ mm -j32
+lchy0113@KDIWIN-NB:~/Develop/Telechips/Android_SDK/external/richgold$ cat richgold.h
+#include <stdio.h>
+
+#define DEBUG 
+#ifdef DEBUG 
+#define ANSI_COLOR_RED "\x1b[31m"
+#define ANSI_COLOR_RESET "\x1b[0m"
+#define DEBUG_PREFIX ANSI_COLOR_RED " << RICHGOLD >> "
+#define DEGMSG(msg,...) fprintf(stderr, DEBUG_PREFIX "[%s %s %d] : " msg "\n" ANSI_COLOR_RESET, \
+                                        __FILE__, __func__, __LINE__, ##__VA_ARGS__)
+#else
+#define DEGMSG(...)
+#endif
+
+
+lchy0113@df84ee6e4231:~/Develop/Telechips/Android_SDK/external/richgold$ mm -j32 
 ============================================
 PLATFORM_VERSION_CODENAME=REL
 PLATFORM_VERSION=8.1.0
@@ -185,13 +194,12 @@ OUT_DIR=out
 ninja: no work to do.
 [1/2] glob external/*/Android.bp
 ninja: no work to do.
-external/richgold/Android.mk was modified, regenerating...
-PRODUCT_COPY_FILES frameworks/base/data/keyboards/Generic.kl:system/usr/keylayout/Generic.kl ignored.
-No private recovery resources for TARGET_DEVICE tcc898x
+No need to regenerate ninja file
 [ 50% 1/2] glob external/*/Android.bp
 [100% 6/6] Install: out/target/product/tcc898x/system/bin/richgold
 
-#### build completed successfully (11 seconds) ####
+#### build completed successfully (3 seconds) ####
+
 
 
 ```
