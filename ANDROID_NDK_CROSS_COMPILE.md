@@ -119,3 +119,81 @@ $ adb shell ./data/local/tmp/hello
 hello, world
 
 ```
+
+## 7. Android SDK를 이용한 빌드. 
+-----
+(Android_SDK)/external 경로에 코드 작성. 
+
+(example)
+```
+lchy0113@KDIWIN-NB:~/Develop/Telechips/Android_SDK/external/richgold$ ls -al
+total 24
+drwxr-xr-x   2 lchy0113 lchy0113  4096  4월 24 10:10 .
+drwxr-xr-x 275 lchy0113 lchy0113 12288  4월 24 10:02 ..
+-rw-r--r--   1 lchy0113 lchy0113   666  4월 24 10:10 Android.mk
+-rw-r--r--   1 lchy0113 lchy0113    74  4월 24 10:10 richgold.c
+
+
+lchy0113@KDIWIN-NB:~/Develop/Telechips/Android_SDK/external/richgold$ cat Android.mk
+# $(call my-dir): 현재 위치를 반환.
+LOCAL_PATH := $(call my-dir)
+# $(CLEAR_VARS): LOCAL_PATH를 제외한 LOCAL_MODULE, LOCAL_SRC_FILES와 수 많은  LOCAL_XXX 변수를 초기화.
+include $(CLEAR_VARS)
+# C/C++ 소스코드 빌드 할 때, 사용할 옵션.
+# -pie -fPIE: PIE(Position Independant Executable) 옵션, -fPIE(compiler operation), -pie(linker option).
+LOCAL_CFLAGS += -fPIE -pie
+# 파일명 지정.
+LOCAL_MODULE := richgold
+# 소스코드 파일 지정.
+LOCAL_SRC_FILES := richgold.c
+# 실행 가능한 바이너리 생성.
+# 라이브러리 생성 시에는 BUILD_SHARED_LIBRARY, BUILD_STATIC_LIBRARY 등을 사용.
+include $(BUILD_EXECUTABLE)
+
+
+lchy0113@KDIWIN-NB:~/Develop/Telechips/Android_SDK/external/richgold$ cat richgold.c
+#include <stdio.h>
+int main(void)
+{
+	printf("RICHGOLD\n");
+
+	return 0;
+}
+
+
+lchy0113@df84ee6e4231:~/Develop/Telechips/Android_SDK/external/richgold$ mm -j32
+============================================
+PLATFORM_VERSION_CODENAME=REL
+PLATFORM_VERSION=8.1.0
+TARGET_PRODUCT=full_tcc898x
+TARGET_BUILD_VARIANT=eng
+TARGET_BUILD_TYPE=release
+TARGET_ARCH=arm
+TARGET_ARCH_VARIANT=armv7-a-neon
+TARGET_CPU_VARIANT=cortex-a7
+HOST_ARCH=x86_64
+HOST_2ND_ARCH=x86
+HOST_OS=linux
+HOST_OS_EXTRA=Linux-5.3.0-46-generic-x86_64-with-Ubuntu-16.04-xenial
+HOST_CROSS_OS=windows
+HOST_CROSS_ARCH=x86
+HOST_CROSS_2ND_ARCH=x86_64
+HOST_BUILD_TYPE=release
+BUILD_ID=OMC1.180417.001
+OUT_DIR=out
+============================================
+ninja: no work to do.
+[1/2] glob external/*/Android.bp
+ninja: no work to do.
+external/richgold/Android.mk was modified, regenerating...
+PRODUCT_COPY_FILES frameworks/base/data/keyboards/Generic.kl:system/usr/keylayout/Generic.kl ignored.
+No private recovery resources for TARGET_DEVICE tcc898x
+[ 50% 1/2] glob external/*/Android.bp
+[100% 6/6] Install: out/target/product/tcc898x/system/bin/richgold
+
+#### build completed successfully (11 seconds) ####
+
+
+```
+
+
