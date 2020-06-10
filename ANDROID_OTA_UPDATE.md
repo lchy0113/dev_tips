@@ -76,7 +76,23 @@
  
  1. 장치가 recovery mode로 재부팅됩니다. recovery partition의 kernel은 boot partition의 kernel 대신 부팅됩니다.
  2. recovery binary는 init에 의해 시작됩니다. /cache/recovery/command 에서 update package를 가리키는 명령 행 인수를 찾습니다. 
+ ```
+ --update_package=/cache/some-filename.zip
+ ```
  3. package에서 data를 가져와 boot, vendor, system partition 을 업데이트 하는데 사용됩니다.  system 파티션의 새로운 파일 중 하나에 새 recovery partition 의 내용이 포함되어 있습니다.
  4. 장치가 정상적으로 재부팅됩니다. 
  5. 새로 업데이트 된 boot partition 이 로드되고, 새로 업데이트 된 system partition 이 mount되고 시작됩니다. 
+
+
+# 6. Release in a secure environment.
+-----
+
+ sign process는 private key 에 대한 access가 제한된 안전한 환경에서 이루어져야 합니다. (일반적으로 개발 서버는 artifacts를 생성하지만 보안 환경에서 외부에 서명됩니다. 
+ 
+ 외부 서명에 필요한 artifacts는 다음과 같습니다. :
+ - 개발 서버에서 full_tcc898x_files-<build_id>.zip 파일을 생성합니다.
+ - release 를 위한 private keys를 생성합니다. [Generate your release keys.][https://www.digi.com/resources/documentation/digidocs/embedded/android/pie/cc8x/android_t_sign-for-release.html#generate-your-release-keys] 
+ - target_zip 파일에 서명하고 릴리즈 artifacts를 생성합니다. 
+
+ 안드로이드 소스에는 이러한 signing tools가 포함되어 있으며, 일부는 스크립트 및 기타는 컴파일 할 코드 파일입니다. 
 
