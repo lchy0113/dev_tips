@@ -91,7 +91,7 @@
  
  외부 서명에 필요한 artifacts는 다음과 같습니다. :
  - 개발 서버에서 full_tcc898x_files-<build_id>.zip 파일을 생성합니다.
- - release 를 위한 private keys를 생성합니다. [Generate your release keys.][https://www.digi.com/resources/documentation/digidocs/embedded/android/pie/cc8x/android_t_sign-for-release.html#generate-your-release-keys] 
+ - release 를 위한 private keys를 생성합니다. [Generate your release keys.](https://www.digi.com/resources/documentation/digidocs/embedded/android/pie/cc8x/android_t_sign-for-release.html#generate-your-release-keys)
  - target_zip 파일에 서명하고 릴리즈 artifacts를 생성합니다. 
 
  안드로이드 소스에는 이러한 signing tools가 포함되어 있으며, 일부는 스크립트 및 기타는 컴파일 할 코드 파일입니다. 
