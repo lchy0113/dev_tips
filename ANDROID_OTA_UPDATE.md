@@ -131,11 +131,11 @@ $(INSTALLED_RECOVERYIMAGE_TARGET): $(MKBOOTFS) $(MKBOOTIMG) $(MINIGZIP) $(ADBD) 
 		$(DEPMOD)
 		$(call build-recoveryimage-target, $@)
 ```
- 크게 아래 이미지로 구성된다고 볼수 있습니다. 
- 1> [1] 램디스크 이미지(Root File System).
- 2> [2] 커널 이미지.
- 3> [3] android/bootable/recovery 에 있는 코드들.
- 4> android/bootable/recovery/etc/init.rc
+ 크게 아래 이미지로 구성된다고 볼수 있습니다.   
+ 1> [1] 램디스크 이미지(Root File System).  
+ 2> [2] 커널 이미지.  
+ 3> [3] android/bootable/recovery 에 있는 코드들.  
+ 4> android/bootable/recovery/etc/init.rc  
 
  recovery를 실행시키는 파트를 확인하려면, android/bootable/recovery/etc/init.rc 코드를 열어서 보면 상세 정보를 확인 할 수 있습니다.
  아래 코드를 보면 init process와 파일 시스템을 마운트하고 recovery를 서비스 형태로 실행시킵니다.
@@ -160,11 +160,11 @@ $(INSTALLED_RECOVERYIMAGE_TARGET): $(MKBOOTFS) $(MKBOOTIMG) $(MINIGZIP) $(ADBD) 
 86 service recovery /sbin/recovery
 87     seclabel u:r:recovery:s0
 ```
- 보통 안드로이드 모바일에서 Recovery 모드는 3가지 시나리오를 지원합니다. 
- 1> 세팅 메뉴에서 팩토리 리셋을 선택하였을 때, 리부팅 된 다음에 진입.
- 2> 전원이 꺼진 상태에서 키맵(제조사 마다 다름)으로 팩토리 리셋에 진입.
- 3> GOTA upgrade.
-
+ 보통 안드로이드 모바일에서 Recovery 모드는 3가지 시나리오를 지원합니다.   
+ 1> 세팅 메뉴에서 팩토리 리셋을 선택하였을 때, 리부팅 된 다음에 진입.  
+ 2> 전원이 꺼진 상태에서 키맵(제조사 마다 다름)으로 팩토리 리셋에 진입.  
+ 3> GOTA upgrade.  
+  
  가끔 Recovery 모드에서 팩토리 리셋이 제대로 안된다. 등 화면이 깨진다. 등등 이슈가 있는 경우, 
  아래 폴더에 로그를 열어 디버깅을 할수 있습니다.
 ```
@@ -195,17 +195,17 @@ $(INSTALLED_RECOVERYIMAGE_TARGET): $(MKBOOTFS) $(MKBOOTIMG) $(MINIGZIP) $(ADBD) 
  그러면 recovery mode 에서 주로 쓰이는 Factory Reset Feature 에 대해서 좀 살펴보겠습니다.
  Factory Reset 은 크게 세팅 메뉴로 동작시킬 수 있고, 각 제조사가 정의한 모드를 통해 동작 시킬 수 있습니다. 
  
- 세팅 메뉴에서 Factory Reset 을 성택할 시 동작 순서는 아래와 같다.
- 1> /cache/recovery/command 파일을 생성하고 여기에 argument 값 --wipe_data 를 write 한다.
- 2> 리부팅 됨.
- 3> LK(Little Kernel) 에서 misc 파티션에 아래와 같은 값을 써줌.
+ 세팅 메뉴에서 Factory Reset 을 성택할 시 동작 순서는 아래와 같다.  
+ 1> /cache/recovery/command 파일을 생성하고 여기에 argument 값 --wipe_data 를 write 한다.  
+ 2> 리부팅 됨.  
+ 3> LK(Little Kernel) 에서 misc 파티션에 아래와 같은 값을 써줌.  
  ```
  bootMessage.command="boot-recovery"
  bootMessage.status[0] = (cahr)0;
  bootMessage.recovery="recovery\n --wipe_data\n"
  ```
- 4> Recovery가 실행(android/bootable/recovery)가 되고 /cache/recovery/command 파일을 찾아서 --wipe_data 값이 있는지 확인.
- 5> /cache, /data 파티션을 날려버림. 
+ 4> Recovery가 실행(android/bootable/recovery)가 되고 /cache/recovery/command 파일을 찾아서 --wipe_data 값이 있는지 확인.  
+ 5> /cache, /data 파티션을 날려버림.   
 
  Recovery mode 코드에서 이해야할 중요한 포인트는 어떤 방법으로 argument 를 읽어오며, 이에 따라 어떤 동작을 수행하는지, 
  각 파티션은 어떻게 erase 하는지 중요하다. 
@@ -218,25 +218,25 @@ $(INSTALLED_RECOVERYIMAGE_TARGET): $(MKBOOTFS) $(MKBOOTIMG) $(MINIGZIP) $(ADBD) 
 
  bootloader나 커널의 실행 시작 포인트는 reset vector 입니다. 
  데몬 형태의 프로세스들은 main 으로 시작합니다. 
-
- [1] : recovery 시작.
- [2] : boot argument load.
- [3] : boot argument 값에 따라 recovery 동작에 대한 정의.
- [4] : recovery mode 동작 이후 디바이스를 shutdown 시키는 argument.
- [5] : 언어 모드를 설정.
- [6][7] : 화면에 출력할 UI와 text 를 초기화.
- [8] : argument를 로그에 출력함.
- [9] : property를 로그에 출력함.
- [10] : update_package이 NULL 인 경우, 실행 안함.
- [11] : 베터리 레벨이 낮으면 return.
- [12] : GOTA package update.
- [13] : Factory Reset.
- [14] : Package 업데이트 중 실패 시, reboot을 칠 예외 코드 등록.
- [15] : Factory Reset.
- [16] : 디바이스 셧다운.
- [17] : 부트로더로 다시 리부팅.
- [18] : 디폴트로 리부팅 시킴. 
-
+  
+ [1] : recovery 시작.  
+ [2] : boot argument load.  
+ [3] : boot argument 값에 따라 recovery 동작에 대한 정의.  
+ [4] : recovery mode 동작 이후 디바이스를 shutdown 시키는 argument.  
+ [5] : 언어 모드를 설정.  
+ [6][7] : 화면에 출력할 UI와 text 를 초기화.  
+ [8] : argument를 로그에 출력함.  
+ [9] : property를 로그에 출력함.  
+ [10] : update_package이 NULL 인 경우, 실행 안함.  
+ [11] : 베터리 레벨이 낮으면 return.  
+ [12] : GOTA package update.  
+ [13] : Factory Reset.  
+ [14] : Package 업데이트 중 실패 시, reboot을 칠 예외 코드 등록.  
+ [15] : Factory Reset.  
+ [16] : 디바이스 셧다운.  
+ [17] : 부트로더로 다시 리부팅.  
+ [18] : 디폴트로 리부팅 시킴.   
+  
 
 ```
 int main(int argc, char **argv) {
@@ -450,17 +450,16 @@ int main(int argc, char **argv) {
 
 ```
 
-
- Recovery를 디버깅할 때 가장 중요한 함수는 get_args() 입니다. 
- 좀 더 상세히 살펴보면, 
- [1] : misc 파티션에서 boot message 를 읽어 옵니다. 
- [2] : boot command 에 대한 로그를 출력합니다.
- [3] : \n 단위로 스트링을 파싱해 준다. 
-    ex. argument 가 "recovery \n --wipe_data" 인 경우, 
-	 이렇게 되는 것입니다.  
-	 tokens[0] = recovery, tokens[1] = --wipe_data
- [4] : COMMAND_FILE  를 읽어서 처리를 하는 루틴인데, 세팅 메뉴로 팩토리 리셋을 선택 하는 경우 동작합니다. 
-
+ Recovery를 디버깅할 때 가장 중요한 함수는 get_args() 입니다.   
+ 좀 더 상세히 살펴보면,   
+ [1] : misc 파티션에서 boot message 를 읽어 옵니다.   
+ [2] : boot command 에 대한 로그를 출력합니다.  
+ [3] : \n 단위로 스트링을 파싱해 준다.   
+    ex. argument 가 "recovery \n --wipe_data" 인 경우,   
+	 이렇게 되는 것입니다.    
+	 tokens[0] = recovery, tokens[1] = --wipe_data  
+ [4] : COMMAND_FILE  를 읽어서 처리를 하는 루틴인데, 세팅 메뉴로 팩토리 리셋을 선택 하는 경우 동작합니다.   
+  
 ```
 // command line args come from, in decreasing precedence:
 //   - the actual command line
