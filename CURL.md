@@ -36,6 +36,7 @@ Curl
 | -s     | 정숙 모드. 진행 내역이나 메시지등을 출력하지 않음.                                                          |                                            |
 | -H     | 헤더 설정. 헤더 정보 전달.                                                                                  |                                            |
 | -d     | HTTP Post data(FORM을 POST하는 HTTP나 JSON으로 데이터를 주고받는 REST 기반의 웹서비스 디버깅시 유용한 옵션) |                                            |
+| -X     | request, Request시 사용할 method 종류(GET, POST, PUT, PATCH, DELETE)를 기술한다.                            |                                            |  
 
 
 ## 1.4. 같이 읽어보면 좋은 자료.
