@@ -5,14 +5,13 @@
 시스템 서비스 (안드로이드 서비스 말고 리눅스 서비스)는 이곳에서 정의된다.
 
 
-이하 프레임워크/system/core/init/readme.txt 파일의 내용.
+이하 프레임워크/system/core/init/README.md 파일의 내용.
 
 
 --------------------------------------------------------------
 
-
-크게 Actions, Commands, Services, Options 네 부분으로 구분된다.
-
+Android Init Language는 5개의 board classes of statements 로 구성된다.
+ (Actions, Commands, Services, Options, Imports) 
 
 각 요소는 라인으로 구분되고, 토큰은 공백으로 구분된다.
 백스페이스문자를 사용하여 공백문자를 토큰으로 사용이 가능하다.
@@ -35,13 +34,38 @@ Actions와 Services는 유니크한 이름을 가지며, 동일한 이름으로 
 
 각 액션은 순차적으로 dequeue되며, 명령어도 순차적으로 실행된다.
 Init handles other activities (device creation/destruction, property setting, process restarting) "between" the execution of the commands in activities.
+
 액션은 다음과 같은 형식이 된다.
 
 ```
-on <trigger>
+on <trigger> [&& <trigger>]*
      <command>
      <command>
      <command>
+```
+
+예를 들어, 
+```
+on boot
+	setprop a 1
+	setprop b 2
+
+on boot && property:true=true
+	setprop c 1
+	setporp d 2
+
+on boot 
+	setprop e 1
+	setprop f 2
+```
+그런 다음 'boot' trigger 가 발생하고 'true' 속성이 'true'라고 가정하면 실행되는 명령의 순서가 된다. 
+```
+setprop a 1
+setprop b 2
+setprop c 1
+setprop d 2
+setprop e 1
+setprop f 2
 ```
 
 
@@ -50,7 +74,7 @@ on <trigger>
 서비스는 초기 실행되(거나 서비스가 종료되면 재시작되)는 프로그램이다. 서비스는 다음과 같은 형식을 가진다
 
 ```
-service <name> <pathname> [ <argument> ]
+service <name> <pathname> [ <argument> ] *
     <option>
     <option>
     ....
@@ -60,6 +84,9 @@ service <name> <pathname> [ <argument> ]
 # 3. Options
 -----
 옵션은 서비스의 속성을 설정한다. 서비스가 언제, 어떻게 실행될지를 정한다.
+
+`console [<console>]`
+> Service에 콘솔이 필요한 경우 사용. 
 
 - critical
  : 장치에 치명적인(중요한) 서비스. 4분 내에 4번 이상 종료되면 디바이스는 리커버리모드로 재부팅된다.
