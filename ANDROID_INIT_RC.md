@@ -88,35 +88,48 @@ service <name> <pathname> [ <argument> ] *
 `console [<console>]`
 > Service에 콘솔이 필요한 경우 사용. 
 
-- critical
- : 장치에 치명적인(중요한) 서비스. 4분 내에 4번 이상 종료되면 디바이스는 리커버리모드로 재부팅된다.
+`critical`
+> 장치에 치명적인(중요한) 서비스. 4분 내에 4번 이상 종료되면 디바이스는 리커버리모드로 재부팅된다.
 
-- disabled
- : 시작시 자동으로 실행되지 않고, 명시적으로 실행하는 서비스.
+`disabled`
+> 시작시 자동으로 실행되지 않고, 명시적으로 실행하는 서비스.
 
-- setenv <name> <value>
- : 환경설정값을 지정
+`setenv <name> <value>`
+> 환경설정값을 지정
 
-- socket <name> <type> <perm> [ <user> [ <group> ] ]
- : /dev/socket/<name> 에 유닉스 도메인 소켓을 생성하고 시작된 프로세스에 해당 fd를 넘겨준다.
- <type>은 "dgram", "stream", "seqpacket" 중 한가지 값을 가진다.
- user와 group의 기본값은 0
+`socket <name> <type> <perm> [ <user> [ <group> [ <seclabel> ] ] ]`
+> /dev/socket/<name> 에 유닉스 도메인 소켓을 생성하고 시작된 프로세스에 해당 fd를 넘겨준다.  <type>은 "dgram", "stream", "seqpacket" 중 한가지 값을 가진다.  user와 group의 기본값은 0
 
-- user <username>
- : 서비스 실행시 사용될 사용자 명. 기본값은 root 이다 (nobody일수도 있음)
+`file <path> <type>`
+> 파일 경로를 열고, fd를 시작된 프로세스로 전달. 
 
-- group <groupname> [ <groupname> ]
- : 서비스 실행시 사용될 그룹명. 기본값은 root (nobody일수도 있음)
+`user <username>`
+> 서비스 실행시 사용될 사용자 명. 기본값은 root 이다 (nobody일수도 있음)
+> Android O 부터 프로세스는 .rc 파일에서 직접 기능을 요청할 수 있다. 아래 "capabilities" 옵션을 참고.
 
-- oneshot
- : 서비스 종료시 자동적으로 재시작하지 않음
+`group <groupname> [ <groupname>\* ]`
+> 서비스 실행시 사용될 그룹명. 기본값은 root (nobody일수도 있음)
 
-- class <name>
- : 서비스 클래스명을 지정한다. 모든 서비스는 같이 시작/종료될 클래스명을 가지고 있으며, 미지정시 "default" 클래스로 지정된다.
+`seclabel <seclabel>`
+> Change to 'seclabel' before exec'ing this service.
+> 기본적으로 rootfs에서 실행되는 서비스에 사용된다. (예: ueventd, adbd.)
+> 시스템 파티션의 서비스는 file security context 를 기반으로 policy-defined 전환을 사용할 수 있다. 
+> 지정하지 않은 경우, 기본값은 init context이다. 
 
-- onrestart
- : 서비스 재시작시 명령을 실행한다.
+`oneshot`
+> 서비스 종료시 자동적으로 재시작하지 않음.
 
+`class <name> [ <name>\* ]`
+> 서비스 클래스명을 지정한다. 모든 서비스는 같이 시작/종료될 클래스명을 가지고 있으며, 미지정시 "default" 클래스로 지정된다.
+
+`animation class`
+> 'animation' 클래스에는 부팅 애니메이션과 종료 애니메이션에 필요한 모든 서비스가 포함되어야 한다. 
+
+`onrestart`
+> 서비스 재시작시 명령을 실행한다.
+
+`writepid <file> [ <file>\* ]`
+> 지정된 파일의 자식 pid  를 사용한다. 
 
 # 4. Triggers
 -----
@@ -138,11 +151,86 @@ service <name> <pathname> [ <argument> ] *
 
 # 5. Commands
 -----
+`bootchart [start|stop]`
+> Start/stop bootcharting. 
+> bootchart/enabled 파일이 존재하는 경우에만 활성화 된다. 
+
+`chmod <octal-mode> <path>`
+> 파일 권한 변경.
+
+`chown <owner> <group> <path>`
+> 파일 소유자와 그룹 변경
+
+`class_start <serviceclass>`
+> 특정 클래스의 서비스를 모두 시작한다.
+
+`class_stop <serviceclass>`
+> 현재 실행중인 클래스 서비스를 중지시킨다.
+
+`class_reset <serviceclass>`
+> 지정된 클래스의 모든 서비스를 비활성화하지 않고, 현재 실행중인 경우 중지시킨다.
+
+`class_restart <serviceclass>`
+> 지정된 클래스의 모든 서비스를 다시 시작시킨다.
+
+`copy <src> <dst>`
+> 파일을 복사한다. write 와 유사하지만 binary/large 을 복사하는 경우 유용하다.
+
+`domainname <name>`
+> 도메인명 지정.
+
+`enable <servicename>`
+> 서비스가 disabled를 지정하지 않은 것처럼, 비활성화 된 서비스를 활성화 된 서비스로 전환한다.
+> 서비스가 실행 중이면 지금 시작된다. 일반적으로 부트로더가 필요 할 때, 특정 서비스를 시작해야 함을 나타내는 변수를 설정할 때 사용된다. (예:
+```
+on property:ro.boot.myfancyhardware=1
+	enable my_fancy_service_for_my_fancy_hardware
+```
+>)
+
+`exec [ <seclabel> [ <user> [ <group>\* ] ] ] -- <command> [ <argument>\* ]`
+> 주어진 인수로 명령을 fork하고 실행한다. option security context, user, supplementary group을 제공할 수 있도록 "--" 이후에 명령이 시작된다.
+> Command가 완료될 때까지 다른 Command는 실행되지 않는다. 
+> _seclabel_은 기본값을 나태나는 - 일 수 있다.
+> _argument_ 내에서 특성이 확장되었다.
+> 분기 된 프로세스가 종료될 때까지 Init 는 명령 실행을 중지한다. 
+
+`exec_start <service>`
+> Start a given service and halt the processing of additional init commands until it returns. 
+> 이 명령은 `exec`명령과 유사하게 동작하지만 exec 인수 벡터 대신 기존 서비스 정의를 사용한다.
+
+`export <name> <value>`
+> 환경변수 <name>에 <value>값을 지정
+
+`hostname <name>`
+> host name 을 세팅.
+
+`ifup <interface>`
+> Network interface _interface_를 온라인 상태로 변경한다.
+
+`insmod [-f] <path> [<options>]`
+> 지정된 옵션으로 _path_에 모듈을 설치한다.
+
+`load_all_props`
+> /system, /vendor 등에서 properties를 load한다.
+
+`load_persist_props`
+> /data 가 decrypted될 때, properties를 load한다. 
+> 이것은 default init.rc에 포함되어 있다. 
+
+`restart <service>`
+> 실행중인 서비스를 중지했다가 다시 시작한다. 서비스가 현재 다시 시작중이면 아무것도 하지 않는다. 그렇지 않으면 서비스가 시작된다. 
+
+`restorecon <path> [ <path>\* ]`
+> Restore the file named by _path_ to the security context specified in the file\_contexts configuration.
+> Not required for directories created by the init.rc as these are automatically labeled correctly by init.
+
+`start <service>`
+> Service가 아직 실행되고 있지 않으면 실행한다.
+
 - exec <path> [ <argument> ]
  : 새로운 프로세스로 <path> 를 실행. 이 작업시 해당 프로그램이 종료될때까지 init은 block되므로 사용상에 주의를 요함.
 
-- export <name> <value>
- : 환경변수 <name>에 <value>값을 지정
 
 - ifup <interface>
  : <interface>를 UP상태로 전환한다.
@@ -156,24 +244,9 @@ service <name> <pathname> [ <argument> ] *
 - chdir <directory>
  : 작업중인 디렉토리 변경
 
-- chmod <octal-mode> <path>
- : 파일 권한 변경
-
-
-- chown <owner> <group> <path>
- : 파일 소유자와 그룹 변경
 
 - chroot <directory>
  : 프로세스의 루트 디렉토리를 변경한다
-
-- class_start <serviceclass>
- : 특정 클래스의 서비스를 모두 시작한다.
-
-- class_stop <serviceclass>
- : 현재 실행중인 클래스 서비스를 중지시킨다.
-
-- domainname <name>
- : 도메인명 지정
 
 - insmod <path>
  : <path>에 있는 모듈을 설치한다.
@@ -217,14 +290,14 @@ service <name> <pathname> [ <argument> ] *
 -----
  : init은 몇개의 시스템 속성값을 셋팅한다.
 
-- init.action
- : 현재 실행중인 액션의 이름
+`init.action`
+> 현재 실행중인 액션의 이름
 
-- init.command
- : 현재 실행중인 커맨드
+`init.command`
+> 현재 실행중인 커맨드
 
-- init.svc.<name>
- : <name> 서비스의 현재 상태. "stopped", "running", "restarting"
+`init.svc.<name>`
+> <name> 서비스의 현재 상태. "stopped", "running", "restarting"
 
 
 기본적으로, init을 통해 실행되는 프로그램은 stdout과 stderr가 /dev/null로 전달된다. (표시되거나 저장되지 않는다)
@@ -232,5 +305,54 @@ service <name> <pathname> [ <argument> ] *
 
 예)
 service akmd /system/bin/logwrapper /sbin/akmd
+
+
+# Boot timing
+-----
+ : Init는 시스템 속성에 일부 부팅 타이밍 정보를 기록한다. 
+
+`ro.boottime.init`
+> 부팅 후 init의 첫 번째 단계가 시작된 ns (via the CLOCK\_BOOTTIME clock)의 시간입니다.
+
+`bo.boottime.init.selinux`
+> Time after boot in ns (via the CLOCK\_BOOTTIME clock) at which the first stage of init started. 
+
+`ro.boottime.init.cold_boot_wait`
+> How long init waited for ueventd's coldboot phase to end.
+
+`ro.boottime.<service-name>`
+> Time after boot in ns (via the CLOCK\_BOOTTIME clock) that the service was first started.
+
+
+# bootcharting
+-----
+ : init 에는 "bootcharting"를 수행하기 위한 코드가 포함되어 있다. <http://www.bootchart.org/>에서 제공하는 도구를 사용하여 처리 할 수 있는 로그를 생성한다. 
+ -bootchart _timeout_ 옵션을 사용하여 _timeout_  초를 확인 할 수 있다.
+
+ On a device:
+```
+adb shell 'touch /data/bootchart/enabled'
+```
+ 로그 파일은 /data/bootchart/에 기록된다. bootchart 명령 행 유틸리티와 함께 사용할 수있는 bootchart.tgz 파일을 작성하고 검색하기위한 스크립트가 제공된다.
+
+```
+sudo apt-get install pybootchartgui 
+# grab-bootchart.sh uses $ANDROID_SERAIL.
+$ANDROID_BUILD_TOP/system/core/init/grab-bootchart.sh
+```
+
+# systrace
+-----
+
+ Systrace (<http://developer.android.com/tools/help/systrace.html>) can be used for obtaining performance analysis reports during boot time on userdebug or eng builds.
+
+ Here is an example of trace events of "wm" and "am" categories:
+```
+$ANDROID_BUILD_TOP/external/chromium-trace/systrace.py \ 
+	wm am --boot
+```
+
+ This command will cause the device to reboot. After the device is rebooted and the boot sequence has finished, the trace report is obtained from the device and written as trace.html on the host by hitting Ctrl+C.
+
 
 
