@@ -371,7 +371,7 @@ int security_setenforce(int value)
 
 
 ##  정책파일 .te의 사용법
-=====
+=====  
  sepolicy에 있는 .te파일에 정책설정하는 방법에 대해 알아보겠다. 
  사용법에 관한 내용은 NSA사이트를 참고했으며, TE설정파일의 예를 보면 아래와 같다.
 
