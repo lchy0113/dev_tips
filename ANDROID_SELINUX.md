@@ -350,7 +350,7 @@ static bool selinux_is_enforcing(void)
 #endif
 	return true;
 }
-
+```
 > ▶security_setenforce()  호출을 마지막으로 selinux_mnt의 enforce 파일에 enforcing 모드값을 설정하고 초기화를 완료한다.
 
 external/libselinux/src/setenforce.c
