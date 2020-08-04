@@ -107,13 +107,13 @@ Android source tree
 AOSP 시스템 설정 값 저장 위치.
 =====
 
-- AOSP 시스템 설정 값 위치는 아래 두 위치에 있다.   
+* AOSP 시스템 설정 값 위치는 아래 두 위치에 있다.   
 [Android Root]에서  
-* ./frameworks/base/packages/SettingsProvider/res/values/defaults.xml  
-* ./frameworks/base/core/res/res/values/config.xml  
+- ./frameworks/base/packages/SettingsProvider/res/values/defaults.xml  
+- ./frameworks/base/core/res/res/values/config.xml  
   
 보통 장치 제조사의 기본 설정값은 아래의 위치에 있다.  
-* ./device/(company name)/(product name)/overlay/frameworks/base/core/res/res/values/config.xml  
+- ./device/(company name)/(product name)/overlay/frameworks/base/core/res/res/values/config.xml  
 
 빌드 시 위의 파일을 원래 파일에 덮어 쓴다.  
 
@@ -149,3 +149,204 @@ device/<company-name>/<product-name>/overlay/frameworks/base/core/res/res/values
 ```
 vendor/
 ```
+
+-----
+
+빌드 설정  
+=====
+
+빌드 아키텍쳐  
+-----
+![Product Device Board 의 개념.](image/ANDROID_SOURCE_TREE_0.png)
+  
+![Makefile 병합 과정.](image/ANDROID_SOURCE_TREE_1.png)
+ 
+> 빌드는 envsetup.sh & lunch 명령의 조합이나 buildspeck.mk 파일을 통해서 최종 빌드 타겟을 설정한다.  
+> buildspeck.mk 이용시, build/buildspec.mk.default 를 참조하여 필요한 환경변수를 설정한 뒤, buildspeck.mk를 루트 디렉토리에 저장하면 된다.   
+> 아래는 make 명령 시, 설정된 타겟과 관련된 환경변수를 보여준다.  
+
+```
+18:56:40 ============================================
+18:56:40 PLATFORM_VERSION_CODENAME=REL
+18:56:40 PLATFORM_VERSION=8.1.0
+18:56:40 TARGET_PRODUCT=full_tcc898x
+18:56:40 TARGET_BUILD_VARIANT=eng
+18:56:40 TARGET_BUILD_TYPE=release
+18:56:40 TARGET_PLATFORM_VERSION=OPM1
+18:56:40 TARGET_BUILD_APPS=
+18:56:40 TARGET_ARCH=arm
+18:56:40 TARGET_ARCH_VARIANT=armv7-a-neon
+18:56:40 TARGET_CPU_VARIANT=cortex-a7
+18:56:40 TARGET_2ND_ARCH=
+18:56:40 TARGET_2ND_ARCH_VARIANT=
+18:56:40 TARGET_2ND_CPU_VARIANT=
+18:56:40 HOST_ARCH=x86_64
+18:56:40 HOST_2ND_ARCH=x86
+18:56:40 HOST_OS=linux
+18:56:40 HOST_OS_EXTRA=Linux-5.3.0-62-generic-x86_64-with-Ubuntu-16.04-xenial
+18:56:40 HOST_CROSS_OS=windows
+18:56:40 HOST_CROSS_ARCH=x86
+18:56:40 HOST_CROSS_2ND_ARCH=x86_64
+18:56:40 HOST_BUILD_TYPE=release
+18:56:40 BUILD_ID=OMC1.180417.001
+18:56:40 OUT_DIR=out
+18:56:40 AUX_OS_VARIANT_LIST=
+18:56:40 ============================================
+```
+  
+> 타겟 디바이스 설정은 build/make/target/product/ 과 device/*/*/ 에 존재하는 AndroidProducts.mk 에서 시작한다.   
+> lunch에서 표시되는 타겟리스트는 master:/device/*/*/AndroidProducts.mk 에서 COMMON_LUNCH_CHOICES와/device/*/*/vendorsetup.sh 에서 add_lunch_combo()로 추가되는 LUNCH_MENU_CHOICES에 저장된 리스트를 표시한다.   
+> add_lunch_combo() 는 /device/*/*/vendorsetup.sh 에서 호출된다.  
+> 커널파라미터, 커널로딩 주소, CPU instruction set 등을 결정하는 BoardConfig.mk는 device/*/TARGET_DEVICE/BoardConfig.mk 에 존재한다.  
+
+
+envsetup.sh
+-----
+> 소스 검색, 빌드 타겟 확인 등 여러가지 빌드 설정(lunch) 및 빌드 디버깅 기능을 제공한다.   
+이 스크립트에서 정의된 명령은 vendorsetup.sh 에서도 사용 할 수 있다.  
+
+* 도움말 :   
+```  
+$ hmm  
+```  
+
+* 파일 검색 명령(AndroidProduct.mk) :  
+```
+lchy0113@cfc0c6849124:~/Develop/Telechips/NHN-1033_GERRIT$ godir
+Usage: godir <regex>
+lchy0113@cfc0c6849124:~/Develop/Telechips/NHN-1033_GERRIT$ godir AndroidProducts.mk
+Creating index... Done
+
+   [1] ./build/make/target/product
+   [2] ./device/asus/fugu
+   [3] ./device/generic/arm64
+   [4] ./device/generic/armv7-a-neon
+   [5] ./device/generic/car
+   [6] ./device/generic/mini-emulator-arm64
+   [7] ./device/generic/mini-emulator-armv7-a-neon
+   [8] ./device/generic/mini-emulator-mips
+   [9] ./device/generic/mini-emulator-mips64
+  [10] ./device/generic/mini-emulator-x86
+  [11] ./device/generic/mini-emulator-x86_64
+  [12] ./device/generic/mips
+  [13] ./device/generic/mips64
+  [14] ./device/generic/qemu
+  [15] ./device/generic/uml
+  [16] ./device/generic/x86
+  [17] ./device/generic/x86_64
+  [18] ./device/google/dragon
+  [19] ./device/google/marlin
+  [20] ./device/google/muskie
+  [21] ./device/google/taimen
+  [22] ./device/huawei/angler
+  [23] ./device/lge/bullhead
+  [24] ./device/linaro/hikey
+  [25] ./device/sample/products
+  [26] ./device/telechips/tcc898x
+
+Select one: 26
+lchy0113@cfc0c6849124:~/Develop/Telechips/NHN-1033_GERRIT/device/telechips/tcc898x$ 
+```
+  
+vendorsetup.sh  
+-----
+> build/envsetup.sh에 의해 실행되며 주요 기능은 add_lunch_combo()를 이용해 envsetup.sh와 lunch에서 사용할 빌드 타겟을 설정한다. 
+
+* envsetup.sh 에서 정의된 모든 함수를 사용할 수 있다.  
+* 아래 처럼 호출하면 TARGET_PRODUCT=full_tcc898x, TARGET_BUILD_VARIANT=eng 으로 설정된다.   
+* 설치되는 각 모듈은 LOCAL_MODULE_TAGS 변수에 user, debug, eng, tests, optional, samples 중 하나로 설정되며 TARGET_BUILD_VARIANT에 설정된 값에 매치되는 모듈이 빌드 된다.  
+```
+$ add_lunch_combo full_tcc898x-eng
+```
+
+  
+AndroidProducts.mk
+-----
+> 빌드 시스템에 전달할 makefile 리스트인 PRODUCT_MAKEFILES을 설정한다.  
+> 이 파일이 적용시 LOCAL_DIR 외 다른 변수는 설정된 것이 없으므로 다른 변수를 이용한 조건문은 불가능하다.  
+* 아래는 Telechips 사의 TCC898x 의 설정이다.  
+
+```
+PRODUCT_MAKEFILE := \
+    $(LOCAL_DIR)/full_tcc898x.mk
+```
+
+  
+device/company/*/PRODUCT_MAKEFILE 
+-----
+> AndroidProduct.mk에서 작성한 제품별 빌드파일로 제품이름 인스톨 패키지 등을 설정한다.  
+
+* PRODUCT_PACKAGES:
+> 추가할 패키지를 지정한다. 
+
+* DEVICE_PACKAGE_OVERLAYS:
+> 기본 패키지 리소스를 기기에 특화된 리소스로 대체한다.
+
+* PRODUCT_COPY_FILES:
+> 대상 파일시스템에 복사할 파일을 지정한다.
+
+* PRODUCT_NAME:
+> 사용자에게 노출되는 제품 이름.
+
+* PRODUCT_DEVICE:
+> 이 변수와 같은 폴더의 BoardConfig.mk를 적용한다.
+
+* PRODUCT_MODEL:
+> 사용자에게 노출된 모델 이름.
+
+* vendor prebuilt makefile  추가됨. (아래 강조 참고).
+
+* 나머지 변수의 의미 참고 : [Product Definition Variables](https://source.android.com/setup/develop/new-device#prod-def, "google link")   
+
+```
+# Build option for TV device
+TV_DEVICE_BUILD := true
+CTS_BUILD := false
+
+ifeq ($(TV_DEVICE_BUILD),true)
+$(call inherit-product, device/google/atv/products/atv_base.mk)
+else
+$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
+endif
+
+ifeq ($(TV_DEVICE_BUILD),true)
+TV_DEVICE_CTS_CDD342_PASS_BUILD := false
+endif
+
+# How this product is called in the build system
+PRODUCT_NAME := full_tcc898x
+PRODUCT_DEVICE := tcc898x
+PRODUCT_BRAND := Android
+PRODUCT_MANUFACTURER := kdiwin 
+
+# Define the name of target board                                                                                                                                                                                 
+#TARGET_BOARD_8980_STB := true
+TARGET_BOARD_8985_OTT := true
+#TARGET_BOARD_8985_STICK := true
+
+ifeq ($(TV_DEVICE_BUILD),true)
+#PRODUCT_CHARACTERISTICS := tv,sdcard
+PRODUCT_CHARACTERISTICS := tablet,sdcard
+else
+PRODUCT_CHARACTERISTICS := tablet,sdcard
+endif
+#PRODUCT_TAGS += nand_v8
+
+# The user-visible product name
+ifeq ($(TARGET_BOARD_8980_STB),true)
+PRODUCT_MODEL := TCC8980_STB
+endif
+
+ifeq ($(TARGET_BOARD_8985_OTT),true)
+PRODUCT_MODEL := NHN-1033
+endif
+
+ifeq ($(TARGET_BOARD_8985_STICK),true)
+PRODUCT_MODEL := TCC8985_STICK
+endif
+```
+
+build/core/main.mk
+-----
+
+
