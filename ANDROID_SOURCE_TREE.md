@@ -117,3 +117,35 @@ AOSP 시스템 설정 값 저장 위치.
 
 빌드 시 위의 파일을 원래 파일에 덮어 쓴다.  
 
+
+-----
+안드로이드의 기본 설정값 및 기본 동작은 아래에서 설명할 파일들을 수정하여 변경 할 수 있다.  
+1. 안드로이드 기본 설정값  
+```
+frameworks/base/packages/SettingsProvider/res/values/defaults.xml
+```
+> 안드로이드 시스템 설정의 초기값을 정할 수 있다.  이중에는 기기 사용자가 설정에서 변경할 수 없는 것도 있다. 시스템 초기의 WiFi의 On 여부, 기본 값 등.  
+
+2. 안드로이드 시스템 설정  
+```
+frameworks/base/core/res/res/values/config.xml
+```
+> 시스템 전반의 동작 유형에 대한 변경을 할 수 있다.  
+> MasterVolume, NavigationBar 표시 여부, 전원 버튼 동작 등.  
+
+3. 기본 바탕 화면 이미지를 변경.
+```
+frameworks/base/core/res/res/drawable-nodpi/default_wallpaper.jpg
+```
+> 위의 파이를 변경하여 기본 배경 화면 이미지를 변경 할 수 있다.  
+
+4. device 폴더의 overlay 폴더를 이용하여 원본 수정 없이, 각 기기 별 설정을 적용 할 수 있다.  
+```
+device/<company-name>/<product-name>/overlay/frameworks/base/core/res/res/values/config.xml
+```
+> overlay 폴더 밑에는 AOSP 프로젝트를 root로 보고, 그 하위에 절대 경로로 폴더 및 파일을 배치하면, 원본을 overlay하게 된다. 이를 이용하여, AOSP 원본을 건드리지 않고도 각 기기에 맞춘 수정이 가능하다.  
+
+5. 또한, vendor 폴더를 이용하여, vendor의 미리 빌드 된 앱, 펌웨어 등을 탑재/이용할 수 있다.   
+```
+vendor/
+```
