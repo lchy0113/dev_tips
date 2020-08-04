@@ -99,3 +99,21 @@ Android source tree
 		-  Android에서 사용되는 makefile인 Android.mk 파일을 어떻게 작성해야 하는지에 대해서 설명되어 있음  
 		-  PDK(Platform Development Kit – Android 소스)에 적용되는 부분에 대한 설명보다는 NDK용 Android.mk 파일에 대한 설명임  
 		-  하지만, PDK용 문서로 참고하기 좋음  
+
+
+-----
+
+
+AOSP 시스템 설정 값 저장 위치.
+=====
+
+- AOSP 시스템 설정 값 위치는 아래 두 위치에 있다.   
+[Android Root]에서  
+* ./frameworks/base/packages/SettingsProvider/res/values/defaults.xml  
+* ./frameworks/base/core/res/res/values/config.xml  
+  
+보통 장치 제조사의 기본 설정값은 아래의 위치에 있다.  
+* ./device/(company name)/(product name)/overlay/frameworks/base/core/res/res/values/config.xml  
+
+빌드 시 위의 파일을 원래 파일에 덮어 쓴다.  
+
