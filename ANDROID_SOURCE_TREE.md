@@ -348,5 +348,12 @@ endif
 
 build/core/main.mk
 -----
+> 최상단 Makefile에 의해 호출되며 build/core/config.mk, build/core/definitions.mk 등 호출해 빌드에 필요한 변수 설정이나 빌드 템플릿을 설정한다.  
+
+build/core/config.mk
+-----
+* include $(TOPDIR)buildspec.mk  을 수행하여 빌드타겟 설정을 하며 만약 파일이 없으면 환경변수를 이용한다.  
+* include $(BUILD_SYSTEM)envsetup.mk 을 수행하여 envsetup.sh 에서 설정한 환경변수를 적용한다.  
 
 
+// http://shincdevnote.blogspot.com/2018/11/aosp-build.html
