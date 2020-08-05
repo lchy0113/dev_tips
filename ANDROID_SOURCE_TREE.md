@@ -109,11 +109,11 @@ AOSP 시스템 설정 값 저장 위치.
 
 * AOSP 시스템 설정 값 위치는 아래 두 위치에 있다.   
 [Android Root]에서  
-- ./frameworks/base/packages/SettingsProvider/res/values/defaults.xml  
-- ./frameworks/base/core/res/res/values/config.xml  
+	- ./frameworks/base/packages/SettingsProvider/res/values/defaults.xml  
+	- ./frameworks/base/core/res/res/values/config.xml  
   
 보통 장치 제조사의 기본 설정값은 아래의 위치에 있다.  
-- ./device/(company name)/(product name)/overlay/frameworks/base/core/res/res/values/config.xml  
+	- ./device/(company name)/(product name)/overlay/frameworks/base/core/res/res/values/config.xml  
 
 빌드 시 위의 파일을 원래 파일에 덮어 쓴다.  
 
@@ -602,20 +602,20 @@ ueventd는 기본 init.rc 가 실행하는 최초의 서비스 중 하나다. �
 ToolBox
 -----
 * init의 전역속성을 제어.
- - getprop <key> : 속성 확인.
- - setprop <key> <value> : 속성 변경.
- - watchprops : 실시간 속성 감시.
+    - getprop <key> : 속성 확인.
+    - setprop <key> <value> : 속성 변경.
+    - watchprops : 실시간 속성 감시.
 
 * 이벤트 확인 및 전달.
- - getevent
- - sendevent /dev/input/event0 1 330 1
+    - getevent
+    - sendevent /dev/input/event0 1 330 1
 
 * 서비스 제어
- - start <servicename>
- - stop <servicename>, ex> stop zygote
+    - start <servicename>
+    - stop <servicename>, ex> stop zygote
 
 * 베이스벤트 프로세서 제어.
- - smd
+    - smd
 
 * ramdisk.img 마운트하기
  램디스크 이미지는 압축파일 이므로 아래와 같이 압축을 풀면된다. /root 의 내용과 같다.
@@ -644,7 +644,7 @@ init.environ.rc  init.tcc898x.tztee.rc          proc
  build/tools/fs_config 가 /system/core/include/private/android_filesystem_config.h 를 참조하여 설정된다. 
 
 * 디렉토리와 파일 권한.
- - system/core/libcutils/fs_config.cpp 아래 구조체에 따라 설정된다.
+    - system/core/libcutils/fs_config.cpp 아래 구조체에 따라 설정된다.
 
 
 
@@ -721,11 +721,11 @@ include $(call all-makefiles-under, $(LOCAL_PATH))
 TIPS
 -----
 * 안드로이드에 이더넷 기능 추가하기. 
- - ICS 4.0.4 패치 : [https://github.com/gxben/aosp-ethernet](https://github.com/gxben/aosp-ethernet)
- - 리나로 패치 : 
+    - ICS 4.0.4 패치 : [https://github.com/gxben/aosp-ethernet](https://github.com/gxben/aosp-ethernet)
+    - 리나로 패치 : 
 
 * 파일 시스템 하나만 사용하기.
- - RowBoat : [https://code.google.com/archive/p/rowboat/](https://code.google.com/archive/p/rowboat/)
+	- RowBoat : [https://code.google.com/archive/p/rowboat/](https://code.google.com/archive/p/rowboat/)
 
 
 * Reference : http://shincdevnote.blogspot.com/2018/11/aosp-build.html
