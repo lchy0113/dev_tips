@@ -490,11 +490,242 @@ $ vi device/(MY_COMPANY)/(MY_DEVICE)vendorsetup.sh
 * userdata.img: /data
 * recovery.img: /recovery
 
+  
 빌드 시 커널 폴더 추가하기.
 -----
+1. 최상의 디렉토리에 커널을 추가한다.
+
+2. 아래 처럼 vendor폴더 추가 스크립트를 적용하는 스크립트를 작성한다.
+(작성 예정)
+
+3. product envsetup에 커널 빌드함수를 작성한다.
+(작성 예정)
+
+
+  
+루트 디렉토리(Device)
+-----
+* /acct : cgroup 마운트 디렉토리.
+* /cache : 진행 중인 다운로드 등 임시데이터 저장.
+* /charger : 배터리 충전 상태를 알려주는 네이티브 앱.
+* /config : configs 마운트 디렉토리.
+* /d : /sys/kernel/debug 심볼릭 링크.
+* /data : userdata.img 마운트 디렉토리.
+ - /anr : ANR 트레이스.
+ - /app : 앱의 기본 설치 디렉토리.
+ - /app-asec : 암호화된 앱.
+ - /app-private : forward locking된 앱의 설치 디렉토리.
+ - /backup : Backup Manager 시스템 서비스가 사용한다.
+ - /dalvik-cache : dex 바이트 코드를 네이티브코드로 변환된 JIT 캐시를 지정한다.
+ - /data : 각 앱의 홈 데릭토리.
+ - /dontpanic : dumpstate가 사용, 발생된 패닉의 콘솔 출력과 스레드 상태를 저장한다.
+ - /drm : DRM 암호화된 데이터, 포워드 락킹 통제 파일.
+ - /local : shell에서 쓰기가 가능한 디렉토리.
+ - /mis : wifi, BT, VPN 등 잡다한 데이터가 저장된다.
+ - /property : 영구적인 시스템 속성.
+ - /resource-cache : 앱 자원 캐시.
+ - /radio : 라디오 펌웨어.
+ - /secure : 암호화된 파일시스템을 사용하는 기기에서 사용하는 계정정보 저장.
+ - /system : 계정 데이터 베이스, 설치된 앱 목록 등 모든 시스템에서 사용하는 데이터.
+ - /tombstones : 네이티브 바이너리가 비정상 종료될때마다 관련 정보를 저장.
+ - /usr : 다중 사용자 시스템을 위한 사용자별 데이터.
+* /dev : tmpfs로 마운트 됨. 장치노드가 생성됨.
+* /etc : /system/etc 심볼릭 링크.
+* /mnt : 임시 마운트 디렉토리.
+* /proc : procfs 마운트 디렉토리.
+* /root : root 사용자 홈 디렉토리, 보통 비어있음.
+* /sbin : 리눅스와 달리 ueventd, watchdogd 심볼릭 링크와 charger를 포함.
+* /sdcard : SD카드 마운트 디렉토리.
+* /storage : 외부 저장소 마운트 디렉토리.
+* /sys : sysfs 마운트 디렉토리.
+* /system : system.img 마운트 디렉토리, 읽기 전용.
+ - /app : AOSP 기본 앱,  BUILD_PACKAGE로 빌드된 모듈.
+ - /bin : AOSP 로 빌드된 네이티브 바이너리 및 데몬, BUILD_EXECUTALBE로 빌드된 모듈.
+ - /etc : 유틸리티 및 데몬에서 사용하는 설정파일.
+ - /fake-libs : art/libart_fake/README.md 말하길 일부 앱에서 잘못된 구현으로 링크가 필요한 라이브러리.
+ - /fake-libs64
+ - /fonts : 안드로이드용 폰트.
+ - /frameworks : 프레임워크 jar파일.
+ - /lib : 네이티브 라이브러리 BUILD_SHARED_LIBRARY로 빌드된 모듈.
+ - /lib64
+ - /media : 부트 애니매이션 및 기타 미디어 관련파일.
+ - /priv-app : signatureOrSystem 권한이 필요한 privileged app. app manifest에서 앱 권한을 설정한다.
+ - /tts : 텍스트 음석 변환(Text-to-Speech)엔진 관련 파일.
+ - /usr : 사용자 계정 디렉토리.
+ - /xbin : tcpdump, strace등 시스템동작에 필요 없지만, 빌드된 패키지가 생성한 바이너리.
+ - /build.prop : 빌드중 생성된 속성. 부팅시 init이 로드 한다.
+* /res : chareger 앱의 리소스 파일.
+* /vendor : 심볼릭 링크(/system/vendor), vendor 독점 바이너리를 포함. 
+* /init : init 실행파일.
+* /init.rc : init 설정파일.
+* /ueventd.rc : ueventd 설정파일.
+* /default.prop : 기본으로 설정되는 전역 속성.
+
+
+init 프로세스
+-----
+ 커널이 램디스크를 루트파일시스템으로 마운트 한 후, 램디스크에 포함된 init 프로세스를 실행한다.
+
+![init프로세스](image/ANDROID_SOURCE_TREE_2.png)
+
+
+init프로세스 수행절차
+-----
+1. init은 udev의 핫플러그 이벤트 핸들러를 구현하고 있으므로, init이 /sbin/ueventd를 통해 호출이 됐으면 ueventd를 실행한다.
+2. /dev, /proc, /sys 를 생성하고 마운트 한다.
+3. /init.rc, /init.(MY_DEVICE).rc 를 시스템에 반영한다.
+4. 종료되었거나 재시작이 필요한 서비스를 다시 실행한다.
+
+
+init.rc
+-----
+* 전역속성 설정파일.
+* 문법은 system/core/init/README.md 에서 확인할 수 있다. ( [번역](http://taehyo.egloos.com/4129642) )
+* 실행 시, stdout, stderr을 /dev/null 로 전달하기 때문에 출력 메시지를 확인 하려면 logwrapper을 이용해야 한다. 
+* /out/../system/default.prop에 핵심 속성의 기본값을 포함한다.  빌드시 변경하려면 AndroidProducts.mk 에서 PRODUCT_PROPERTY_OVERRIDES 를 통해서 변경한다.
+
+
+ueventd
+-----
+ueventd는 기본 init.rc 가 실행하는 최초의 서비스 중 하나다. 설정파일을 읽어 들여 커널 이벤트에 따라 /dev에 노드를 생성한다.
+
+~[](image/ANDROID_SOURCE_TREE_3.png)
+
+1. ueventd의 설정파일 문법.
+```
+/dev/<node>    <mode>    <user>    <group>
+```
+
+2. uevent operation 참조 : [쾌도난마](http://egloos.zum.com/furmuwon/v/11024590)   , [RS](http://egloos.zum.com/embedded21/v/1864518)
+
+
+ToolBox
+-----
+* init의 전역속성을 제어.
+ - getprop <key> : 속성 확인.
+ - setprop <key> <value> : 속성 변경.
+ - watchprops : 실시간 속성 감시.
+
+* 이벤트 확인 및 전달.
+ - getevent
+ - sendevent /dev/input/event0 1 330 1
+
+* 서비스 제어
+ - start <servicename>
+ - stop <servicename>, ex> stop zygote
+
+* 베이스벤트 프로세서 제어.
+ - smd
+
+* ramdisk.img 마운트하기
+ 램디스크 이미지는 압축파일 이므로 아래와 같이 압축을 풀면된다. /root 의 내용과 같다.
+```
+lchy0113@KDIWIN-NB:~/Develop/Telechips/NHN-1033/out/target/product/tcc898x/temp_dir$ gunzip -c ramdisk.img | cpio -idm
+6246 blocks
+lchy0113@KDIWIN-NB:~/Develop/Telechips/NHN-1033/out/target/product/tcc898x/temp_dir$ ls
+acct             init.factory.rc                init.tcc898x.tztee.tzos.rc     ramdisk.img
+bugreports       initlogo.rle                   init.tcc898x.usb.rc            res
+cache            init.rc                        init.tcc898x.wifi.broadcom.rc  sbin
+charger          init.recovery.tcc898x.emmc.rc  init.tcc898x.wifi.marvell.rc   sdcard
+config           init.recovery.tcc898x.nand.rc  init.tcc898x.wifi.realtek.rc   storage
+d                init.recovery.tcc898x.rc       init.usb.configfs.rc           sys
+data             init.tcc898x.emmc.rc           init.usb.rc                    system
+default.prop     init.tcc898x.hdcp2.hdmi.rc     init.zygote32.rc               ueventd.rc
+dev              init.tcc898x.nand.rc           lib                            ueventd.tcc898x.rc
+etc              init.tcc898x.rc                mnt                            vendor
+init             init.tcc898x.setupfs.rc        oem
+init.environ.rc  init.tcc898x.tztee.rc          proc
+```
+
+
+기본 권한 및 소유권 
+-----
+* 사용자/그룹 생성 설정.
+ build/tools/fs_config 가 /system/core/include/private/android_filesystem_config.h 를 참조하여 설정된다. 
+
+* 디렉토리와 파일 권한.
+ - system/core/libcutils/fs_config.cpp 아래 구조체에 따라 설정된다.
 
 
 
+모듈 빌드 Android.mk
+-----
+안드로이드 시스템 각 모듈의 빌드 파일로서,  각 모듈을 실행파일 또는 동적 및 정적 라이브러리로 만들 수 있다. 
+
+* Module-Description 변수(LOCAL_XXX)
+* LOCAL_로 시작하는 변수를 통해 동작과 결과물을 조절할 수 있다.
+ LOCAL 변수 참조 : [https://developer.android.com/ndk/guides/android_mk?hl=ko](https://developer.android.com/ndk/guides/android_mk?hl=ko)
+* 컴파일 결과물 설치위치는 빌드템플릿(BUILD_XXX) 에 따라 정해진다.  설치 위치를 변경하려면 LOCAL_MODULE_PATH를 이용한다.
+* 빌드템플릿과 출력 경로.
+ | 탬플릿               | 기본출력 경로                         |
+ |----------------------|---------------------------------------|
+ | BUILD_EXECUTEABLE    | /system/bin                           |
+ | BUILD_JAVA_LIBRARY   | /system/framework                     |
+ | BUILD_SHARED_LIBRARY | /system/lib                           |
+ | BUILD_PREBUILT       | LOCAL_MODULE_CLASS/PATH로 설정해야 함 |
+ | BUILD_MULTI_PREBUILT | 모듈의 유형에 따라 다름               |
+ | BUILD_PACKAGE        | /system/app                           |
+ | BUILD_KEY_CAHR_MAP   | /system/usr/keychars                  |
+* 빌드 탬플릿(BUILD_XXX)
+* BUILD_STATIC/SHARED_LIBRARY : 빌드 타겟용 공유/정적 라이브러리로 빌드한다.
+* BUILD_EXECUTABLE : 빌드 타겟용 실행파일로 빌드한다.
+
+ex) packages/apps/Camera2/Android.mk
+```
+LOCAL_PATH:= $(call my-dir)                                                                                                                                                                                       
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE_TAGS := optional
+
+LOCAL_STATIC_JAVA_LIBRARIES := android-support-v13
+LOCAL_STATIC_JAVA_LIBRARIES += android-ex-camera2-portability
+LOCAL_STATIC_JAVA_LIBRARIES += xmp_toolkit
+LOCAL_STATIC_JAVA_LIBRARIES += glide
+LOCAL_STATIC_JAVA_LIBRARIES += guava
+LOCAL_STATIC_JAVA_LIBRARIES += jsr305
+
+LOCAL_SRC_FILES := $(call all-java-files-under, src)
+LOCAL_SRC_FILES += $(call all-java-files-under, src_pd)
+LOCAL_SRC_FILES += $(call all-java-files-under, src_pd_gcam)
+
+LOCAL_RESOURCE_DIR += \
+    $(LOCAL_PATH)/res \
+    $(LOCAL_PATH)/res_p
 
 
-// http://shincdevnote.blogspot.com/2018/11/aosp-build.html
+include $(LOCAL_PATH)/version.mk
+LOCAL_AAPT_FLAGS := \
+        --auto-add-overlay \
+        --version-name "$(version_name_package)" \
+        --version-code $(version_code_package) \
+(리소스 관리 툴 설정)
+
+LOCAL_PACKAGE_NAME := Camera2
+
+LOCAL_SDK_VERSION := current
+
+LOCAL_PROGUARD_FLAG_FILES := proguard.flags
+(소스 난독화 툴 프로가드 설정)
+
+# Guava uses deprecated org.apache.http.legacy classes.
+LOCAL_JAVA_LIBRARIES += org.apache.http.legacy
+
+LOCAL_JNI_SHARED_LIBRARIES := libjni_tinyplanet libjni_jpegutil
+
+include $(BUILD_PACKAGE)
+
+include $(call all-makefiles-under, $(LOCAL_PATH))
+```
+
+TIPS
+-----
+* 안드로이드에 이더넷 기능 추가하기. 
+ - ICS 4.0.4 패치 : [https://github.com/gxben/aosp-ethernet](https://github.com/gxben/aosp-ethernet)
+ - 리나로 패치 : 
+
+* 파일 시스템 하나만 사용하기.
+ - RowBoat : [https://code.google.com/archive/p/rowboat/](https://code.google.com/archive/p/rowboat/)
+
+
+* Reference : http://shincdevnote.blogspot.com/2018/11/aosp-build.html
