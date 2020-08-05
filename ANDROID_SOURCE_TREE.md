@@ -355,5 +355,146 @@ build/core/config.mk
 * include $(TOPDIR)buildspec.mk  을 수행하여 빌드타겟 설정을 하며 만약 파일이 없으면 환경변수를 이용한다.  
 * include $(BUILD_SYSTEM)envsetup.mk 을 수행하여 envsetup.sh 에서 설정한 환경변수를 적용한다.  
 
+build/core/envsetup.mk
+-----
+> 아래를 호출하여 빌드 버전과 빌드 타겟( eng / user ) 을 설정한다. 
+* include $(BUILD_SYSTEM)/version_defaults.mk
+* include $(BUILD_SYSTEM)/product_config.mk
+
+
+include $(BUILD_SYSTEM)/version_defaults.mk
+> 아래 다양한 빌드 버전 변수를 설정한다.
+```
+PLATFORM_VERSION
+PLATFORM_SDK_VERSION
+PLATFORM_VERSION_CODENAME
+DEFAULT_APP_TARGET_SDK
+BUILD_ID
+BUILD_NUMBER
+```
+* include $(BUILD_SYSTEM)build_id.mk 를 통해 BUILD_ID를 설정한다.
+* BUILD_ID 가 아래처럼 안드로이드 빌드 아이디로 표시된다.
+```
+BUILD_ID=OMC1.180417.001
+```
+
+build/core/makefile
+-----
+> 이 파일을 통해 여러가지 결과물이 생성되며 주요 사항은 아래와 같다.
+* 속성파일들(/default.prop, /system/build.prop) 등.
+* 램디스크.
+* 부트 이미지(램디스크와 커널 이미지).
+* 공지(NOTICE)파일들: 아파치 라이센스 관련 파일.
+* OTA 키스토어.
+* 복구이미지.
+* 시스템 이미지.
+* 데이터 파티션 이미지.
+* OTA 업데이트 패키지.
+* SDK.
+
+BoardConfig.mk
+-----
+> 각 디바이스에 해당하는 모드설정을 한다.
+* device/*/TARGET_DEVICE/BoardConfig.mk 에 위치한다.
+* TARGET_DEVICE는 AndroidProducts.mk에서 설정한 TARGET_PRODUCT.mk에서 설정된다. 
+* 커널 파라미터, 커널로딩 주소.
+* CPU instruction set.
+* sepolicy.
+* 파일시스템 파티션 사이즈 등을 결정한다.
+
+
+Build/buildspec.mk.default
+-----
+> buildspec.mk 의 템플릿으로 루트디렉토리에 buildspec.mk 로 복사한 후 필요한 설정은 주석을 제거하여 적용이 되도록 수정하면 된다. 
+
+Makefile 디버깅
+=====
+
+
+빌드시 GCC 명령 보기.
+-----
+* make showcommands
+* 표준출력과 표준에러를 파일에 기록; make showcommands 2>&1 | tell build.log
+
+개별 모듈 빌드하기.
+-----
+* 런처만 빌드 : make Launcher2
+* 런처만 초기화 : make clean-Launcher2
+* 갱신된 런처를 시스템이미지에 추가 : make Launcher2 snod
+
+
+새로운 기기 추가를 위한 설정
+-----
+안드로이드 제공 문서 참조 : [https://source.android.com/setup/develop/new-device]: https://source.android.com/setup/develop/new-device
+
+1. 새로운 기기들의 빌드 파일 리스트를 설정한 파일 AndroidProduct.mk 를 생성한다. 
+```
+$ mkdir -p device/(MY_COMPANY)/(MY_DEVICE)
+$ vi device(MY_COMPANY)/(MY_DEVICE)/AndroidProduct.mk
+PRODUCT_MAKEFILES := \
+	$(LOCAL_DIR)full_(MY_DEVICE).mk
+```
+
+2. 새로운 제품의 빌드파일을 작성한다. 필요한 경우 inherit-product 를 이용해 기존 빌드 설정을 추가한다. 
+PRODUCT_DEVICE에 설정된 이름과 같은 디렉토리의 BoardConfig.mk를 적용하게 된다.
+```
+$ vi device/(MY_COMPANY)/(MY_DEVICE)/full_(MY_DEVICE).mk
+$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
+$(call inherit-product, $(SRC_TARGET_DIR0/board/generic/device.mk)
+
+# Overrides
+PRODUCT_NAME := full_(MY_DEVICE)
+PRODUCT_DEVICE := (MY_DEVICE)
+PRODUCT_BRAND := Android
+PRODUCT_MODEL := Full Android on mydevice
+```
+
+ex.)
+
+```
+$ vi device/telechips/tcc898x/full_tcc898x.mk
+
+ifeq ($(TV_DEVICE_BUILD),true)
+$(call inherit-product, device/google/atv/products/atv_base.mk)
+else
+$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
+endif
+
+ifeq ($(TV_DEVICE_BUILD),true)
+TV_DEVICE_CTS_CDD342_PASS_BUILD := false
+endif
+
+# How this product is called in the build system
+PRODUCT_NAME := full_tcc898x
+PRODUCT_DEVICE := tcc898x
+PRODUCT_BRAND := Android
+PRODUCT_MANUFACTURER := kdiwin 
+```
+
+3. envsetup.sh와 lunch 메뉴에서 추가한 기기를 표시할 수 있도록 vendorsetup.sh를 작성한다.
+```
+$ vi device/(MY_COMPANY)/(MY_DEVICE)/vendorsetup.sh
+add_lunch_combo full_tcc898x-eng
+$ chmod 755 vendorsetup.sh
+```
+
+4. 새로운 기기의 보드에 해당하는 설정을 BoardCofnig.mk 에 작성한다.
+```
+$ vi device/(MY_COMPANY)/(MY_DEVICE)vendorsetup.sh
+```
+
+5. 빌드를 한다. 빌드된 이미지의 내용은 아래 폴더(out/target/product/product-name/)에서 확인 할 수 있다. 
+* ramdisk.img: /root
+* vendor.img: /vendor
+* system.img: /system
+* userdata.img: /data
+* recovery.img: /recovery
+
+빌드 시 커널 폴더 추가하기.
+-----
+
+
+
+
 
 // http://shincdevnote.blogspot.com/2018/11/aosp-build.html
