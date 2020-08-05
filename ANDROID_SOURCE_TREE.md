@@ -511,24 +511,24 @@ $ vi device/(MY_COMPANY)/(MY_DEVICE)vendorsetup.sh
 * /config : configs 마운트 디렉토리.
 * /d : /sys/kernel/debug 심볼릭 링크.
 * /data : userdata.img 마운트 디렉토리.
- - /anr : ANR 트레이스.
- - /app : 앱의 기본 설치 디렉토리.
- - /app-asec : 암호화된 앱.
- - /app-private : forward locking된 앱의 설치 디렉토리.
- - /backup : Backup Manager 시스템 서비스가 사용한다.
- - /dalvik-cache : dex 바이트 코드를 네이티브코드로 변환된 JIT 캐시를 지정한다.
- - /data : 각 앱의 홈 데릭토리.
- - /dontpanic : dumpstate가 사용, 발생된 패닉의 콘솔 출력과 스레드 상태를 저장한다.
- - /drm : DRM 암호화된 데이터, 포워드 락킹 통제 파일.
- - /local : shell에서 쓰기가 가능한 디렉토리.
- - /mis : wifi, BT, VPN 등 잡다한 데이터가 저장된다.
- - /property : 영구적인 시스템 속성.
- - /resource-cache : 앱 자원 캐시.
- - /radio : 라디오 펌웨어.
- - /secure : 암호화된 파일시스템을 사용하는 기기에서 사용하는 계정정보 저장.
- - /system : 계정 데이터 베이스, 설치된 앱 목록 등 모든 시스템에서 사용하는 데이터.
- - /tombstones : 네이티브 바이너리가 비정상 종료될때마다 관련 정보를 저장.
- - /usr : 다중 사용자 시스템을 위한 사용자별 데이터.
+    - /anr : ANR 트레이스.
+    - /app : 앱의 기본 설치 디렉토리.
+    - /app-asec : 암호화된 앱.
+    - /app-private : forward locking된 앱의 설치 디렉토리.
+    - /backup : Backup Manager 시스템 서비스가 사용한다.
+    - /dalvik-cache : dex 바이트 코드를 네이티브코드로 변환된 JIT 캐시를 지정한다.
+    - /data : 각 앱의 홈 데릭토리.
+    - /dontpanic : dumpstate가 사용, 발생된 패닉의 콘솔 출력과 스레드 상태를 저장한다.
+    - /drm : DRM 암호화된 데이터, 포워드 락킹 통제 파일.
+    - /local : shell에서 쓰기가 가능한 디렉토리.
+    - /mis : wifi, BT, VPN 등 잡다한 데이터가 저장된다.
+    - /property : 영구적인 시스템 속성.
+    - /resource-cache : 앱 자원 캐시.
+    - /radio : 라디오 펌웨어.
+    - /secure : 암호화된 파일시스템을 사용하는 기기에서 사용하는 계정정보 저장.
+    - /system : 계정 데이터 베이스, 설치된 앱 목록 등 모든 시스템에서 사용하는 데이터.
+    - /tombstones : 네이티브 바이너리가 비정상 종료될때마다 관련 정보를 저장.
+    - /usr : 다중 사용자 시스템을 위한 사용자별 데이터.
 * /dev : tmpfs로 마운트 됨. 장치노드가 생성됨.
 * /etc : /system/etc 심볼릭 링크.
 * /mnt : 임시 마운트 디렉토리.
