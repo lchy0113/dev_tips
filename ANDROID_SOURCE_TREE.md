@@ -539,21 +539,21 @@ $ vi device/(MY_COMPANY)/(MY_DEVICE)vendorsetup.sh
 * /storage : 외부 저장소 마운트 디렉토리.
 * /sys : sysfs 마운트 디렉토리.
 * /system : system.img 마운트 디렉토리, 읽기 전용.
- - /app : AOSP 기본 앱,  BUILD_PACKAGE로 빌드된 모듈.
- - /bin : AOSP 로 빌드된 네이티브 바이너리 및 데몬, BUILD_EXECUTALBE로 빌드된 모듈.
- - /etc : 유틸리티 및 데몬에서 사용하는 설정파일.
- - /fake-libs : art/libart_fake/README.md 말하길 일부 앱에서 잘못된 구현으로 링크가 필요한 라이브러리.
- - /fake-libs64
- - /fonts : 안드로이드용 폰트.
- - /frameworks : 프레임워크 jar파일.
- - /lib : 네이티브 라이브러리 BUILD_SHARED_LIBRARY로 빌드된 모듈.
- - /lib64
- - /media : 부트 애니매이션 및 기타 미디어 관련파일.
- - /priv-app : signatureOrSystem 권한이 필요한 privileged app. app manifest에서 앱 권한을 설정한다.
- - /tts : 텍스트 음석 변환(Text-to-Speech)엔진 관련 파일.
- - /usr : 사용자 계정 디렉토리.
- - /xbin : tcpdump, strace등 시스템동작에 필요 없지만, 빌드된 패키지가 생성한 바이너리.
- - /build.prop : 빌드중 생성된 속성. 부팅시 init이 로드 한다.
+    - /app : AOSP 기본 앱,  BUILD_PACKAGE로 빌드된 모듈.
+    - /bin : AOSP 로 빌드된 네이티브 바이너리 및 데몬, BUILD_EXECUTALBE로 빌드된 모듈.
+    - /etc : 유틸리티 및 데몬에서 사용하는 설정파일.
+    - /fake-libs : art/libart_fake/README.md 말하길 일부 앱에서 잘못된 구현으로 링크가 필요한 라이브러리.
+    - /fake-libs64
+    - /fonts : 안드로이드용 폰트.
+    - /frameworks : 프레임워크 jar파일.
+    - /lib : 네이티브 라이브러리 BUILD_SHARED_LIBRARY로 빌드된 모듈.
+    - /lib64
+    - /media : 부트 애니매이션 및 기타 미디어 관련파일.
+    - /priv-app : signatureOrSystem 권한이 필요한 privileged app. app manifest에서 앱 권한을 설정한다.
+    - /tts : 텍스트 음석 변환(Text-to-Speech)엔진 관련 파일.
+    - /usr : 사용자 계정 디렉토리.
+    - /xbin : tcpdump, strace등 시스템동작에 필요 없지만, 빌드된 패키지가 생성한 바이너리.
+    - /build.prop : 빌드중 생성된 속성. 부팅시 init이 로드 한다.
 * /res : chareger 앱의 리소스 파일.
 * /vendor : 심볼릭 링크(/system/vendor), vendor 독점 바이너리를 포함. 
 * /init : init 실행파일.
