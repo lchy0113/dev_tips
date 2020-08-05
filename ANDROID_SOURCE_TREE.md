@@ -589,7 +589,7 @@ ueventd
 -----
 ueventd는 기본 init.rc 가 실행하는 최초의 서비스 중 하나다. 설정파일을 읽어 들여 커널 이벤트에 따라 /dev에 노드를 생성한다.
 
-~[](image/ANDROID_SOURCE_TREE_3.png)
+![](image/ANDROID_SOURCE_TREE_3.png)
 
 1. ueventd의 설정파일 문법.
 ```
