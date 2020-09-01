@@ -132,3 +132,37 @@ dependencies {
 6. dependencies{...}  
  라이브러리와 같은 의존성 추가 시 이곳에 작성합니다.  
  6.1. 소스코드와 의존성 라이브러리를 엮어서 컴파일하여 패키징 하는 것.  
+
+
+=====
+
+1. Gradle 이란 무엇인가 ? 
+-----
+* 범용 빌드 도구.
+> Java, Java web projects, C, C++, Android 등. 
+> 폴라그랏 프로그래밍 (Facebook는 20여개의 언어를 동시 빌드)
+* Groovy 언어 기반
+> Groovy 언어를 몰라도 스크립트 작성 가능.
+> DSL(Domain Specific Language)
+* Ant와 Maven을 계승
+> Ant의 유연함 -> 대부분의 Ant task를 gradle에서 실행 가능.
+> Maven 의 체계성을 혼합 -> 폴더 구조가 복잡해짐.
+* 명령창에서도 빌드할 수 있음.
+> Jenkins등 CI와 연동 가능.
+
+
+2. Android Gradle 살펴보기.
+-----
+* Android Gradle의 구성 요소.
+ - Project의 Build.Gradle
+  + Android Gradle 플러그인 버전 지정.
+  + Allprojects 항목.
+   = 하위 모듈 공통적으로 해당하는 항목들.
+ - App(모듈)의 Build.Gradle
+  + AndroidManifest.xml 재정의하기.
+   = Build tools / minSDK / targetSDK / 
+   = applicationId / versionCode / versionName
+ - Settings.Gradle
+  + 멀티 프로젝트에 포함되는 하위 모듈 목록.
+ - Gradle.properties
+  + 기타 환경 변수들.
