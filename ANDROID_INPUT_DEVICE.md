@@ -5,7 +5,8 @@
 * Android key Layout file 의 각 필드는 다음과 같다.
 -----
 
-| 'scancode' | 커널에서 올라오는 값 |
+| 'scancode' | 커널에서 올라오는 값        |
+|------------|-----------------------------|
 | 'keycode'  | 안드로이드로 올라가는 키 값 | 
 
 data/keyboards/Generic.kl
