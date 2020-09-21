@@ -101,12 +101,387 @@ $(error The 'sdk' target may not be specified with any other targets)
 endif
 ```
 
-TARGET_BUILD_VARIANT 에 따른 동작은 아래와 같다. 
-Android.mk에 정의된 LOCAL_MODULE_TAGS를 정의하지 않은 모듈은 기본이 user 태그이다. 
-따라서 이전에 eng로 설정되어 있는 모듈들이 설치되지 않은 이유는 명시적으로 eng 태그를 설정해 주었기 때문이다.
+> TARGET_BUILD_VARIANT 에 따른 동작은 아래와 같다. 
+> Android.mk에 정의된 LOCAL_MODULE_TAGS를 정의하지 않은 모듈은 기본이 user 태그이다. 
+> 따라서 이전에 eng로 설정되어 있는 모듈들이 설치되지 않은 이유는 명시적으로 eng 태그를 설정해 주었기 때문이다.
 
 | TARGET_BUILD_VARIANT | Actions                                                                                                                                                                                                                                                                                                          |
 |----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | eng                  | - Installs modules tagged with: eng, debug, user, and/or development. - Installs non-APK modules that have no tags specified. - Installs APKs according to the product definition files, in addition to tagged APKs. - ro.secure=0 - ro.debuggable=1 - ro.kernel.android.checkjni=1 - adb is enabled by default. |
 | user                 | - Installs modules tagged with user. - Installs non-APK modules that have no tags specified. - Installs APKs according to the product definition files; tags are ignored for APK modules. - ro.secure=1 - ro.debuggable=0 - adb is disabled by default.                                                          |
 | userdebug            | The same as user, except: - Also installs modules tagged with debug. - ro.debuggable=1 - adb is enabled by default.                                                                                                                                                                                              |
+
+> 빌드 시, build/tools/findleaves.sh(first-makefiles-under)  로 define  된 함수를 사용하여, 각 폴더의   첫번째 Android.mk파일을 모두 찾아서  Makefile에 추가한다. 
+> 하위 폴더에 Android.mk파일이 존재하더라도, 상위 폴더에서 Android.mk가 존재하면 상위 폴더에 있는 Android.mk까지만 찾는다. 
+
+> 그리고 현재 Product 설정파일의 TARGET_DEVICE의 BoardConfig.mk를 포함시킨다. 
+
+
+## Part 2 : /build/core/main.mk
+=====
+
+```
+#
+# Typical build; include any Android.mk files we can find.
+#
+
+FULL_BUILD := true
+
+# Before we go and include all of the module makefiles, mark the PRODUCT_*
+# and ADDITIONAL*PROPERTIES values readonly so that they won't be modified.
+$(call readonly-product-vars)
+ADDITIONAL_DEFAULT_PROPERTIES := $(strip $(ADDITIONAL_DEFAULT_PROPERTIES))
+.KATI_READONLY := ADDITIONAL_DEFAULT_PROPERTIES
+ADDITIONAL_BUILD_PROPERTIES := $(strip $(ADDITIONAL_BUILD_PROPERTIES))
+.KATI_READONLY := ADDITIONAL_BUILD_PROPERTIES
+
+ifneq ($(PRODUCT_ENFORCE_RRO_TARGETS),)
+ENFORCE_RRO_SOURCES :=
+endif
+
+ifneq ($(ONE_SHOT_MAKEFILE),)
+# We've probably been invoked by the "mm" shell function
+# with a subdirectory's makefile.
+include $(SOONG_ANDROID_MK) $(wildcard $(ONE_SHOT_MAKEFILE))
+# Change CUSTOM_MODULES to include only modules that were
+# defined by this makefile; this will install all of those
+# modules as a side-effect.  Do this after including ONE_SHOT_MAKEFILE
+# so that the modules will be installed in the same place they
+# would have been with a normal make.
+CUSTOM_MODULES := $(sort $(call get-tagged-modules,$(ALL_MODULE_TAGS)))
+FULL_BUILD :=
+# Stub out the notice targets, which probably aren't defined
+# when using ONE_SHOT_MAKEFILE.
+NOTICE-HOST-%: ;
+NOTICE-TARGET-%: ;
+
+# A helper goal printing out install paths
+define register_module_install_path
+.PHONY: GET-MODULE-INSTALL-PATH-$(1)
+GET-MODULE-INSTALL-PATH-$(1):
+	echo 'INSTALL-PATH: $(1) $(ALL_MODULES.$(1).INSTALLED)'
+endef
+
+SORTED_ALL_MODULES := $(sort $(ALL_MODULES))
+UNIQUE_ALL_MODULES :=
+$(foreach m,$(SORTED_ALL_MODULES),\
+    $(if $(call streq,$(m),$(lastword $(UNIQUE_ALL_MODULES))),,\
+        $(eval UNIQUE_ALL_MODULES += $(m))))
+SORTED_ALL_MODULES :=
+
+$(foreach mod,$(UNIQUE_ALL_MODULES),$(if $(ALL_MODULES.$(mod).INSTALLED),\
+    $(eval $(call register_module_install_path,$(mod)))\
+    $(foreach path,$(ALL_MODULES.$(mod).PATH),\
+        $(eval my_path_prefix := GET-INSTALL-PATH-IN)\
+        $(foreach component,$(subst /,$(space),$(path)),\
+            $(eval my_path_prefix := $$(my_path_prefix)-$$(component))\
+            $(eval .PHONY: $$(my_path_prefix))\
+            $(eval $$(my_path_prefix): GET-MODULE-INSTALL-PATH-$(mod))))))
+UNIQUE_ALL_MODULES :=
+
+else # ONE_SHOT_MAKEFILE
+
+ifneq ($(dont_bother),true)
+#
+# Include all of the makefiles in the system
+#
+
+subdir_makefiles := $(SOONG_ANDROID_MK) $(call first-makefiles-under,$(TOP))
+subdir_makefiles_total := $(words $(subdir_makefiles))
+.KATI_READONLY := subdir_makefiles_total
+
+$(foreach mk,$(subdir_makefiles),$(info [$(call inc_and_print,subdir_makefiles_inc)/$(subdir_makefiles_total)] including $(mk) ...)$(eval include $(mk)))
+
+ifdef PDK_FUSION_PLATFORM_ZIP
+# Bring in the PDK platform.zip modules.
+include $(BUILD_SYSTEM)/pdk_fusion_modules.mk
+endif # PDK_FUSION_PLATFORM_ZIP
+
+droid_targets : blueprint_tools
+
+endif # dont_bother
+
+endif # ONE_SHOT_MAKEFILE
+```
+
+
+build/tools/fineleaves.sh 동작 예제.
+```
+$ find hardware --name "*.mk"
+(...)
+hardware/invensense/6515/libsensors_iio/software/simple_apps/stress_iio/build/filelist.mk                                                                                                                                              
+hardware/invensense/6515/libsensors_iio/software/simple_apps/self_test/build/android/shared.mk                                                                                                                                         
+hardware/invensense/6515/libsensors_iio/software/simple_apps/self_test/build/filelist.mk                                                                                                                                               
+hardware/invensense/6515/libsensors_iio/software/simple_apps/gesture_test/build/android/shared.mk                                                                                                                                      
+hardware/invensense/6515/libsensors_iio/software/simple_apps/gesture_test/build/filelist.mk                                                                                                                                            
+hardware/invensense/6515/libsensors_iio/Android.mk                                                                                                                                                                                     
+hardware/invensense/6515/Android.mk                                                                                                                                                                                                    
+hardware/invensense/Android.mk                                                                                                                                                                                                         
+hardware/ril/librilutils/Android.mk                                                                                                                                                                                                    
+hardware/ril/CleanSpec.mk                                                                                                                                                                                                              
+hardware/ril/rild/Android.mk                                                                                                                                                                                                           
+hardware/ril/reference-ril/Android.mk                                                                                                                                                                                                  
+hardware/ril/libril/Android.mk                                                                                                                                                                                                         
+hardware/telechips/omx/omx_wmadec_component/Android.mk                                                                                                                                                                                 
+hardware/telechips/omx/tcc_omx.mk                                                                                                                                                                                                      
+hardware/telechips/omx/omx_mp3dec_component/Android.mk                                                                                                                                                                                 
+hardware/telechips/omx/omx_videodec_component/Android.mk                                                                                                                                                                               
+hardware/telechips/omx/omx_aacdec_component/Android.mk                                                                                                                                                                                 
+hardware/telechips/omx/omx_base/Android.mk                                                                                                                                                                                             
+hardware/telechips/omx/omx_videoenc_component/Android.mk                                                                                                                                                                               
+hardware/telechips/omx/omx_apedec_component/Android.mk                                                                                                                                                                                 
+hardware/telechips/omx/omx_ca7_audiodec_component/Android.mk                                                                                                                                                                           
+hardware/telechips/omx/omx_audio_interface/Android.mk                                                                                                                                                                                  
+hardware/telechips/omx/omx_spdif_component/spdif/Android.mk                                                                                                                                                                            
+hardware/telechips/omx/omx_spdif_component/Android.mk                                                                                                                                                                                  
+hardware/telechips/omx/omx_videodec_interface/Android.mk                                                                                                                                                                               
+hardware/telechips/omx/omx_videoenc_interface/Android.mk                                                                                                                                                                               
+hardware/telechips/omx/Android.mk                                                                                                                                                                                                      
+hardware/telechips/omx/omx_wavdec_component/Android.mk                                                                                                                                                                                 
+hardware/telechips/omx/omx_flacdec_component/Android.mk                                                                                                                                                                                
+hardware/telechips/media/tcc_media.mk                                                                                                                                                                                                  
+hardware/telechips/media/tcc_container_support.mk                                                                                                                                                                                      
+hardware/telechips/media/tcc_video_support.mk                                                                                                                                                                                          
+hardware/telechips/media/tcc_audio_support.mk                                                                      
+hardware/telechips/camera/libcamera_v2/Android.mk                                                                  
+hardware/telechips/camera/tc_camera.mk                                                                             
+hardware/telechips/common/spdif_sound/Android.mk                                                                   
+hardware/telechips/common/tcc-interface/tccExt/ext_renderer/Android.mk                                             
+hardware/telechips/common/tcc-interface/tccExt/ext_decoder/Android.mk                                              
+hardware/telechips/common/tcc-interface/tccExt/ext_player/Android.mk                                               
+hardware/telechips/common/tcc-interface/tccif-direct/Android.mk                                                    
+hardware/telechips/common/bluetooth_sound/Android.mk  
+hardware/telechips/common/hdmi_cec/Android.mk                                                                      
+hardware/telechips/common/secure_sound/Android.mk                                                                  
+hardware/telechips/common/power/Android.mk                                                                         
+hardware/telechips/common/liblights/Android.mk                                                                     
+hardware/telechips/common/libtranscoder/Android.mk     
+hardware/telechips/common/soundtrigger/Android.mk                                                                  
+hardware/telechips/common/tcc_gps/Android.mk                                                                       
+hardware/telechips/common/tcc_common.mk                                                                            
+hardware/telechips/common/hdmi_in/Android.mk                                                                       
+hardware/telechips/common/tcc803x.mk                                                                               
+hardware/telechips/common/libpmap/Android.mk                                                                       
+hardware/telechips/common/tcc898x.mk                                                                               
+hardware/telechips/common/tcc899x.mk                                                                               
+hardware/telechips/common/tcc897x.mk                                                                               
+hardware/telechips/common/extenddisplay_v2/service/Android.mk                                                      
+hardware/telechips/common/extenddisplay_v2/hdcp/Android.mk                                                         
+hardware/telechips/common/extenddisplay_v2/libs/libbitoperation/Android.mk                                         
+hardware/telechips/common/extenddisplay_v2/libs/Android.mk                                                         
+hardware/telechips/common/extenddisplay_v2/Android.mk                                                              
+hardware/telechips/common/gralloc/arm-mali-bifrost/Android.vexpress.mk                                             
+hardware/telechips/common/gralloc/arm-mali-bifrost/Android.juno.mk                                                                                                                                                                     
+hardware/telechips/common/gralloc/arm-mali-bifrost/Android.mk                                                      
+hardware/telechips/common/gralloc/arm-mali400/Android.mk                                                           
+hardware/telechips/common/hwcomposer/Android.mk                                                         
+hardware/telechips/common/Android.mk                                                                       
+hardware/telechips/common/stagefright/omx_core/Android.mk           
+hardware/telechips/common/stagefright/libstagefrightdash/libwebvtt/Android.mk                        
+hardware/telechips/common/stagefright/libstagefrightdash/libttmlparser/Android.mk                   
+hardware/telechips/common/stagefright/libstagefrightdash/Android.mk                                      
+hardware/telechips/common/stagefright/tccv2ipcodec/Android.mk                                               
+hardware/telechips/common/stagefright/libstagefrighthw/Android.mk                                     
+hardware/telechips/common/audio/Android.mk                                                            
+hardware/telechips/common/libmemtrack/Android.mk                                                       
+hardware/telechips/common/extenddisplay/service/Android.mk                                                 
+hardware/telechips/common/extenddisplay/libs/Android.mk                                            
+hardware/telechips/common/extenddisplay/Android.mk                                                
+hardware/marvell/bt/Android.mk                                                                       
+hardware/marvell/bt/libbt-vendor/Android.mk 
+```
+
+```
+$ ./build/tools/findleaves.sh hardware Android.mk
+(...)
+hardware/interfaces/tests/baz/Android.mk
+hardware/interfaces/tests/expression/Android.mk
+hardware/interfaces/tests/extension/light/2.0/Android.mk
+hardware/interfaces/tests/foo/Android.mk
+hardware/interfaces/tests/hash/1.0/Android.mk
+hardware/interfaces/tests/inheritance/Android.mk
+hardware/interfaces/tests/libhwbinder/Android.mk
+hardware/interfaces/tests/msgq/Android.mk
+hardware/interfaces/tests/multithread/1.0/Android.mk
+hardware/interfaces/tests/pointer/Android.mk
+hardware/interfaces/tetheroffload/control/1.0/Android.mk
+hardware/interfaces/thermal/1.0/Android.mk
+hardware/interfaces/thermal/1.1/Android.mk
+hardware/interfaces/tv/cec/Android.mk
+hardware/interfaces/tv/input/Android.mk
+hardware/interfaces/usb/1.0/Android.mk
+hardware/interfaces/usb/1.1/Android.mk
+hardware/interfaces/vibrator/1.0/Android.mk
+hardware/interfaces/vibrator/1.1/Android.mk
+hardware/interfaces/vr/1.0/Android.mk
+hardware/interfaces/weaver/1.0/Android.mk
+hardware/interfaces/wifi/1.0/Android.mk
+hardware/interfaces/wifi/1.1/Android.mk
+hardware/interfaces/wifi/supplicant/1.0/Android.mk
+hardware/invensense/Android.mk
+hardware/libhardware/Android.mk
+hardware/marvell/bt/Android.mk
+hardware/qcom/audio/Android.mk
+hardware/qcom/bootctrl/Android.mk
+hardware/qcom/bt/Android.mk
+hardware/qcom/camera/Android.mk
+hardware/qcom/data/ipacfg-mgr/Android.mk
+hardware/qcom/display/Android.mk
+hardware/qcom/gps/Android.mk
+hardware/qcom/keymaster/Android.mk
+hardware/qcom/media/Android.mk
+hardware/qcom/msm8998/Android.mk
+hardware/qcom/power/Android.mk
+hardware/qcom/wlan/Android.mk
+hardware/ril/libril/Android.mk
+hardware/ril/librilutils/Android.mk
+hardware/ril/reference-ril/Android.mk
+hardware/ril/rild/Android.mk
+hardware/telechips/camera/libcamera_v2/Android.mk
+hardware/telechips/common/Android.mk
+hardware/telechips/omx/Android.mk
+(...)
+```
+> hardware/telechips/Android.mk 파일에서 아래와 같이 하위의  Android.mk파일을 상황에 따라서 include를 하여 필요한 모듈만 컴파일하여 추가시킬 때 사용할 수 있다. (이것을 이용하여 Samsung의  Opensource쪽 변경 소스 관리를 할 수 있을 것으로 보인다.)
+```
+ifneq ($(filter capella7200, surf, $(TARGET_DEVICE)), )
+include $(all-subdir-makefile)
+endif
+```
+
+
+설치될 모듈들을 선택하고, LOCAL_OVERRIDES_PACKAGES로 선택된 Package를 항목에서 삭제 한다.
+
+## Part 3 : build/core/main.mk
+=====
+
+```
+# -------------------------------------------------------------------
+# Figure out our module sets.
+#
+# Of the modules defined by the component makefiles,
+# determine what we actually want to build.
+
+###########################################################
+## Expand a module name list with REQUIRED modules
+###########################################################
+# $(1): The variable name that holds the initial module name list.
+#       the variable will be modified to hold the expanded results.
+# $(2): The initial module name list.
+# Returns empty string (maybe with some whitespaces).
+define expand-required-modules
+$(eval _erm_new_modules := $(sort $(filter-out $($(1)),\
+  $(foreach m,$(2),$(ALL_MODULES.$(m).REQUIRED)))))\
+$(if $(_erm_new_modules),$(eval $(1) += $(_erm_new_modules))\
+  $(call expand-required-modules,$(1),$(_erm_new_modules)))
+endef
+
+ifdef FULL_BUILD
+  # The base list of modules to build for this product is specified
+  # by the appropriate product definition file, which was included
+  # by product_config.mk.
+  product_MODULES := $(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)
+  # Filter out the overridden packages before doing expansion
+  product_MODULES := $(filter-out $(foreach p, $(product_MODULES), \
+      $(PACKAGES.$(p).OVERRIDES)), $(product_MODULES))
+  # Filter out executables as well
+  product_MODULES := $(filter-out $(foreach m, $(product_MODULES), \
+      $(EXECUTABLES.$(m).OVERRIDES)), $(product_MODULES))
+
+  # Resolve the :32 :64 module name
+  modules_32 := $(patsubst %:32,%,$(filter %:32, $(product_MODULES)))
+  modules_64 := $(patsubst %:64,%,$(filter %:64, $(product_MODULES)))
+  modules_rest := $(filter-out %:32 %:64,$(product_MODULES))
+  # Note for 32-bit product, $(modules_32) and $(modules_64) will be
+  # added as their original module names.
+  product_MODULES := $(call get-32-bit-modules-if-we-can, $(modules_32))
+  product_MODULES += $(modules_64)
+  # For the rest we add both
+  product_MODULES += $(call get-32-bit-modules, $(modules_rest))
+  product_MODULES += $(modules_rest)
+
+  $(call expand-required-modules,product_MODULES,$(product_MODULES))
+
+  product_FILES := $(call module-installed-files, $(product_MODULES))
+  ifeq (0,1)
+    $(info product_FILES for $(TARGET_DEVICE) ($(INTERNAL_PRODUCT)):)
+    $(foreach p,$(product_FILES),$(info :   $(p)))
+    $(error done)
+  endif
+else
+  # We're not doing a full build, and are probably only including
+  # a subset of the module makefiles.  Don't try to build any modules
+  # requested by the product, because we probably won't have rules
+  # to build them.
+  product_FILES :=
+endif
+
+eng_MODULES := $(sort \
+        $(call get-tagged-modules,eng) \
+        $(call module-installed-files, $(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES_ENG)) \
+    )
+debug_MODULES := $(sort \
+        $(call get-tagged-modules,debug) \
+        $(call module-installed-files, $(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES_DEBUG)) \
+    )
+tests_MODULES := $(sort \
+        $(call get-tagged-modules,tests) \
+        $(call module-installed-files, $(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES_TESTS)) \
+    )
+
+```
+
+> 추가로 Android의 모든 Application은 고유한 key를 사용하여 Signning을 수행해야 한다. 어떤 Key로 Signning을 할지를 결정은 LOCAL_CERTIFICATE에 기술한다. 
+
+packages/apps/TCCLauncher/Android.mk
+```
+LOCAL_PATH:= $(call my-dir)                         
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE_TAGS := optional
+
+LOCAL_SRC_FILES := $(call all-subdir-java-files)
+
+LOCAL_PACKAGE_NAME := TelechipsLauncher
+
+LOCAL_OVERRIDES_PACKAGES := Launcher2
+
+LOCAL_CERTIFICATE := platform
+
+include $(BUILD_PACKAGE)
+```
+
+> package.mk 파일을 보시면 LOCAL_CERTIFICATE가 설정되지 않으면 testkey가 사용되며, 관련 private와 certificate는 /build/target/product/security/폴더에 있는 key값을 사용합니다.
+
+> mkkey.sh => key값을 생성하기 위한 명령어, Samsung Android폰 개발시 고유한 key를 생성해서 출시해야함.
+```
+media.pk8
+
+media.x509.pem
+
+platform.pk8
+
+platform.x509.pem
+
+shared.pk8
+
+shared.x509.pem
+
+testkey.pk8
+
+testkey.x509.pem
+```
+
+* Product설정파일을 통해 환경변수를 설정하여 선택적으로 빌드가능
+- PRODUCT_NAME : 제품명
+- PRODUCT_DEVICE : 디바이스명
+- PRODUCT_LOCALE : 지역정보
+- PRODUCT_PACKAGE_OVERLAY : 대체될 resource가 있는 Path
+- PRODUCT_PROPERTY_OVERRIDES : 추가될 system property 항목이며 /system/build.prop에 저장됨.
+- PRODUCT_PACKAGES : 기본적으로 설치될 app 목록
+
+ 전체 과정을 간략히 설명하면, TARGET_BUILD_VARIANT에 따라서 System Property와 설치될 모듈을 결정한다.
+ 그 과정을Makefile을 따라가면서 확인해 보겠다.
+
+
