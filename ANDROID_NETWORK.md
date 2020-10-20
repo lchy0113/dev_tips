@@ -310,8 +310,9 @@
 
 # The process for starting Ethernet.
 > networkRequest 으로만 start/stop  한다.
-a) networkrequest 으로 Ethernet start/stop.
+ networkrequest 으로 Ethernet start/stop.
 -> [EthernetService.java]: onBootPhase()
+[EthernetNetworkFactory.java] 의 start() 함수를 호출한다. 
 ```
     public void onBootPhase(int phase) {
         if (phase == SystemService.PHASE_SYSTEM_SERVICES_READY) {
@@ -320,7 +321,6 @@ a) networkrequest 으로 Ethernet start/stop.
     }
 
 ```
-[EthernetNetworkFactory.java] 의 start() 함수를 호출한다. 
 -> [EthernetNetworkFactory.java]:start()
 register()을 호출한다. 
 
@@ -359,9 +359,33 @@ register()을 호출한다.
     }
 
 ```
+-> [NetworkFactory.java]:register()
+NetworkFactory의 register() 호출.
+```
+    public void register() {
+        if (DBG) log("Registering NetworkFactory");
+        if (mMessenger == null) {
+            mMessenger = new Messenger(this);
+            ConnectivityManager.from(mContext).registerNetworkFactory(mMessenger, LOG_TAG);
+        }
+    }
+
+```
+
+-> [ConnectivityService.java]:registerNetworkFactory()
+이 함수는 EVENT_REGISTER_NETWORK_FACTORY 을 호출 하여, handleRegisterNetworkFactory()를 호출한다. 
+```
+    @Override
+    public void registerNetworkFactory(Messenger messenger, String name) {
+        enforceConnectivityInternalPermission();
+        NetworkFactoryInfo nfi = new NetworkFactoryInfo(name, messenger, new AsyncChannel());
+        mHandler.sendMessage(mHandler.obtainMessage(EVENT_REGISTER_NETWORK_FACTORY, nfi));
+    }
+```
+
+
 
 -> [ConnectivityService.java]: registerNetworkFactory()
- 이 함수는 EVENT_REGISTER_NETWORK_FACTORY 을 호출 하여, handleRegisterNetworkFactory()를 호출한다. 
 ```
     private void handleRegisterNetworkFactory(NetworkFactoryInfo nfi) {
         if (DBG) log("Got NetworkFactory Messenger for " + nfi.name);
@@ -397,6 +421,7 @@ register()을 호출한다.
  ```
 
 -> [ConnectivityService.java]: handleAsyncChannelHalfConnect()
+NetworkFactory 에게 CMD_REQUEST_NETWORK 메시지를 전달한다. 
 ```
     private void handleAsyncChannelHalfConnect(Message msg) {
         AsyncChannel ac = (AsyncChannel) msg.obj;
@@ -437,7 +462,8 @@ register()을 호출한다.
     }
 ```
 
- 위 함수는 모든 Factories에게 [CMD_REQUEST_NETWORK]를 전달하고, [CMD_REQUEST_NETWORK]는 handleAddRequest()에 의해 처리 된다. 
+위 함수는 모든 Factories에게 [CMD_REQUEST_NETWORK]를 전달하고, [CMD_REQUEST_NETWORK]는 handleAddRequest()에 의해 처리 된다. 
+-> [NetworkFactory.java]:handleAddRequest()
 ```
     @VisibleForTesting
     protected void handleAddRequest(NetworkRequest request, int score) {
@@ -479,7 +505,7 @@ register()을 호출한다.
 
 ```
 
--> [NetworkFactory]:needNetworkFor():
+-> [NetworkFactory.java]:needNetworkFor():
 ```
     // override to do fancier stuff
     protected void needNetworkFor(NetworkRequest networkRequest, int score) {
@@ -487,7 +513,7 @@ register()을 호출한다.
     }
 ```
 
--> [NetworkFactory]:startNetwork():
+-> [EthernetNetworkFactory.java]:startNetwork():
 ```
         protected void startNetwork() {
             if (!mNetworkRequested) {
@@ -495,6 +521,154 @@ register()을 호출한다.
                 maybeStartIpManager();
             }
         }
+```
 
+-> [EthernetNetworkFactory.java]:maybeStartIpManager();
+```
+    public void maybeStartIpManager() {
+        if (mNetworkRequested && mIpManager == null && isTrackingInterface()) {
+            startIpManager();
+        }
+    }
+
+``
+
+-> [EthernetNetworkFactory.java]:startIpManager();
+Static IP 세팅 시, 네트워크 통신이 되지 않는 문제 발생되어 
+아래 코드로 수정. 
+[origin code]
+```
+    public void startIpManager() {
+        if (DBG) {
+            Log.d(TAG, String.format("starting IpManager(%s): mNetworkInfo=%s", mIface,
+                    mNetworkInfo));
+        }
+
+        LinkProperties linkProperties;
+
+        IpConfiguration config = mEthernetManager.getConfiguration();
+
+        if (config.getIpAssignment() == IpAssignment.STATIC) {
+            if (!setStaticIpAddress(config.getStaticIpConfiguration())) {
+                // We've already logged an error.
+                return;
+            }
+            linkProperties = config.getStaticIpConfiguration().toLinkProperties(mIface);
+        } else {
+            mNetworkInfo.setDetailedState(DetailedState.OBTAINING_IPADDR, null, mHwAddr);
+            IpManager.Callback ipmCallback = new IpManager.Callback() {
+                @Override
+                public void onProvisioningSuccess(LinkProperties newLp) {
+                    mHandler.post(() -> onIpLayerStarted(newLp));
+                }
+
+                @Override
+                public void onProvisioningFailure(LinkProperties newLp) {
+                    mHandler.post(() -> onIpLayerStopped(newLp));
+                }
+
+                @Override
+                public void onLinkPropertiesChange(LinkProperties newLp) {
+                    mHandler.post(() -> updateLinkProperties(newLp));
+                }
+            };
+
+            stopIpManager();
+            mIpManager = new IpManager(mContext, mIface, ipmCallback);
+
+            if (config.getProxySettings() == ProxySettings.STATIC ||
+                    config.getProxySettings() == ProxySettings.PAC) {
+                mIpManager.setHttpProxy(config.getHttpProxy());
+            }
+
+            final String tcpBufferSizes = mContext.getResources().getString(
+                    com.android.internal.R.string.config_ethernet_tcp_buffers);
+            if (!TextUtils.isEmpty(tcpBufferSizes)) {
+                mIpManager.setTcpBufferSizes(tcpBufferSizes);
+            }
+
+            final ProvisioningConfiguration provisioningConfiguration =
+                    mIpManager.buildProvisioningConfiguration()
+                            .withProvisioningTimeoutMs(0)
+                            .build();
+            mIpManager.startProvisioning(provisioningConfiguration);
+        }
+    }
+```
+[bugfix code]
+```
+    public void startIpManager() {
+        if (DBG) {
+            Log.d(TAG, String.format("starting IpManager(%s): mNetworkInfo=%s", mIface,
+                    mNetworkInfo));
+        }
+
+        LinkProperties linkProperties;
+
+        IpConfiguration config = mEthernetManager.getConfiguration();
+
+        if (config.getIpAssignment() == IpAssignment.STATIC) {
+            if (!setStaticIpAddress(config.getStaticIpConfiguration())) {
+                // We've already logged an error.
+                return;
+            }
+            linkProperties = config.getStaticIpConfiguration().toLinkProperties(mIface);
+
++			if (config.getProxySettings() == ProxySettings.STATIC || 
++					config.getProxySettings() == ProxySettings.PAC)	{
++				// mIpManager.setHttpProxy(config.getHttpProxy());
++				linkProperties.setHttpProxy(config.getHttpProxy());
++			}
+
++			String tcpBufferSizes = mContext.getResources().getString(
++					com.android.internal.R.string.config_ethernet_tcp_buffers);
+
+*			if (TextUtils.isEmpty(tcpBufferSizes) == false) {
+*				linkProperties.setTcpBufferSizes(tcpBufferSizes);
+*			}
+        } else {
+            mNetworkInfo.setDetailedState(DetailedState.OBTAINING_IPADDR, null, mHwAddr);
++		}
+		IpManager.Callback ipmCallback = new IpManager.Callback() {
+			@Override
+			public void onProvisioningSuccess(LinkProperties newLp) {
+				mHandler.post(() -> onIpLayerStarted(newLp));
+			}
+
+			@Override
+			public void onProvisioningFailure(LinkProperties newLp) {
+				mHandler.post(() -> onIpLayerStopped(newLp));
+			}
+			
+			@Override
+			public void onLinkPropertiesChange(LinkProperties newLp) {
+				mHandler.post(() -> updateLinkProperties(newLp));
+			}
+		};
+		
+		stopIpManager();
+		mIpManager = new IpManager(mContext, mIface, ipmCallback);
+
+		if (config.getProxySettings() == ProxySettings.STATIC ||
+				config.getProxySettings() == ProxySettings.PAC) {
+			mIpManager.setHttpProxy(config.getHttpProxy());
+		}
+
+		final String tcpBufferSizes = mContext.getResources().getString(
+				com.android.internal.R.string.config_ethernet_tcp_buffers);
+		if (!TextUtils.isEmpty(tcpBufferSizes)) {
+			mIpManager.setTcpBufferSizes(tcpBufferSizes);
+		}
+
++		if (config.getIpAssignment() == IpAssignment.STATIC) {
++			mIpManager.startProvisioning(config.getStaticIpConfiguration());
++		} else {
+			final ProvisioningConfiguration provisioningConfiguration =
+					mIpManager.buildProvisioningConfiguration()
+						.withProvisioningTimeoutMs(0)
+						.build();
+			mIpManager.startProvisioning(provisioningConfiguration);
++		}
+	}
 ```
 
