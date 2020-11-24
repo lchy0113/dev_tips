@@ -110,6 +110,7 @@ GIT 헤더 구조
 ![](image/GPT_PARTITION-21.png)  
 > - 파티션의 시작 주소.
 > - Little Endian 방식.
+
 ex)  
 | No | NAME     | first LBA | LAST LBA | block | ptr start addr |
 |----|----------|-----------|----------|-------|----------------|
