@@ -110,6 +110,20 @@ GIT 헤더 구조
 ![](image/GPT_PARTITION-21.png)  
 > - 파티션의 시작 주소.
 > - Little Endian 방식.
+ex)  
+| No | NAME     | first LBA | LAST LBA | block | ptr start addr |
+|----|----------|-----------|----------|-------|----------------|
+| 1  | boot     | 0x22      | 0x7821   | 0x200 | 0x0000 4400    |
+| 2  | system   | 0x7822    | 0x607821 | 0x200 | 0x00f0 4400    |
+| 3  | cache    | 0x607822  | 0x652821 | 0x200 | 0xc0f0 4400    |
+| 4  | recovery | 0x652822  | 0x65a021 | 0x200 | 0xca50 4400    |
+| 5  | dtb      | 0x65a022  | 0x65b021 | 0x200 | 0xcb40 4400    |
+| 6  | splash   | 0x65b022  | 0x65d821 | 0x200 | 0xcb60 4400    |
+| 7  | misc     | 0x65d822  | 0x65e021 | 0x200 | 0xcbb0 4400    |
+| 8  | tcc      | 0x65e022  | 0x65e821 | 0x200 | 0xcbc0 4400    |
+| 9  | vendor   | 0x65e822  | 0x690821 | 0x200 | 0xcbd0 4400    |
+| 10 | sest     | 0x690822  | 0x694821 | 0x200 | 0xd210 4400    |
+| 11 | userdata | 0x694822  | 0xe8ffdd | 0x200 | 0xd290 4400    |
 
 - Last LBA (8 Byte)  
 ![](image/GPT_PARTITION-22.png)  
