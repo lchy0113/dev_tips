@@ -4,15 +4,15 @@
 GIT 헤더 구조  
 ![](image/GPT_PARTITION-01.png)
 
- 1. Protective MBR - 0 Sector
-![](image/GPT_PARTITION-02.png)
-> 0번 Sector에 위치.
-> EFI를 지원하는 운영체제일 경우에는 해당 위치를 접근하지 않고 EFI를 지원하지 않는 운영체제일 경우에 EFI에서 BIOS 에뮬레이션을 하여 접근하는 부분
-> GPT 파티션 영역의 전체의 시작 주소, 끝 주소를 16 바이트 주 파티션 엔트리 0번에 저장
-> 보는 방법은 MBR과 동일
- ※ MBR을 사용하는 이유
-> MBR Based Utility에서 잘못 판단하여 오작동을 일으키지 않도록 하기 위해서 사용함. GPT 사용시 MBR의 Partition Type을 0xEE로 전체 GPT Drive를 표시하여 OS에 해당 Drive가 GPT를 사용한다고 알리는데 사용함
-
+ 1. Protective MBR - 0 Sector  
+![](image/GPT_PARTITION-02.png)  
+> 0번 Sector에 위치.  
+> EFI를 지원하는 운영체제일 경우에는 해당 위치를 접근하지 않고 EFI를 지원하지 않는 운영체제일 경우에 EFI에서 BIOS 에뮬레이션을 하여 접근하는 부분  
+> GPT 파티션 영역의 전체의 시작 주소, 끝 주소를 16 바이트 주 파티션 엔트리 0번에 저장  
+> 보는 방법은 MBR과 동일  
+ ※ MBR을 사용하는 이유  
+> MBR Based Utility에서 잘못 판단하여 오작동을 일으키지 않도록 하기 위해서 사용함. GPT 사용시 MBR의 Partition Type을 0xEE로 전체 GPT Drive를 표시하여 OS에 해당 Drive가 GPT를 사용한다고 알리는데 사용함  
+  
  2. Primary GPT Header - 1 Sector
 ![](image/GPT_PARTITION-03.png)
 > 1번 Sector에 위치.
