@@ -623,9 +623,9 @@ Static IP 세팅 시, 네트워크 통신이 되지 않는 문제 발생되어
 +			String tcpBufferSizes = mContext.getResources().getString(
 +					com.android.internal.R.string.config_ethernet_tcp_buffers);
 
-*			if (TextUtils.isEmpty(tcpBufferSizes) == false) {
-*				linkProperties.setTcpBufferSizes(tcpBufferSizes);
-*			}
++			if (TextUtils.isEmpty(tcpBufferSizes) == false) {
++				linkProperties.setTcpBufferSizes(tcpBufferSizes);
++			}
         } else {
             mNetworkInfo.setDetailedState(DetailedState.OBTAINING_IPADDR, null, mHwAddr);
 +		}
