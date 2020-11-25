@@ -1,7 +1,7 @@
 # GPT(GUID Partition Table) 
 =====
 
-GIT 헤더 구조  
+GPT 헤더 구조  
 ![](image/GPT_PARTITION-01.png)
 
  1. Protective MBR - 0 Sector  
