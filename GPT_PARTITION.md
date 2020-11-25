@@ -133,7 +133,8 @@ ex)
 
 - Attribute Flags (8 Byte)  
 ![](image/GPT_PARTITION-23.png)  
-> - 파티션의 속성을 나타내는 값. 
+> - 파티션의 속성을 나타내는 값.   
+  
 | Bit |                                     설명                                     |
 |-----|:----------------------------------------------------------------------------:|
 | 0   | System Partition(Disk Partitioning Utilities는 파티션을 그대로 보존 해야함.) |
