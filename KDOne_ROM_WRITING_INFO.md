@@ -1,5 +1,5 @@
 # 경동원 (ROM Writing 관련 H26M41208HPR eMMC 정보)
-=====
+> kd_user_201124 file 기준. 
 
  1. Primary GPT Header - 1 Sector  
 ![](image/GPT_PARTITION-03.png)  
