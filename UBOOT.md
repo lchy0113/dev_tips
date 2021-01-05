@@ -136,6 +136,25 @@ SECTIONS
 }
 
 ```
+> LD(loader & linker)의 input으로 주어져서, object 파일을 생성하는데 규칙을 제공. 
+- OUTPUT_FORMAT	:	ELF32의 little endian으로 코드를 생성.
+- OUTPUT_ARCH	:	binary을 실행할 수 있는 CPU architecture로 ARM을 사용.
+- ENTRY point	:	Program의 시작을 가리키며, 시작되는 함수는 "_start".
+- SECTIONS		:	정의를 보면, head, text, rodata, data, u_boot_list, image_copy_end, bss_start, bss, 라는 section들이 정의.
+* .text 	:	실행할 프로그램 코드 영역.
+* .rodata	:	read-only data 영역.
+* .data		:	initiallzed data 영역.
+* .got		:	global offset table 영역.
+* .bss		:	uninitialized data 영역.
+- 특수한 링커 변수 dot'.'는 항상 현재 출력 address point을 담고 있다.
+* address point는 출력 섹션의 크기만큼 증가한다.
+* '*'는 어떤 파일명에도 대응한다. '*(.text)'는 모든 입력파일의 모든 입력 섹션 '.text'을 의미한다.
+- 프로그램 코드는 0x4A000000에서 시작해서 4Byte단위로 정렬된 text section에 놓여질 것이다. 
+- u-boot의 시작은 entry point에 선언된 _start부터 시작된다.
+- _start는 'arch/arm/cpu/armv7/start.S'에 정의.
+- TEXT_BASE에 의해 Linker수행 시, symbol들은 상대적 주소를 갖는다. 
+- Power가 on 한 후, 0x00번지(즉, flash)에서 시작하여 memory 초기화를 거쳐 flash의 내용을 dram에 relocate하면 비로써 dram 에서 동작하게 된다. 
+- Symbol들은 모두 TEXT_BASE의 상대적 주소 값을 가지고 있으므로, dram에 relocate전에는 offset branch 명령만 사용해야 한다. (B, BL, ADR)
 
 ## arch/arm/cpu/armv7/start.S
 -----
