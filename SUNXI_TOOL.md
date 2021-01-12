@@ -131,3 +131,9 @@ $ sudo sunxi-fel spl ./boot0.bin
 ```
 > 명령을 통해 FEL mode에서 실제로 아래와 같이 boot0.bin 이 실행됨. 
 ![sunxi-fel을 사용하여 boot0.bin 구동](image/SUNXI_TOOL-02.png)
+
+
+출처 :
+https://slowbootkernelhacks.blogspot.com/2017/07/pine-a64-64-bit-arm-linux.html
+http://linux-sunxi.org/Pine64#Boot_sequence
+https://blog.hypriot.com/post/the-pine-a64-is-about-to-become=the-cheapest-ARM-64-bit-platform-to-run-Docker/
