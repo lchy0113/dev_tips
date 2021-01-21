@@ -74,9 +74,25 @@ build.sh
 					|
 					+--> mkkernel
 						build kernel.
-					|
-					+--> mkrootfs
-						build rootfs.
+							|
+							+--> script/build.sh
+								build_kernel, build_modules, build_ramfs 실행.
+									|
+									+--> build_kernel
+										make modules 실행.
+										build 이미지(ko파일 포함)를 output 경로에 복사. (Makefile 옵션 적용 검토)
+									|
+									+--> build_modules
+										build_nand_lib, build_gpu(mali)
+									|
+									+--> build_ramfs
+										rootfs.cpio.gz에 빌드된 ko파일을 포함하여 regenerate 및 boot.img 생성. 
+										(boot.img spec)
+										BASE="0x40000000"
+										KERNEL_OFFSET="0x8000"
+										bss_sz = bss 영역 size(offset + size)
+										RAMDISK_OFFSET=0x01000000
+										dtb 파일을 사용하지 않음. 
 						
 
 ```
