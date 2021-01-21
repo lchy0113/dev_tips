@@ -64,6 +64,19 @@ build.sh
 					LICHEE_KERN_DEFCONF=sun8iw11p1smp_androidm_defconfig
 				|
 				+--> mklichee
-							
+					build total lichee.
+					|
+					+--> mkbr 
+						build buildroot.
+						toolchain 설치 & PATH.
+						(example) 
+						buildroot tool path = lichee/out/${LICHEE_CHIP}/${LICHEE_PLATFORM}/common/buildroot/external-toolchain
+					|
+					+--> mkkernel
+						build kernel.
+					|
+					+--> mkrootfs
+						build rootfs.
+						
 
 ```
