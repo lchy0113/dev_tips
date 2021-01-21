@@ -29,7 +29,7 @@ build.sh
 						mk_error, mk_warn, mk_info, check_env, init_disclaimer, init_defconf, init_chips, init_platforms, init_kernel_ver, init_boards, select_chip, select_platform, select_kern_ver, select_board, mkbr, clbr, prepare_toolchain, mkkernel, clkernel, mkboot, packtinyandroi, mkrootfs, mklichee, mkclean, mkdistclean, mkpack, mkhelp() 가 정의되어 있음.
 			|
 			+--> [ " x$1 " = "xconfig" ]
-				$1 값이 config인 경우, 
+				$1 값이 config인 경우, config 세팅 동작을 취함.
 					|
 					+--> buildroot/scripts/mksetup.sh 
 							기존 buildconfig을 제거 하고 새로운 buildconfig을 export취함. 
@@ -43,7 +43,7 @@ build.sh
 			|
 			+--> [ " x$1 " = "xpack" ]
 					|
-					+-->
+					+-->	
 			+--> [ " x$1 " = "xpack_debug" ]
 			+--> [ " x$1 " = "xpack_dump" ]
 			+--> [ " x$1 " = "xpack_secure" ]
@@ -53,7 +53,17 @@ build.sh
 			+--> [ " x$1 " = "xclean" ]
 			+--> [ " x$1 " = "xdistclean" ]
 			+--> [ " $# -eq 0 ]
-					|
-					+-->
+				커널 빌드 수행. 
+				|
+				+--> init_defconf
+					export 된 variable(chip, platform)정보를 통해 target defconf을 설정.
+					buildroot/scripts/mkrule 파일에 리스트로 정의되어 있음. 
+					(example)
+					pattern=sun8iw11p1_androidm
+					LICHEE_BR_DEFCONFIG=sun8i_defconfig
+					LICHEE_KERN_DEFCONF=sun8iw11p1smp_androidm_defconfig
+				|
+				+--> mklichee
+							
 
 ```
