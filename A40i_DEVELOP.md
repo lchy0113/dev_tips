@@ -99,3 +99,43 @@ build.sh
 						
 
 ```
+
+## Android compile.
+> Android build 과정을 정리(A40i에 귀속된 부분만 정리)
+```
+(android)/device/softwinner/common/vendorsetup.sh
+	|
+	+--> function extract-bsp()
+		bsp 및 출력 파일을 컴파일 된 Android 소스 코드의 출력 디렉토리에 복사함.
+			|
+			+--> get_lichee_out_dir() 
+				kernel output file 디렉토리 환경변수 세팅.
+			|
+			+--> get_device_dir()
+				target device(a40-p1) 디렉토리 환경변수 세팅.
+			|
+			+--> kernel(bImage), modules 파일 copy. 
+				modules.mk 파일 생성. 
+	|
+	+--> make 
+		Android build.
+	|
+	+--> function pack()
+		package into firmware.
+		|
+		+--> (android)/device/softwinner/a40-p1/package.sh
+			chip(sun8iw11p1), platform(androidm), board(a40-p1), debug(uart0),sigmode(none), securemode(none) para 정보 세팅후, pack 실행.
+				|
+				+--> (android)/../lichee/tools/pack/pack
+					packing
+					|
+					+--> function do_prepare()
+						tools_file, configs_file, boot_resource, boot_file 복사.
+						IMG_NAME_세팅 후, image.cfg  파일 업데이트.
+					|
+					+--> function do_common()
+						fastdtb : 
+			
+
+```
+
