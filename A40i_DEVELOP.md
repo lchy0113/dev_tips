@@ -133,8 +133,30 @@ build.sh
 						tools_file, configs_file, boot_resource, boot_file 복사.
 						IMG_NAME_세팅 후, image.cfg  파일 업데이트.
 					|
+					+--> function do_ini_to_dts()
+						sys_config_fix.fex 업데이트. dram -> dram_para, 	nand0 -> nand0_para
+						dts 파일을 사용하지 않으므로, common dts file로 대체.
+						DTC_DEP_FILE=.sun8iw11p1-soc.dtb.d.dtc.tmp
+						DTC_SRC_FILE=.sun8iw11p1-soc.dtb.dts
+					|
 					+--> function do_common()
-						fastdtb : 
+						fastdtb command 를 사용하여 dtb 정보에 추가 size 만큼 데이터를 추가. (fastdtb command 확인)
+							fastdtb : [   dtb len=0x000155f3  ] + [  len=0x0001 114d   ]
+						update_uboot_fdt command 를 사용하여 u-boot.bin정보에 dtb  정보를 추가.
+							u-boot.fex len = u-boot.fex len + sunxi.fex len 
+						boot0 image 업데이트.
+							bootloader 에서 빌드된 boot0 이미지에 sys_config 데이터 추가.
+						u-boot.fex 업데이트.
+						fes1.fex 업데이트.
+						boot-resource.ini 업데이트.
+					|
+					+--> function do_pack_androidm()
+						boot.img, system.img, recovery.img 를 링크	
+					|
+					+--> function do_finish()
+						sys_partition.bin 업데이트.
+						dragon image.cfg sys_partition.fex
+							하나의 이미지로 pack. 
 			
 
 ```
