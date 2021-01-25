@@ -43,7 +43,11 @@ build.sh
 			|
 			+--> [ " x$1 " = "xpack" ]
 					|
-					+-->	
+					+--> init_defconf	
+					|
+					+--> mkpack
+						packing firmware
+						pack() function을 실행시킴. 
 			+--> [ " x$1 " = "xpack_debug" ]
 			+--> [ " x$1 " = "xpack_dump" ]
 			+--> [ " x$1 " = "xpack_secure" ]
