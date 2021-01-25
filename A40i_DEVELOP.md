@@ -93,6 +93,9 @@ build.sh
 										bss_sz = bss 영역 size(offset + size)
 										RAMDISK_OFFSET=0x01000000
 										dtb 파일을 사용하지 않음. 
+									|
+									+--> gen_output
+										LICHEE_PLAT_OUT(lichee/out/${LICHEE_CHIP}/${LICHEE_PLATFORM}/common 경로에 lib 파일을 포함한 output 파일 복사.
 						
 
 ```
