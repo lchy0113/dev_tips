@@ -4,6 +4,39 @@
 ## sunxi lichee tool Build Sequence.
 
 > build.sh 의 대략적인 코드 흐름 (bootloader, kernel, android, flash image 생성 등)을 정리 한 것이다.
+### bootloader compile.
+> partition type : mbr
+> origin defconfig : sun8iw11p1_config
+```
+brandy/build.sh
+	|
+	+--> build_uboot
+		|
+		+--> Makefile
+			outputmakefile
+			|
+			+--> mkconfig
+				|
+				+--> boards.cfg
+					include/config.mk file 생성.
+			|
+			+--> overridden arch/arm/cpu/armv7/config.mk 
+				CROSS_COMPILE Path 세팅.
+			|
+			+--> u-boot-$(CONFIG_TARGET_NAME).bin 
+				u-boot 이미지를 지정된 pack 경로에 복사. 
+			|
+			+--> spl
+				fes, boot0 이미지 빌드. 
+				|
+				+--> spl_make
+					fes, boot0 이미지를 지정된 pack경로에 복사.
+
+```
+
+
+### kernel compile.
+> Allwinner 사에서 제공하는 lichee  build system을 이용하여 빌드되도록 SDK가 구성되어 있음. 
 ```
 build.sh
 	|
