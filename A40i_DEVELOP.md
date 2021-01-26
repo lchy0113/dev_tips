@@ -178,7 +178,6 @@ build.sh
 					|
 					+--> function do_common()
 						fastdtb command 를 사용하여 dtb 정보에 추가 size 만큼 데이터를 추가. (fastdtb command 확인)
-							fastdtb : [   dtb len=0x000155f3  ] + [  len=0x0001 114d   ]
 						update_uboot_fdt command 를 사용하여 u-boot.bin정보에 dtb  정보를 추가.
 							u-boot.fex len = u-boot.fex len + sunxi.fex len 
 						boot0 image 업데이트.
@@ -186,6 +185,13 @@ build.sh
 						u-boot.fex 업데이트.
 						fes1.fex 업데이트.
 						boot-resource.ini 업데이트.
+						dragonsecboot -pack boot_package.cfg 
+							|
+							+--> boot_package.cfg  의 정보를 읽어 bootloader(u-boot.fex) pack.
+						u_boot_env_gen 
+							|
+							+--> generate the u-boot env partition from config file.
+								env의 comment를 제거하고  0x20000 length 의 fex file 출력.
 					|
 					+--> function do_pack_androidm()
 						boot.img, system.img, recovery.img 를 링크	
