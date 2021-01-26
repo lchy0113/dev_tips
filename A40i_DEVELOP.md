@@ -198,6 +198,55 @@ build.sh
 
 ```
 
+# pack 
+
+## boot0 
+- tools/pack/chips/sun8iw11p1/bin/ 경로의 bin 파일을  out 경로에 복사한다. 
+```
+boot_file_list=(
+chips/${PACK_CHIP}/bin/boot0_nand_${PACK_CHIP}.bin:out/boot0_nand.fex
+chips/${PACK_CHIP}/bin/boot0_sdcard_${PACK_CHIP}.bin:out/boot0_sdcard.fex
+chips/${PACK_CHIP}/bin/boot0_spinor_${PACK_CHIP}.bin:out/boot0_spinor.fex
+...
+)
+
+pintf "copying boot file\n"
+for file in ${boot_file_list[@]} ; do
+	cp -f `echo $file | awk -F: '{print $1}'` \
+		`echo $file | awk -F: '{print $2}'` 2 >/dev/null
+done
+```
+- sys_config.bin을 통해 boot0 을 업데이트하고 boot0_sdcard.fex를 생성함.
+```
+update_boot0 boot0_sdcard.fex sys_config.bin SDMMC_CARD > /dev/null
+```
+
+## u-boot 
+- brandy/build.sh는 u-boot를 컴파일하여 tools/pack/chips/${PACK_CHIP}/bin/ 경로에 복사한다.  
+
+```
+boot_file_list=(
+...
+chips/${PACK_CHIP}/bin/u-boot-${PACK_CHIP}.bin:out/u-boot.fex
+...
+)
+
+pintf "copying boot file\n"
+for file in ${boot_file_list[@]} ; do
+	cp -f `echo $file | awk -F: '{print $1}'` \
+		`echo $file | awk -F: '{print $2}'` 2 >/dev/null
+done
+```
+- sys_config을 통해 uboot파일헤더의 메타데이터를 업데이트한다.
+```
+update_uboot u-boot.fex sys_config.bin > /dev/null
+```
+
+> offset address 0xda800
+```
+update_uboot_fdt u-boot.fex sunxi.fex u-boot.fex
+```
+
 ## sys_config
 > sys_config 는 Allwinner sunxi 의 구성 script로서 Linux kernel 의 DTS와는 다르지만 DTS 와 같이 동작.
 
@@ -211,7 +260,7 @@ cp $DTC_INI_FILE_BASE $DTC_INI_FILE
 
 $DTC_COMPILER -O dtb -o ${LICHEE_OUT}/sunxi.dtb	\
 		-b 0									\
-		-i $DTC_SRC_FILE						\
+		-i $DTC_SRC_PATH						\
 		-F $DTC_INI_FILE						\
 		-d $DTC_DEP_FILE	$DTC_SRC_FILE
 ```
@@ -237,4 +286,30 @@ update_uboot u-boot.fex			sys_config.bin > /dev/null
 update_fes1	 fes1.fex			sys_config.bin > /dev/null
 update_toc0  toc0.fex			sys_config.bin
 ```
+
+## dts
+> sys_config.fex를 사용하여 dts를 통해 sunxi.dtb 파일 생성.
+```
+$DTC_COMPILER -O dtb -o ${LICHEE_OUT}/sunxi.dtb	\
+	-b 0						\
+	-i $DTC_SRC_PATH			\
+	-F $DTC_INI_FILE			\
+	-d $DTC_DEP_FILE $DTC_SRC_FILE
+```
+
+> 생성된 sunxi.fex를 복사하고 uboot 이미지에 병함.
+> Offset addr : 0xda800
+```
+update_uboot_fdt	u-boot.fex sunxi.fex u-boot.fex
+```
+```
+hexdump -C -n 1000 tools/pack/out/sunxi.fex
+hexdump -C -n 1000 -s 0xda800 tools/pack/out/u-boot.fex
+```
+
+## boot-resource
+> boot-resource는 uboot에서 부팅에 사용되는 리소스 파일(부팅화면).
+
+## bootimg (kernel+ramdisk)
+> boot.img는 android 부팅용 커널 형식으로 파일 헤더와 커널, 램디스크가 포함되어 있음.
 
