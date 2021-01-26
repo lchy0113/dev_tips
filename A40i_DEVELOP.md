@@ -2,8 +2,9 @@
 -----
 
 ## sunxi lichee tool Build Sequence.
+> 여러 build system이 있지만, Allwinner 사 제품은 sunxi lichee 기반으로 개발 SDK  가 제공.
+> sunxi lichee system 의 build 절차를 (bootloader, kernel, android, flash image 생성 등) 아래와 같이 정리.
 
-> build.sh 의 대략적인 코드 흐름 (bootloader, kernel, android, flash image 생성 등)을 정리 한 것이다.
 ### bootloader compile.
 > partition type : mbr
 > origin defconfig : sun8iw11p1_config
