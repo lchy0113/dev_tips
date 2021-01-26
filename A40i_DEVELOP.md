@@ -248,7 +248,7 @@ update_uboot_fdt u-boot.fex sunxi.fex u-boot.fex
 ```
 
 ## sys_config
-> sys_config 는 Allwinner sunxi 의 구성 script로서 Linux kernel 의 DTS와는 다르지만 DTS 와 같이 동작.
+> sys_config 는 Allwinner sunxi 의 구성 script로서 Linux kernel 의 DTS와는 다르지만 DTS 와 유사하게 동작.
 
 - dts를 통해 sunxi.dtb를 생성하려면 sys_config.fex 를 사용.
 ```
