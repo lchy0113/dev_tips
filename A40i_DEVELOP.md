@@ -198,3 +198,43 @@ build.sh
 
 ```
 
+## sys_config
+> sys_config 는 Allwinner sunxi 의 구성 script로서 Linux kernel 의 DTS와는 다르지만 DTS 와 같이 동작.
+
+- dts를 통해 sunxi.dtb를 생성하려면 sys_config.fex 를 사용.
+```
+local DTC_INI_FILE_BASE=${LICHEE_OUT}/../../../../tools/pack/out/sys_config.fex
+local DTC_INI_FILE=${LICHEE_OUT}/../../../../tools/pack/out/sys_config_fix.fex
+local DTC_DEP_FILE=${LICHEE_OUT}/../../../../$PACK_KERN/arch/$ARCH/boot/dts/.${PACK_CHIP}-soc.dtb.d.dtc.tmp
+local DTC_SRC_FILE=${LICHEE_OUT}/../../../../$PACK_KERN/arch/$ARCH/boot/dts/.${PACK_CHIP}-soc.dtb.dts
+cp $DTC_INI_FILE_BASE $DTC_INI_FILE
+
+$DTC_COMPILER -O dtb -o ${LICHEE_OUT}/sunxi.dtb	\
+		-b 0									\
+		-i $DTC_SRC_FILE						\
+		-F $DTC_INI_FILE						\
+		-d $DTC_DEP_FILE	$DTC_SRC_FILE
+```
+
+- sys_config.bin을 생성하여 config.fex를 복사한다. 
+- sys_config.bin은 나중에 다른 파일을 업데이트 하는데 사용된다. 
+- config.fex는 일시적으로 사용되지 않는다.
+```
+busybox unix2dos sys_config.fex
+script sys_config.fex > /dev/null
+cp -f sys_config.bin config.fex
+```
+
+- sys_config.bin을 사용하여 boot0, uboot, fes1, toc0 을 업데이트 한다. 
+```
+update_boot0 boot0_spinor.fex	sys_config.bin SDMMC_CARD > /dev/null
+update_uboot u-boot-spinor.fex	sys_config.bin > /dev/null
+
+update_boot0 boot0_nand.fex		sys_config.bin NAND > /dev/null
+update_boot0 boot0_sdcard.fex	sys_config.bin SDMMC_CARD > /dev/null
+
+update_uboot u-boot.fex			sys_config.bin > /dev/null
+update_fes1	 fes1.fex			sys_config.bin > /dev/null
+update_toc0  toc0.fex			sys_config.bin
+```
+
