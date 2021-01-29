@@ -12,14 +12,14 @@
 > 예) NAND Flash, SPI (Serial Peripheral Interface)를 통해 연결된 플래시 메모리, MMC 장치 첫 번째 섹터(SD카드)등에서 SPL 을 읽는다.
 > Allwinner사 SoC는 Specific boot process를 가지고 있다.
  SoC는 BROM이 있는 주소  0xffff0000에서 명령어를 가져오기 시작한다.(처음 a tiny on chip rom이라고 불리는 BROM이 실행된다.) 
- BROM은 두 부분으로 나뉘며, 첫번째 부분은 [0xffff0000|https://github.com/lchy0113/Allwinner-Info/blob/master/BROM/ffff0000] 은 FEL모드이고, 두번째 부분은 eGON.BRM([0xffff4000|https://github.com/lchy0113/Allwinner-Info/blob/master/BROM/ffff4000.s])이다.
+ BROM은 두 부분으로 나뉘며, 첫번째 부분은 [0xffff0000]:https://github.com/lchy0113/Allwinner-Info/blob/master/BROM/ffff0000 은 FEL모드이고, 두번째 부분은 eGON.BRM([0xffff4000:https://github.com/lchy0113/Allwinner-Info/blob/master/BROM/ffff4000.s)이다.
 
 - Reset vector 
 > Reset vector는 FEL 모드의 맨 처음 주소 0xffff0000에 위치하며, reset시 0xffff0028로 점프하여 0xffff4000 (eGON.Boot ROM)을 프로그램 카운터에 로드하여 jump한다.
 
 - eGON BOOT
  The eGON Boot ROM performs a few tasks:
- 	1. doest some [co-processor setup|https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L19].
+ 	1. doest some [co-processor setup]:https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L19
 	
 
 * BROM은 부팅 모드를 확인 한다.(SDCARD > NAND) 각 장치의 u-boot SPL 로드를 시도한다.
