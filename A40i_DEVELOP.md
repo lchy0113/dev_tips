@@ -1,10 +1,28 @@
+[A40i Develop]
+
+<hr/>
+# Develop Git Project.
+
+a40i_develop : private.
+	- branch : main
+android : local
+	- branch : develop/private
+lichee : 
+	- branch : develop/private
+	- list
+		brandy : lichee/brandy
+		buildroot : lichee/buildroot
+		linux-3.10 : lichee/linux-3.10
+		tools : lichee/tools
+
+
+<hr/>
+
 #A40i Build system
------
 
 ## sunxi lichee tool Build Sequence.
-> 여러 build system이 있지만, Allwinner 사 제품은 sunxi lichee 기반으로 개발 SDK  가 제공.
-> sunxi lichee system 의 build 절차를 (bootloader, kernel, android, flash image 생성 등) 아래와 같이 정리.
 
+> build.sh 의 대략적인 코드 흐름 (bootloader, kernel, android, flash image 생성 등)을 정리 한 것이다.
 ### bootloader compile.
 > partition type : mbr
 > origin defconfig : sun8iw11p1_config
@@ -13,7 +31,7 @@ brandy/build.sh
 	|
 	+--> build_uboot
 		|
-		+--> Makefile
+		+--> make
 			outputmakefile
 			|
 			+--> mkconfig
@@ -25,16 +43,33 @@ brandy/build.sh
 				CROSS_COMPILE Path 세팅.
 			|
 			+--> u-boot-$(CONFIG_TARGET_NAME).bin 
+				./tools/add_hash_uboot.sh -f u-boot.bin -m uboot
+					|
+					+--> u-boot.bin의 offset(0x600)에 commit number 추가.
 				u-boot 이미지를 지정된 pack 경로에 복사. 
+		|
+		+--> make spl
+			fes, boot0 이미지 빌드. 
+				fes, boot0 이미지를 지정된 pack경로에 복사.
 			|
-			+--> spl
-				fes, boot0 이미지 빌드. 
-				|
-				+--> spl_make
-					fes, boot0 이미지를 지정된 pack경로에 복사.
-
+			+--> spl_make fes	(fes 는 사용하지 않음)
+				timer_init, serial_init(for debug), initial pll, dram init /* fes 가 사용되는지 확인여부 */
+				
+			|
+			+--> spl_make boot0
+				timer, serial, pll, check rtc value, dram  
+					|
+					+--> rtc[2] value = 0x5aa5a55a 인경우, boot0 jump to 0xffff0020(FEL mode.
+				load_boot1(u-boot)
+					|
+					+--> copy para 
+				
 ```
+### output file  
+- (lichee)/tools/pack/chips/sun8iw11p1/bin/fes1_sun8iw11p1.bin
+- (lichee)/tools/pack/chips/sun8iw11p1/bin/u-boot-sun8iw11p1.bin
 
+> CONFIG_STORAGE_MEDIA_NAND, CONFIG_STORAGE_MEDIA_MMC, CONFIG_STORAGE_MEDIA_SPINOR config중 Target에 사용되는 config 확인. 
 
 ### kernel compile.
 > Allwinner 사에서 제공하는 lichee  build system을 이용하여 빌드되도록 SDK가 구성되어 있음. 
@@ -205,6 +240,8 @@ build.sh
 
 ```
 
+<hr/>
+
 # pack 
 
 ## boot0 
@@ -319,4 +356,32 @@ hexdump -C -n 1000 -s 0xda800 tools/pack/out/u-boot.fex
 
 ## bootimg (kernel+ramdisk)
 > boot.img는 android 부팅용 커널 형식으로 파일 헤더와 커널, 램디스크가 포함되어 있음.
+
+
+<hr/>
+
+# script.bin
+-----
+> script.bin은 커널에서 사용되는 board-specific binary 즉, 'configuration file'이며 주변 장치, I/O pin 셋업을 명시한다.
+> Sunxi-tools를 사용하여 bin <-> fex 변환한다. 
+
+## Build script.bin
+### Get bin2fex utility
+### Get sunxi-boards repository
+
+
+<hr/>
+
+# FEL/USBBoot
+ Allwinner SoC 는 USB OTG를 통한 부팅이 가능하다. 
+
+## Install the tools
+project : https://github.com/linux-sunxi/sunxi-tools
+
+## Switch device into FEL mode
+> sunxi-tool을 통한 device와 통신을 위해선 device가 FEL mode에 진입해야 한다.
+- boot0 에서 2 key  입력.
+- 전원 인가 후 u-boot 버튼 입력.(EVBoard 기준)
+- adb reboot efex
+
 
