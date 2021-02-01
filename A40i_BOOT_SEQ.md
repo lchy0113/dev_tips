@@ -39,14 +39,14 @@
 
 ```
 boot-> check fel key pressed (yes) --> FEL mode (boot from USB OTG0
-					\
-					(no) \
-						\----->	1) try to boot from SDC0.
-									2) try to boot from SPI0.
-									3) try to boot from eMMC2.
-									4) try to boot from SDC2.
-									5) try to boot from NAND.
-									6) FEL mode (boot form USB OTG.
+				\
+			(no) \
+				\----->	1) try to boot from SDC0.
+						2) try to boot from SPI0.
+						3) try to boot from eMMC2.
+						4) try to boot from SDC2.
+						5) try to boot from NAND.
+						6) FEL mode (boot form USB OTG.
 ```
 
 
