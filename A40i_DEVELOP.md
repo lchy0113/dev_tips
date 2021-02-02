@@ -52,7 +52,7 @@ brandy/build.sh
 			fes, boot0 이미지 빌드. 
 				fes, boot0 이미지를 지정된 pack경로에 복사.
 			|
-			+--> spl_make fes	(fes 는 사용하지 않음)
+			+--> spl_make fes
 				timer_init, serial_init(for debug), initial pll, dram init /* fes 가 사용되는지 확인여부 */
 				
 			|
@@ -67,6 +67,7 @@ brandy/build.sh
 ```
 ### output file  
 - (lichee)/tools/pack/chips/sun8iw11p1/bin/fes1_sun8iw11p1.bin
+- (lichee)/tools/pack/chips/sun8iw11p1/bin/boot0_sdcard_sun8iw11p1.bin
 - (lichee)/tools/pack/chips/sun8iw11p1/bin/u-boot-sun8iw11p1.bin
 
 > CONFIG_STORAGE_MEDIA_NAND, CONFIG_STORAGE_MEDIA_MMC, CONFIG_STORAGE_MEDIA_SPINOR config중 Target에 사용되는 config 확인. 
@@ -189,6 +190,7 @@ build.sh
 			|
 			+--> kernel(bImage), modules 파일 copy. 
 				modules.mk 파일 생성. 
+				recovery image make시, $(PRODUCT_OUT)/kernel 파일을 사용.
 	|
 	+--> make 
 		Android build.
