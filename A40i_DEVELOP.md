@@ -267,30 +267,75 @@ done
 update_boot0 boot0_sdcard.fex sys_config.bin SDMMC_CARD > /dev/null
 ```
 
+# patch boot0
+```
+#####
+# copy fex file
+#####
+cp -fv chips/sun8iw11p1/configs/$(BOARD)/sys_config.fex 	sys_config.fex
+
+#####
+# copy boot0
+#####
+cp -fv chips/sun8iw11p1/bin/boot0_nand_sun8iw11p1.bin		boot0_nand.fex
+cp -fv chips/sun8iw11p1/bin/boot0_sdcard_sun8iw11p1.bin		boot0_sdcard.fex
+cp -fv chips/sun8iw11p1/bin/fes1_sun8iw11p1.bin				fes1.fex
+
+#####
+# fex file compiler requires fex file in CRLF format.
+#####
+busybox unix2dos sys_config.fex
+
+#####
+# compile fex file
+#####
+pctools/linux/mod_update/update/script 	sys_config.fex
+
+#####
+# patch nand and sdcard boot0
+#####
+pctools/linux/mod_update/update_boot0 	boot0_nand.fex		NAND
+pctools/linux/mod_update/update_boot0 	boot0_sdcard.fex	SDMMC_CARD
+
+#####
+# patch FEL boot0
+#####
+pctools/linux/mod_update/update_fes1 	fes1.fex			sys_config.bin
+```
+
 ## u-boot 
-- brandy/build.sh는 u-boot를 컴파일하여 tools/pack/chips/${PACK_CHIP}/bin/ 경로에 복사한다.  
+# patch u-boot
+```
+#####
+# copy fex file
+#####
+cp -fv chips/sun8iw11p1/configs/$(BOARD)/sys_config.fex 	sys_config.fex
 
-```
-boot_file_list=(
-...
-chips/${PACK_CHIP}/bin/u-boot-${PACK_CHIP}.bin:out/u-boot.fex
-...
-)
+#####
+# copy u-boot file
+#####
+cp -fv chips/sun8iw11p1/bin/u-boot-sun8iw11p1.bin 			u-boot.fex
 
-pintf "copying boot file\n"
-for file in ${boot_file_list[@]} ; do
-	cp -f `echo $file | awk -F: '{print $1}'` \
-		`echo $file | awk -F: '{print $2}'` 2 >/dev/null
-done
-```
-- sys_config을 통해 uboot파일헤더의 메타데이터를 업데이트한다.
-```
-update_uboot u-boot.fex sys_config.bin > /dev/null
-```
+#####
+# fex file compiler requires fex file in CRLF format
+#####
+busybox unix2dos 	sys_config.fex
 
-> offset address 0xda800
-```
-update_uboot_fdt u-boot.fex sunxi.fex u-boot.fex
+#####
+# compile fex file
+#####
+pctools/linux/mod_update/update/script 	sys_config.fex
+
+#####
+# updat offset address 0xda800
+#####
+update_uboot_fdt u-boot.fex 	sunxi_fex	u-boot.fex
+
+#####
+# patch u-boot
+# sys_config을 통해 uboot파일헤더의 메타데이터를 업데이트한다.
+#####
+pctools/linux/mod_update/updade_uboot 	u-boot.fex			sys_config.bin
 ```
 
 ## sys_config
