@@ -20,22 +20,23 @@
 - eGON BOOT
  SDC0, SPI0, eMMC2, SDC2, NAND Flash 및 USB 에서 연속적으로 부팅을 시도하며 동시에 외부 핀  Boot Select Pin 이 Low 상태가 되면 USB Mode 로 부팅을 시도한다. 
 
-### The eGON Boot ROM performs a few tasks:  
- 	1. does some [co-processor setup](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L19)  
-	2. Disables the [WatchDog Timer](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L23)	  
-	3. Setups [CPU, AXI, AHB, and APB0 clocks](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L28)  
-	4. [Enables AHB Gating](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L34)  
-	5. [Enables APB0 Gating](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L38)  
-	6. [Sets the Stack Pointer to 32K](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L40)  
-	7. then it [jumps](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L41) to [boot](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L84) which immedidately [jumps to](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L86) [check_uboot](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L2551).  
-	8. [check_uboot](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L2551) setups up some registers, then [checks the status pin](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L2560)(often called FEL pin, BSP pin or uboot)  
-		8.1 If the pin is low (connected to GND) [executes](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L90) [FEL](https://linux-sunxi.org/FEL) mode at 0xffff0020.   
-		8.2 If the pin is high it continues trying to boot from the following media and on failure continues to the next in order.   
-			8.2.1 [SD Card0](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L91) also known as MMC0  
-			8.2.2 [Internal Nand Flash](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L98) also known as NAND  
-			8.2.3 [SD_Card2](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L104) also known as MMC2  
-			8.2.4 [SPI connected NOR flash](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L111) alsk known as SPI  
-			8.2.5 [If all fails](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L117), FEL/USB Boot mode is [executed](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L120) from 0xffff0020  
+### The eGON Boot ROM performs a few tasks:
+
+1. does some [co-processor setup](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L19)  
+2. Disables the [WatchDog Timer](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L23)	  
+3. Setups [CPU, AXI, AHB, and APB0 clocks](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L28)  
+4. [Enables AHB Gating](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L34)  
+5. [Enables APB0 Gating](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L38)  
+6. [Sets the Stack Pointer to 32K](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L40)  
+7. then it [jumps](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L41) to [boot](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L84) which immedidately [jumps to](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L86) [check_uboot](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L2551).  
+8. [check_uboot](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L2551) setups up some registers, then [checks the status pin](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L2560)(often called FEL pin, BSP pin or uboot)  
+8.1 If the pin is low (connected to GND) [executes](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L90) [FEL](https://linux-sunxi.org/FEL) mode at 0xffff0020.   
+8.2 If the pin is high it continues trying to boot from the following media and on failure continues to the next in order.   
+8.2.1 [SD Card0](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L91) also known as MMC0  
+8.2.2 [Internal Nand Flash](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L98) also known as NAND  
+8.2.3 [SD_Card2](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L104) also known as MMC2  
+8.2.4 [SPI connected NOR flash](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L111) alsk known as SPI  
+8.2.5 [If all fails](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L117), FEL/USB Boot mode is [executed](https://github.com/lchy0113/Allwinner-Info/blob/4777ddf2a26eca973484714ac48bbaf18849dab4/BROM/ffff4000.s#L120) from 0xffff0020  
   
 ```
 boot-> check fel key pressed (yes) --> FEL mode (boot from USB OTG0
