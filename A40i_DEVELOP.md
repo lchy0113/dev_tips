@@ -432,3 +432,43 @@ project : https://github.com/linux-sunxi/sunxi-tools
 - adb reboot efex
 
 
+
+<hr/>
+
+# FEL mode 로 부팅하기. 
+ normal 부팅 시, BROM이 가장 먼저 구동시키는 것은 boot0 loader.
+```
+lchy0113@KDIWIN-NB:~/Develop/Allwinner/tools/sunxi-tools$ sudo sunxi-fel version 
+AWUSBFEX soc=00001701(R40) 00000001 ver=0001 44 08 scratchpad=00007e00 00000000 0000000
+```
+
+ sunxi-fel을 사용하여 boot0.bin loader 실행.
+
+```
+	[target board]								[host pc]
+	 USB-A port		---------------------------- USB-A port
+	 FEL mode 진입								 sunxi-fel spl boot0.bin
+	 BROM											|
+	 	|											|
+		<-------------------------------------------+
+						boot0.bin 전달.
+		|
+		V
+	Execute boot0.bin by BROM
+		.
+		.
+		.
+```
+
+## make spl file (include spl header)
+
+```
+$ arm-linux-gnueabi-gcc -g -Os -marm -fpic -Wall \
+			-fno-common -fno-builtin -ffreestanding -nostdinc -fno-strict-aliasing	\
+			-mno-thumb-interwork -fno-stack-protector -fno-toplevel-reorder	\
+			-Wstrict-prototypes -Wno-format-nonliteral -Wno-format-security \
+			uart0-helloworld-sdboot.c -nostdlib -o uart0-helloworld-sdboot.lds \
+			-T uart0-helloworld-sdboot.lds -Wl,-N
+$ arm-linux-gnueabi-objcopy -O binary richgold.elf richgold.bin
+$ mksunxiboot richgold.bin richgold.sunxi
+```
