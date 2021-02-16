@@ -472,3 +472,9 @@ $ arm-linux-gnueabi-gcc -g -Os -marm -fpic -Wall \
 $ arm-linux-gnueabi-objcopy -O binary richgold.elf richgold.bin
 $ mksunxiboot richgold.bin richgold.sunxi
 ```
+
+</hr>
+# FEL 
+ FEL is a means of talking to the Allwinner SoCs BROM over USB. You first need to activate FEL mode on your device to be able to access it.
+
+
