@@ -17,7 +17,7 @@
 (example) Allwinner A40i board.
 - MBR(Master Boot Record) 구조.
 ```
-lchy0113@DP10190350:/mnt/c/Users/10190350/Desktop$ hexdump -Cv -n512 mmcblk2.dump
+$ hexdump  -Cv -s0 -n512 mmcblk2p.dump 
 00000000  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
 00000010  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
 00000020  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
@@ -50,11 +50,12 @@ lchy0113@DP10190350:/mnt/c/Users/10190350/Desktop$ hexdump -Cv -n512 mmcblk2.dum
 000001d0  00 00 06 00 00 00 00 20  01 00 00 00 01 00 00 00  |....... ........|
 000001e0  00 00 05 00 00 00 01 00  00 00 00 80 6e 00 00 00  |............n...|
 000001f0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 55 aa  |..............U.|
+00000200
 ```
 
 - Boot Code[0x0000 - 0x01BD]
 ```
-lchy0113@DP10190350:/mnt/c/Users/10190350/Desktop$ hexdump -Cv -n445 mmcblk2.dump
+$ hexdump  -Cv -s0 -n445 mmcblk2p.dump 
 00000000  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
 00000010  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
 00000020  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
@@ -97,26 +98,26 @@ lchy0113@DP10190350:/mnt/c/Users/10190350/Desktop$ hexdump -Cv -n445 mmcblk2.dum
 	+ Size if Sector(4 Byte) : 파티션(LBA0에 할당된 섹터의 총 수. (1 sector * 512 = 1 Byte)
 * Partition Table Entry 1 [0x01BE - 0x01CD]
 ```
-lchy0113@DP10190350:/mnt/c/Users/10190350/Desktop$ hexdump -Cv -s446 -n16 mmcblk2.dump
+$ hexdump  -Cv -s446 -n16 mmcblk2p.dump
 000001be  80 00 00 00 0b 00 00 00  00 a0 70 00 00 d0 62 01  |..........p...b.|
 000001ce
 ```
 * Partition Table Entry 2 [0x01CE - 0x01DD]
 ```
-lchy0113@DP10190350:/mnt/c/Users/10190350/Desktop$ hexdump -Cv -s462 -n16 mmcblk2.dump
+$ hexdump  -Cv -s462 -n16 mmcblk2p.dump
 000001ce  00 00 00 00 06 00 00 00  00 20 01 00 00 00 01 00  |......... ......|
 000001de
 ```
 * Partition Table Entry 3 [0x01DE - 0x01ED] 
 ```
-lchy0113@DP10190350:/mnt/c/Users/10190350/Desktop$ hexdump -Cv -s478 -n16 mmcblk2.dump
-000001de  00 00 00 00 05 00 00 00  01 00 00 00 00 80 6e 00  |..............n.|
+$ hexdump  -Cv -s478 -n16 mmcblk2p.dump
+000001de  00 00 00 00 05 00 00 00  01 00 00 00 00 80 6e 00  |..............n.| 
 000001ee
 ```
 * Partition Table Entry 4 [0x01EE - 0x01FD] 
 ```
-lchy0113@DP10190350:/mnt/c/Users/10190350/Desktop$ hexdump -Cv -s494 -n16 mmcblk2.dump
-000001ee  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+$ hexdump  -Cv -s494 -n16 mmcblk2p.dump
+000001ee  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................| 
 000001fe
 ```
 
@@ -128,6 +129,13 @@ lchy0113@DP10190350:/mnt/c/Users/10190350/Desktop$ hexdump -Cv -s494 -n16 mmcblk
 |        #4 |      0x00 |             0x000000 |            0x00 |           0x000000 |          0x00000000 () |                    0x00000000 (;) |
 
 
-- Partition Type
-  * 0x05 : DOS 3.3+ Extended Partition
-  * 0x0F : Extended LBA Partition
+* Partition Type
+  + 0x05 : DOS 3.3+ Extended Partition
+  + 0x0F : Extended LBA Partition
+
+- Signature 
+```
+$ hexdump  -Cv -s510 -n2 mmcblk2p.dump
+000001fe  55 aa                                             |U.| 
+00000200
+```
