@@ -349,4 +349,10 @@ sys_partition.fex 을 보면 다음과 같다.
  * user_type : 파티션 사용자 속성 
 
  다음은 sys_partition.fex파일에 지정된 파티션의 파일을 설명.
-
+| Name              | Function                            |
+|-------------------|-------------------------------------|
+| boot-resource.fex | 부트로더에서 사용되는 리소스(로고). |
+| env.fex           | bootloader environment data.        |
+| boot.fex          | kernel, ramdisk data.               |
+| system.fex        | android data.                       |
+| recovery.fex      | recovery data.                      |
