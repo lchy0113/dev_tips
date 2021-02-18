@@ -21,6 +21,7 @@ script flow
 ![](./image/ALLWINNER_PACKAGING_PROCESS_ANALYSIS-1.png)
 
 Packaing script는 다음과 같은 5단계로 구분된다. 
+
 	do_prepare
 	do_ini_to_dts
 	do_common
