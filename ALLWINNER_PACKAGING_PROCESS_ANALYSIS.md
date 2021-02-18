@@ -130,4 +130,107 @@ dragon 		image.cfg		 sys_partition.fex
 ```
 
 ## Analysis of firmware components
+ 펌웨어 패키지를 구성하는 파일에 대해 설명.
 
+ tools/pack/out/image.cfg 파일을 열어보면 아래와 같은 데이터를 확인할 수 있다. 
+```
+[DIR_DEF]
+INPUT_DIR = "../"
+
+;(eng) document list
+[FILELIST]
+;(eng) maintype and subtype cannot be changed 
+    ;-------------------------------��������---------------------------------------;
+	;(eng)Public section
+
+	;(eng) consistent
+    {filename = "sys_config.fex",   maintype = ITEM_COMMON,       subtype = "SYS_CONFIG100000",},
+    {filename = "config.fex",       maintype = ITEM_COMMON,       subtype = "SYS_CONFIG_BIN00",},
+    {filename = "split_xxxx.fex",   maintype = ITEM_COMMON,       subtype = "SPLIT_0000000000",},
+    {filename = "sys_partition.fex",maintype = ITEM_COMMON,       subtype = "SYS_CONFIG000000",},
+    {filename = "sunxi.fex",        maintype = ITEM_COMMON,       subtype = "DTB_CONFIG000000",},
+
+	;(eng) boot file
+    {filename = "boot0_nand.fex",   maintype = ITEM_BOOT,         subtype = "BOOT0_0000000000",},
+    {filename = "boot0_sdcard.fex", maintype = "12345678",        subtype = "1234567890BOOT_0",},
+    {filename = "u-boot.fex",   	maintype = "12345678",        subtype = "UBOOT_0000000000",},
+    {filename = "toc1.fex",     	maintype = "12345678",        subtype = "TOC1_00000000000",},
+    {filename = "toc0.fex",     	maintype = "12345678",        subtype = "TOC0_00000000000",},
+    {filename = "fes1.fex",         maintype = ITEM_FES,          subtype = "FES_1-0000000000",},
+    {filename = "boot_package.fex", maintype = "12345678",        subtype = "BOOTPKG-00000000",},
+
+	;(eng) USB mass production part
+    ;-->tools�ļ�
+	;(eng) tools file
+    {filename = "usbtool.fex",      maintype = "PXTOOLSB",        subtype = "xxxxxxxxxxxxxxxx",},
+    {filename = "aultools.fex",     maintype = "UPFLYTLS",        subtype = "xxxxxxxxxxxxxxxx",},
+    {filename = "aultls32.fex",     maintype = "UPFLTL32",        subtype = "xxxxxxxxxxxxxxxx",},
+
+	;(eng) Card mass production part
+	;(eng) Fixed PC usage
+    {filename = "cardtool.fex",     maintype = "12345678",        subtype = "1234567890cardtl",},
+    {filename = "cardscript.fex",   maintype = "12345678",        subtype = "1234567890script",},
+
+	;(eng) First that need to be burned to the card
+    {filename = "sunxi_mbr.fex",       maintype = "12345678",        subtype = "1234567890___MBR",},
+    {filename = "dlinfo.fex",          maintype = "12345678",        subtype = "1234567890DLINFO",},
+    {filename = "arisc.fex",           maintype = "12345678",        subtype = "1234567890ARISC" ,},
+	;(eng) Other
+
+;(eng) maintype and subtype cannot be changed
+
+;(eng) Mirror configuration information
+[IMAGE_CFG]
+version = 0x100234                ;-->Image�İ汾 	;(eng) Image version
+pid = 0x00001234                  ;-->��ƷID			;(eng) Product ID
+vid = 0x00008743                  ;-->��Ӧ��ID		;(eng) Vendor ID
+hardwareid = 0x100                ;-->Ӳ��ID bootrom	;(eng) Hardware ID bootrom
+firmwareid = 0x100                ;-->�̼�ID bootrom	;(eng) Firmware ID bootrom
+bootromconfig = "bootrom_071203_00001234.cfg"
+rootfsconfig = "rootfs.cfg"
+;;imagename = "ePDKv100_nand.img"
+filelist = FILELIST
+;imagename = ..\sun4i_test_evb.img
+encrypt = 0		;-->�������Ҫ���ܽ���������Ϊ0	����������Ϊ1	;(eng) If encryption is not required, set this to 0, otherwise set to 1 
+
+imagename = RICHGOLD_sun8iw11p1_androidm_a40-p1_uart0_none_v0-0.img
+```
+
+Custom으로 파일을 추가해야 하는 경우, 필요한 파일의 Type을 지정하여 script파일 작성 가능하다.
+ * filename : package file
+ * maintype : package format
+ * subtype : custom name (최대 16Byte)
+> 위의 규칙에 따라 작성하고 파일의 [FILELIST] Tab에 추가하면 함께 패키징된다.
+
+아래 Table은 image.cfg 에서 각 펌웨어 멤버에 대한 설명.
+
+| name              | function                                                                                                            |
+|-------------------|---------------------------------------------------------------------------------------------------------------------|
+| sys_config.fex    | Hardware-related configuration file  리스트 정보를 갖고 있다.                                                       |
+| config.fex        | sys_config.fex에 대한 binary file.                                                                                  |
+| split_xxxx.fex    | As one of the input parameters of fsbuild, make partition mirror                                                    |
+| sys_partition.fex | 스토리지 장치에 생성될 파티션을 정의하는 파일. 파티션 갯수, 파티션 속성을 정의.                                     |
+| sunxi.fex         | device tree 구성정보.                                                                                               |
+| boot0_nand.fex    | boot0 은 타겟 장치(nand 스토리지) 의 RAM에서 실행된다.  boot0 은 RAM을 초기화하고, 스토리지에서 uboot을 로드한다.   |
+| boot0_sdcard.fex  | boot0 은 타겟 장치(sdcard 스토리지) 의 RAM에서 실행된다.  boot0 은 RAM을 초기화하고, 스토리지에서 uboot을 로드한다. |
+| u-boot.fex        | u-boot binary.                                                                                                      |
+| toc1.fex          | security boot 관련 파일.                                                                                            |
+| toc0.fex          | security boot 관련 파일.                                                                                            |
+| fes1.fex          | RAM 초기화에 사용되며 초기화 결과값을 반환함.  부팅 시, 이 코드가 가장 먼저 실행된다.                               |
+| boot_package.fex  | u-boot 코드가 압축되어 있음.                                                                                        |
+| usbtool.fex       | nor-flash 에 사용.                                                                                                  |
+| aultools.fex      | usb flashing tool. 64bit system                                                                                     |
+| aultools32.fex    | usb flashing tool. 32bit system                                                                                     |
+| cardtool.fex      | Card burning tool.                                                                                                  |
+| cardscript.fex    | Specify each partition file burned by Card.                                                                         |
+| sunxi_mbr.fex     | Partition master boot record                                                                                        |
+| dlinfo.fex        | 지정된 파티션에 다운로드 할 파일 정의.                                                                              |
+| arisc.fex         | standby, power management 등을 관리하는데 사용되는 코드.( in A40i)                                                  |
+
+ image.cfg 파일의 리스트 외에도 sys_partition.fex 의 리스트의 파일도 패키징시 포함된다. 
+
+sys_partition.fex 을 보면 다음과 같다.
+
+```
+[partition_start]
+```
