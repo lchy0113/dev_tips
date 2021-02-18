@@ -22,11 +22,11 @@ script flow
 
 Packaing script는 다음과 같은 5단계로 구분된다. 
 
-	do_prepare
-	do_ini_to_dts
-	do_common
-	do_pack_${PACK_PLATFORM}
-	do_finish
+* do_prepare
+* do_ini_to_dts
+* do_common
+* do_pack_${PACK_PLATFORM}
+* do_finish
 
 ## Analysis of each stage of packaging
 ### do_prepare
