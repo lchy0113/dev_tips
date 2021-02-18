@@ -14,13 +14,13 @@
 <hr/>
 ## Packaging script analysis.
 - script flow
-	> lichee directory에서 ./build.sh을 실행하고 컴파일이 완료되면 packaging을 실행 할 수 있다. 전체 packaging process는 아래 그림과 같다. 
-	![](./image/ALLWINNER_PACKAGING_PROCESS_ANALYSIS-1.png)
+> lichee directory에서 ./build.sh을 실행하고 컴파일이 완료되면 packaging을 실행 할 수 있다. 전체 packaging process는 아래 그림과 같다. 
+![](./image/ALLWINNER_PACKAGING_PROCESS_ANALYSIS-1.png)
 
-	> 아래 명령어로 실행.
-	```
-	./build.sh pack
-	```
+> 아래 명령어로 실행.
+```
+./build.sh pack
+```
 
 
 
