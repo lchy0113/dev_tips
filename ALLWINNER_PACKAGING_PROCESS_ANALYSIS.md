@@ -233,4 +233,120 @@ sys_partition.fex 을 보면 다음과 같다.
 
 ```
 [partition_start]
+
+;------------------------------>mmcblk0p2/nanda
+[partition]
+    name         = bootloader
+    size         = 65536
+    downloadfile = "boot-resource.fex"
+    user_type    = 0x8000
+
+;------------------------------>mmcblk0p5/nandb
+[partition]
+    name         = env
+    size         = 32768
+    downloadfile = "env.fex"
+    user_type    = 0x8000
+
+;------------------------------>mmcblk0p6/nandc
+[partition]
+    name         = boot
+    size         = 32768
+    downloadfile = "boot.fex"
+    user_type    = 0x8000
+
+;------------------------------>mmcblk0p7/nandd
+[partition]
+    name         = system
+    size = 3145728
+    downloadfile = "system.fex"
+    user_type    = 0x8000
+
+;------------------------------>mmcblk0p8/nande
+;[partition]
+;    name         = verity_block
+;    size         = 65536
+;   downloadfile = "verity_block.fex"
+;    user_type    = 0x8000
+;------------------------------>mmcblk0p9/nandf
+[partition]
+    name         = data
+    size         = 2097152
+    user_type    = 0x8000
+
+;------------------------------>mmcblk0p9/nandg
+[partition]
+    name         = misc
+    size         = 32768
+    user_type    = 0x8000
+
+;------------------------------>mmcblk0p10/nandh
+[partition]
+    name         = recovery
+    size         = 65536
+    downloadfile = "recovery.fex"
+    user_type    = 0x8000
+
+;------------------------------>mmcblk0p11/nandi
+[partition]
+    name         = cache
+    size         = 1572864
+    user_type    = 0x8000
+
+;------------------------------>nandj, store encryptable
+[partition]
+	name		= metadata
+	size		= 32768
+	user_type	= 0x8000
+;------------------------------>nandk, data image private
+[partition]
+    name         = private
+    size         = 32768
+    ro           = 0
+    user_type    = 0x8000
+
+;------------------------------>mmcblk0p13, frp
+[partition]
+    name         = frp
+    size         = 1024
+    ro           = 0
+    user_type    = 0x8000
+    keydata      = 0x8000
+
+;------------------------------>empty
+[partition]
+    name         = empty
+    size         = 31744
+    ro           = 0
+    user_type    = 0x8000
+
+;------------------------------>nandk, save android and kernel panic log
+[partition]
+    name         = alog
+    size         = 163840
+    ro           = 0
+    user_type    = 0x8000
+
+;------------------------------>nandl, UDISK
+[partition]
+    name         = UDISK
+    user_type    = 0x8100
+
 ```
+ 이 파일은 스토리지 파티션을 생성하기 위한 파일 이다. 파티션 속성에는 다음 항목이 포함된다.
+ * partition name
+ * the size of the partition
+ * downloaded files
+ * User attributes of the partition
+
+ 파일에 설명된 파티션의 속성 정보.
+ * name : 파티션 이름
+	 파티션 이름을 지정한다. 최대 16 Byte
+ * size : 파티션 크기
+	 섹터 단위로 파티션 크기를 정의
+ * downloadfile : 다운로드 파일
+	 파일의 경로는 image.cfg파일 기준 상대 경로.
+ * user_type : 파티션 사용자 속성 
+
+ 다음은 sys_partition.fex파일에 지정된 파티션의 파일을 설명.
+
