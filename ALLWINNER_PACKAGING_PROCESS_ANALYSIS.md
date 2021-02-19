@@ -1,6 +1,6 @@
 # Allwinner Packaing Process Analysis
 -----
-
+> 아래 항목으로 작성함.
 - introduction to firmware packaging.
 - Packaging script analysis.
 - Analysis of firmware components.
@@ -11,6 +11,7 @@
 ## introduction to firmware packaging.
 > firmware packaging은 compile된 bootloader, kernel, root file system을 하나의 image file에 write 하는 것을 의미.
 > 이미지를 nand, eMMC, or sd card에 flashing하여 시스템을 동작 가능케 함.
+> Allwinner lichee build 시스템의 packaing scrip 기능.
 
 <hr/>
 
@@ -28,7 +29,9 @@ Packaing script는 다음과 같은 5단계로 구분된다.
 * do_pack_${PACK_PLATFORM}
 * do_finish
 
+
 ## Analysis of each stage of packaging
+
 ### do_prepare
 
  파일을 복사하는 작업을 진행하며, tools/pack/out directory에 복사된다. 
@@ -71,11 +74,14 @@ $DTC_COMPILER -O dtb -o ${LICHEE_OUT}/sunxi.dtb \
  packaging 에 사용되는 file analysis, partition packaging 등 시스템에 관련된 parameters를 업데이트 한다.  
 
 ```
-if [ -f "${LICHEE_OUT}/sunxi.dtb" ]; then
-	cp ${LICHEE_OUT}/sunxi.dtb sunxi.fex
-	fastdtb sunxi.fex
-	update_uboot_fdt u-boot.fex sunxi.fex u-boot.fex
-fi
+busybox unix2dos sys_config.fex
+busybox unix2dos sys_partition.fex
+
+# create bin file
+script  sys_config.fex > /dev/null		# output sys_config.bin
+script  sys_partition.fex > /dev/null	# output sys_partition.bin
+
+cp -f   sys_config.bin config.fex
 
 # Those files for Nand or card0
 update_boot0 boot0_nand.fex 	sys_config.bin NAND 		> /dev/null
@@ -83,29 +89,6 @@ update_boot0 boot0_sdcard.fex   sys_config.bin SDMMC_CARD 	> /dev/null
 update_uboot u-boot.fex         sys_config.bin 				> /dev/null
 update_fes1  fes1.fex           sys_config.bin 				> /dev/null
 fsbuild      boot-resource.ini  split_xxxx.fex 				> /dev/null
-
-if [ -f boot_package.cfg ]; then
-	echo "pack boot package"
-	busybox unix2dos boot_package.cfg
-	dragonsecboot -pack boot_package.cfg
-
-	if [ $? -ne 0 ]
-	then
-		echo "dragon pack run error"
-		exit 1
-	fi
-fi
-
-# generate the u-boot env partition from config file.
-# input_config_file env.cfg 
-# output_config_bin_file env.fex
-u_boot_env_gen env.cfg env.fex > /dev/null
-
-#arisc
-if [ -f "${LICHEE_OUT}/arisc" ]; then
-	ln -sf $(get_realpath $LICHEE_OUT ./)/arisc arisc.fex
-fi
-
 ```
 
 ### do_pack_${PACK_PLATFORM}
@@ -132,10 +115,13 @@ dragon 		image.cfg		 sys_partition.fex
  /* 파일 리스트 및 파티션 정보에 따라 패키징 */
 ```
 
+<hr/>
+
 ## Analysis of firmware components
  펌웨어 패키지를 구성하는 파일에 대해 설명.
 
  tools/pack/out/image.cfg 파일을 열어보면 아래와 같은 데이터를 확인할 수 있다. 
+
 ```
 [DIR_DEF]
 INPUT_DIR = "../"
@@ -191,9 +177,7 @@ hardwareid = 0x100                ;-->Ӳ��ID bootrom	;(eng) Hardware ID boot
 firmwareid = 0x100                ;-->�̼�ID bootrom	;(eng) Firmware ID bootrom
 bootromconfig = "bootrom_071203_00001234.cfg"
 rootfsconfig = "rootfs.cfg"
-;;imagename = "ePDKv100_nand.img"
 filelist = FILELIST
-;imagename = ..\sun4i_test_evb.img
 encrypt = 0		;-->�������Ҫ���ܽ���������Ϊ0	����������Ϊ1	;(eng) If encryption is not required, set this to 0, otherwise set to 1 
 
 imagename = RICHGOLD_sun8iw11p1_androidm_a40-p1_uart0_none_v0-0.img
