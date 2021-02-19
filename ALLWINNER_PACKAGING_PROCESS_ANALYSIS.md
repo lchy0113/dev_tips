@@ -1,4 +1,4 @@
-# Allwinner Packaing Process Analysis
+# Allwinner Packaging Process Analysis
 -----
 > 아래 항목으로 작성함.
 - introduction to firmware packaging.
