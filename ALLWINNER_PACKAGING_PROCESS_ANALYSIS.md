@@ -34,9 +34,9 @@ Packaing script는 다음과 같은 5단계로 구분된다.
 
 ### do_prepare
 
- 파일을 복사하는 작업을 진행하며, tools/pack/out directory에 복사된다. 
- tools_file_list, configs_file_list, boot_resource_list, boot_file_list로 분류되어 복사된다. 
- 추구 패키징에 추가하고 싶은 항목이 있으면 추가 하면 됨. 
+파일을 복사하는 작업을 진행하며, tools/pack/out directory에 복사된다. 
+tools_file_list, configs_file_list, boot_resource_list, boot_file_list로 분류되어 복사된다. 
+추구 패키징에 추가하고 싶은 항목이 있으면 추가 하면 됨. 
 
 ```
 echo "copy tools file"
