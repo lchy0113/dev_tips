@@ -36,7 +36,7 @@ Packaing script는 다음과 같은 5단계로 구분된다.
 
 파일을 복사하는 작업을 진행하며, tools/pack/out directory에 복사된다.   
 tools_file_list, configs_file_list, boot_resource_list, boot_file_list로 분류되어 복사된다.   
-추구 패키징에 추가하고 싶은 항목이 있으면 추가 하면 됨.   
+추후 패키징에 추가하고 싶은 항목이 있으면 추가 하면 됨.   
 
 ```
 echo "copy tools file"
@@ -62,7 +62,9 @@ done
 
 ### do_ini_to_dts
  linux device tree를 설명하는 sunxi.dtb파일이 컴파일 및 생성 됨.
-> sunxi build 시스템을 분석하며, linux ver 3.10 에서 처음으로 devicetree 개념이 도입되어, devicetree의 개념을 system에 적용하기 위해 이와 같은 방법을 도입한 것으로 추측됨. allwinner사의 차기 시스템(이후 버전)에서는 devicetree 를 가공하지 않고 mainline으로 적용하여 사용하고 있는 것으로 보임. 
+> sunxi build 시스템을 분석하며, linux ver 3.10 에서 처음으로 devicetree 개념이 도입되어, devicetree의 개념을 system에 적용하기 위해 이와 같은 방법을 도입한 것으로 추측됨.
+> allwinner사의 차기 시스템(이후 버전)에서는 devicetree 를 가공하지 않고 mainline으로 적용하여 사용하고 있는 것으로 보임. 
+
 ```
 $DTC_COMPILER -O dtb -o ${LICHEE_OUT}/sunxi.dtb \
 	-b 0	\
@@ -93,8 +95,8 @@ fsbuild      boot-resource.ini  split_xxxx.fex 				> /dev/null
 ```
 
 ### do_pack_${PACK_PLATFORM}
- 시스템 플랫폼에 고유한 작업은 진행되며, 우리의 경우 Android 플랫폼에 필요한 boot.img, system.img, recovery.img 를 링크시킨다. 
- 리눅스와 같은 플랫폼의 경우, 커널 파일과 파일 시스템을 링크 시킨다.  
+시스템 플랫폼에 고유한 작업은 진행되며, 우리의 경우 Android 플랫폼에 필요한 boot.img, system.img, recovery.img 를 링크시킨다.   
+리눅스와 같은 플랫폼의 경우, 커널 파일과 파일 시스템을 링크 시킨다.   
 
 ```
 ln -sf ${AOSP_IMAGE_PATH}/boot.img		boot.fex
