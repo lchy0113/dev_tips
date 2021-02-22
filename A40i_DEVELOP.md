@@ -23,7 +23,9 @@ lichee :
 ## sunxi lichee tool Build Sequence.
 
 > build.sh 의 대략적인 코드 흐름 (bootloader, kernel, android, flash image 생성 등)을 정리 한 것이다.
-### bootloader compile.
+### bootloader 
+
+#### bootloader compile.
 > partition type : mbr
 > origin defconfig : sun8iw11p1_config
 ```
@@ -65,14 +67,19 @@ brandy/build.sh
 					+--> copy para 
 				
 ```
-### output file  
+#### output file  
 - (lichee)/tools/pack/chips/sun8iw11p1/bin/fes1_sun8iw11p1.bin
 - (lichee)/tools/pack/chips/sun8iw11p1/bin/boot0_sdcard_sun8iw11p1.bin
 - (lichee)/tools/pack/chips/sun8iw11p1/bin/u-boot-sun8iw11p1.bin
 
 > CONFIG_STORAGE_MEDIA_NAND, CONFIG_STORAGE_MEDIA_MMC, CONFIG_STORAGE_MEDIA_SPINOR config중 Target에 사용되는 config 확인. 
 
-### kernel compile.
+#### Code Review
+
+
+### kernel
+
+#### kernel compile.
 > Allwinner 사에서 제공하는 lichee  build system을 이용하여 빌드되도록 SDK가 구성되어 있음. 
 ```
 build.sh
@@ -174,7 +181,9 @@ build.sh
 
 ```
 
-## Android compile.
+### android
+
+#### Android compile.
 > Android build 과정을 정리(A40i에 귀속된 부분만 정리)
 ```
 (android)/device/softwinner/common/vendorsetup.sh
