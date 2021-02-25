@@ -240,6 +240,14 @@ __double underscores__
 
 사이즈 조절 기능은 없기 때문에 ```<img width="" height=""></img>```를 이용한다.
 
+## 2.9. 색상
+
+```
+<span style="color:red">내용</span>
+```
+기본적으로 문법에서 지원하지 않으므로, HTML 태그를 사용해야 함.
+<span style="color:red">내용</span>
+
 ****
 # 3. 마크다운 사용기
 ## 3.1. 이지윅(WSYWIG) 에디터
