@@ -250,7 +250,7 @@ __double underscores__
 
 
 ## 3.10. add a newline in a markdown table
-마크다운 태이블 내 newline이용 시, ```html <br />``` 구문을 이용한다.
+마크다운 태이블 내 newline이용 시, ```<br />``` 구문을 이용한다.
 
   
 |Something|Something else<br />that's rather long|Something else|
