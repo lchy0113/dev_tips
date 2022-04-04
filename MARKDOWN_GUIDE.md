@@ -248,6 +248,13 @@ __double underscores__
 기본적으로 문법에서 지원하지 않으므로, HTML 태그를 사용해야 함.
 <span style="color:red">내용</span>
 
+
+## 3.10. add a newline in a markdown table
+마크다운 태이블 내 newline이용 시, <br /> 구문을 이용한다.
+
+|Something|Something else<br />that's rather long|Something else|
+
+
 ****
 # 3. 마크다운 사용기
 ## 3.1. 이지윅(WSYWIG) 에디터
