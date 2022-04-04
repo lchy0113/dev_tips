@@ -149,9 +149,6 @@ static struct platform_device my_gpio_i2c = {
 
  드라이버의 probe() 함수가 호출되면 Platform_data포인터를 가져와서 필요한 나머지 정보를 얻는데 사용할 수 있다. 
 
-```
-
-
 
 ---
 
