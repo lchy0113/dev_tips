@@ -70,6 +70,14 @@ unsigned char logo_intro_lk_bmp[] = {
 
 - gimp application 을 사용하여 ppm format 으로 export후, 커널에 등록하여 사용한다.
 
+### boot logo
+- A popular feature offered by the frame buffer subsystem is the boot logo. To display a logo, enable CONFIG_LOGO during kernel configuration and select an available logo. You may also add a custom logo image in the drivers/video/logo/ directory.
+- CLUT224 is a commonly used boot logo image format that supports 224 colors. The working of this format is similar to pseudo palettes described in the section "Color Modes." A CLUT224 image is a C file containing two structures:
+  * A CLUT (Color Look Up Table), which is a character array of 224 RGB tuples (thus having a size of 224*3 bytes). Each 3-byte CLUT element is a combination of red, green, and blue colors.
+  * A data array whose each byte is an index into the CLUT. The indices start at 32 and extend until 255 (thus supporting 224 colors). Index 32 refers to the first element in the CLUT. The logo manipulation code (in drivers/video/fbmem.c) creates frame buffer pixel data from the CLUT tuple corresponding to each index in the data array. Image display is accomplished using the low-level frame buffer driver's fb_imageblit() method, as indicated in the section "Accelerated Methods."
+- Other supported logo formats are the 16-color vga16 and the black-and-white mono. Scripts are available in the top-level scripts/ directory to convert standard Portable Pixel Map (PPM) files to the supported logo formats.
+- If the frame buffer device is also the console, boot messages scroll under the logo. You may prefer to disable console messages on production-level systems (by adding console=/dev/null to the kernel command line) and display a customer-supplied CLUT224 "splash screen" image as the boot logo.
+	reference : http://www.embeddedlinux.org.cn/essentiallinuxdevicedrivers/final/ch12lev1sec6.html
 
 ## bootanimation
 - bootanimation 은 스틸이미지를 반복적으로 출력하여 노출 시킨다. 
