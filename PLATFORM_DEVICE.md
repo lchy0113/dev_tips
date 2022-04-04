@@ -153,6 +153,6 @@ static struct platform_device my_gpio_i2c = {
 ---
 
 * reference :
- https://makersweb.net/embedded/17478
- https://lwn.net/Articles/448499/
+ - https://makersweb.net/embedded/17478
+ - https://lwn.net/Articles/448499/
 
