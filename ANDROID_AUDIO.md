@@ -44,6 +44,7 @@ crw-rw----  1 system audio 116,  33 2014-05-25 17:25 timer
  - http://alsa.opensrc.org/index.php/Asynchronous_Playback_(Howto)
 
 
+<hr/>
 
 
 
