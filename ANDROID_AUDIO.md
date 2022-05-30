@@ -48,7 +48,7 @@ crw-rw----  1 system audio 116,  33 2014-05-25 17:25 timer
 
 ## Android Sound Subsystem 구조
  Android sound subsystem의 class구조와 흐름은 다음과 같습니다.
-![](.image/ANDROID_AUDIO-02.png)
+![](./image/ANDROID_AUDIO-02.png)
 
 
 ### Android Sound HAL
