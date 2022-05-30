@@ -53,14 +53,34 @@ crw-rw----  1 system audio 116,  33 2014-05-25 17:25 timer
 
 
 ### Android Sound HAL
+ Android Sound system은 다른 서브 시스템과 마찬가지 2가지 구조로 이루어져 있습니다.
+ 1) Audio service : service
+ 2) Audio user : client 
 
 ### Android Audio Service(server 구성)
+ audio service를 구성하는 부분은 audioflinger입니다. 이 audio service는 init process가 실행되면서 init.rc의 내용에 따라 mediaserver를 구동시킵니다. 
+ mediaserver는 데몬(daemon) 프로세서로 항상 동작대기 상태에 있으며, client의 요청에 따라 특정 동작에 대한 요청을 받아들이고, 
+ HAL을 통해서 이를 실행하는 역할을 합니다.
 
 ### Android Audio User(client 구성)
+ audio client는 JAVA에서의 응용프로그램이 실행되거나 할때 생성됩니다.
+ sound play의 경우는 AudioTrack class를 생성해서 audioflinger쪽에 서비스를 요청하게 됩니다. 
+ sound record의 경우에는 Audio Record class를 생성해서 audioflinger쪽에 서비스를 요청하게 됩니다.
+ 실제로 모든 서비스의 실행 및 동작은 서버 쪽에서 이루어집니다.
 
 ### Android Sound System 초기화
+ Android Sound System의 초기화는 init process가 init.rc의 내용을 실행시킬 때, mediaserver가 실행되고, 
+ AudioFlinger가 초기화 되면서 시작됩니다. 
+ 시스템의 init과정에서 AudioFlinger가 생성이 될때, AudioHardwareInterface가 초기화 됩니다.
+ 이 AudioHardwareInterface는 Android Audio Device의 Hardware Abstraction Layer라고 얘기 할 수 있습니다.
 
 ### 초기화 후, Routing 설정
+ AudioFlinger system 초기화 시, 하드웨어 초기화가 끝나면 Audio System의 Routing에 대한 정보를 설정하게 됩니다.
+  * 출력 : 스피커 혹은 헤드셋, bluetooth등.
+  * 입력 : 마이크 혹은 line-in 등.
+ Audio system의 기반이 되는 HAL을 제어하는 AudioFlinger는 다음과 같이 mediaserver daemon이 시작되면서 시작합니다.
+
+
 
 
 
