@@ -26,6 +26,32 @@ crw-rw----  1 system audio 116,  33 2014-05-25 17:25 timer
  리눅스 커널 소스의 sound/soc/* 에 존재하며, 전체 구조 중 SoC에 해당하는 부분의 architecture부분이 분리되어 있습니다.
 
 ![](./image/ANDROID_AUDIO-01.png)
+
+
+## ALSA 시스템의 주요 기능
+ - control interface : 가능한 장치들을 체크하고, 사운드 카드의 레지스터를 관리하기 위한 일반적인 목적(general-purpose)을 위한 기능.
+ - pcm interface : 일반적인 디지털 오디오 어플리케이션이 이용하는 디지털 오디오 캡쳐와 출력을 위한 인터페이스.
+ - raw midi interface : 전자 음악 장비의 표준인 midi(musical instrument digital interface) 지원. api는 사운드 카드의 midi 버스로 접근을 제공. midi 이벤트와 직접 동작하고 프로그래머는 프로토콜과 타이밍에 대한 관리. 
+ - time interface : 사운드 이벤트의 동기화에 사용되는 사운드 카드의 하드웨어 타이밍의 접근 제공.
+ - sequencer interface : midi 프로그래밍을 위한 고수준 인터페이스로 보다 많은 midi 프로토콜과 타이밍을 관리.
+ - mixer interface : 사운드 볼륨의 제어와 입력 시그널의 선택과 사운드 카드의 장비 제어. 컨트롤 인터페이스의 제일 위에 위치.
+
+
+## ALSA API
+ 응용 프로그램에서 ALSA는 ALSA lib에서 제공하는 API를 이용하여 접근하도록 기능을 제공하고 있습니다. ALSA 라이브러리 API를 기술한 링크는 다음과 같습니다.
+ - http://www.alsa-project.org/alsa-doc/alsa-lib/
+ - http://www.alsa-project.org/~tiwai/alsa-driver-api/index.html
+ - http://alsa.opensrc.org/index.php/Asynchronous_Playback_(Howto)
+
+
+
+
+
+
+
+
+
+
 ```bash
 
 frameworks/av/media/mediaserver/mediaserver.rc
