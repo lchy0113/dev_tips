@@ -199,6 +199,9 @@ frameworks/av/media/mediaserver/mediaserver.rc
 
 <hr/>
 
+ - reference 
+   * https://programmer.ink/think/qualcomm-8155-audio-data-from-hal-to-dsp.html
+
  - audio sample
  오디오 샘플링 속도는 녹음 장비가 단위 시간당 얼마나 많은 아날로그 신호를 샘플링하는지를 말하며 샘플링 주파수가 높을수록 기계적 파동 의 파형이 더 사실적이고 자연스럽습니다 . 오늘날의 주류 캡처 카드에서 샘플링 주파수는 일반적으로 11025Hz, 22050Hz, 24000Hz, 44100Hz 및 48000Hz의 5가지 레벨로 나뉩니다.11025Hz는 AM 방송의 음질을 달성할 수 있고 22050Hz 및 24000Hz는 FM 방송을 달성할 수 있습니다. 44100Hz는 CD 음질의 이론적인 한계이며 48000Hz가 더 정확합니다.
 
