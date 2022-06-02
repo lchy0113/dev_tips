@@ -87,7 +87,19 @@ crw-rw----  1 system audio 116,  33 2014-05-25 17:25 timer
 <hr/>
 
 ## ANDROID AUDIO SYSTEM ANALYSIS
+- kernen, linux alsa architecture : 
+	kernel-3.14/sound/soc/tcc/
+	kernel-3.14/Documentation/sound/alsa/soc/
+- android upper alsa interface :
+	external/tinyalsa/
+- hal :
+	hardware/telechips/common/audio/
+- android audio flinger :
+	frameworks/av/services/audioflinger/
 
+tinyalsa는 Android 4.0 에 AOSP코드에 포함되었으며, alsa 커널을 기반으로 하는 user-level audio interface 입니다. Android 4.0 이전에는 alsa-lib 가 사용되었습니다. Google이 tinyalsa를 출시한 이유는 alsa가 GPL 라이선스를 사용하기 때문일 수도 있고, alsa-lib의 라이브러리가 너무 복잡하고 번거롭기 때문일 수도 있습니다. 
+tinyalsa의 main header file 과 data structre 는 아래 이미지와 같으며,  kernel alsa 와 ioctl을 통해 동작합니다.
+![class tinyalsa](./image/ANDROID_AUDIO-03.png)
 
 
 <br />
