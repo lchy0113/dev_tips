@@ -79,16 +79,20 @@
 
  - codec driver : Audio Codec 내 Control을 제어한다. 
 	: DAC 또는 AMP를 device에 붙이게 된다면 vendor사에서 기본적으로 제공하는 driver입니다. 또한 sound/soc/codecs directory에도 있으니 참조하면 됩니다.
-	: 말 그대로 codec의 특성 및 운영 방법에 대한 명세입니다.
+	: 말 그대로 codec의 특성 및 운영 방법에 대한 명세입니다. (regmap을 사용합니다.)
+	: Codec DAI 를 설정합니다.
+	: mixer와 오디오를 컨트롤합니다.(Documentation/sound/alsa/soc/codec.txt 73Line) 
 	: ex) sound/soc/codecs/ak7755.c
 	![](./image/ALSA-04.png)
 
  - platform driver : SoC 내 DMA 및 DAI를 제어
 	: stream 제어와 관련된 사항들을 설정하는 부분입니다. raw data, pcm이나 compress data(mp3등)을 출력하기 위해서는 buffer를 control해주어야 하는데, 이와 관련된 부분이 platform driver입니다. 
+	: platform driver 는 audio DMA drivers, SoC DAI drivers, DSP drivers 로 나눌수 있습니다. (Documentation/sound/alsa/soc/platform.txt)
 	![](./image/ALSA-05.png);
 
  - machine driver : embedded board의 audio 관련 device의 연결상태를 선언 및 제어합니다.(sound card등록)
 	: sound card를 등록하고 dai(digital audio interface)-i2s 및 codec device 관계를 설정.
+	: 즉, ASoC machine driver는 모든 구성 요소 driver(e.g. codecs driver, platform driver, component driver)를 하나로 묶는 코드입니다.
 	: 기존에 machine driver를 참고하여 개발하거나 기존 reference code를 참고하여 개발하면 됨.
 	: ex) sound/soc/tcc/tcc_board_ak7755.c
 	![](./image/ALSA-06.png);
@@ -99,9 +103,9 @@
 	![](./image/ALSA-07.png);
 
 
->A. ALSA 는 X86의 Sound Card를 위해 만들어 졌습니다.
->B. Embedded processor 용에 대응하기 위하여 ALSA System On Chip(SoC) Layer가 존재.
->C. ASoC는 다음 목표로 설계 되었다.
+> A. ALSA 는 X86의 Sound Card를 위해 만들어 졌습니다.
+> B. Embedded processor 용에 대응하기 위하여 ALSA System On Chip(SoC) Layer가 존재.
+> C. ASoC는 다음 목표로 설계 되었다.
 >
 >    1) Audio Codec Driver 독립적 및 재사용 가능 하도록 설계
 >    2) Audio Codec 과 I2S 및 PCM Audio interfac의 연결을 쉽도록 설계
