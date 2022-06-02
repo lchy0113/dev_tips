@@ -166,3 +166,23 @@ frameworks/av/media/mediaserver/mediaserver.rc
 		    writepid /dev/cpuset/foreground/tasks /dev/stune/foreground/tasks
 
 ```
+
+<br />
+
+<hr/>
+
+ - audio sample
+ 오디오 샘플링 속도는 녹음 장비가 단위 시간당 얼마나 많은 아날로그 신호를 샘플링하는지를 말하며 샘플링 주파수가 높을수록 기계적 파동 의 파형이 더 사실적이고 자연스럽습니다 . 오늘날의 주류 캡처 카드에서 샘플링 주파수는 일반적으로 11025Hz, 22050Hz, 24000Hz, 44100Hz 및 48000Hz의 5가지 레벨로 나뉩니다.11025Hz는 AM 방송의 음질을 달성할 수 있고 22050Hz 및 24000Hz는 FM 방송을 달성할 수 있습니다. 44100Hz는 CD 음질의 이론적인 한계이며 48000Hz가 더 정확합니다.
+
+   * 공통 샘플 속도
+     디지털 오디오 분야에서 일반적으로 사용되는 샘플링 속도는 다음과 같습니다.
+	 8,000Hz - 전화에서 사용되는 샘플 속도, 사람의 음성에 충분
+	 11,025Hz - AM 방송에 사용되는 샘플링 레이트
+	 22,050Hz 및 24,000Hz - FM 라디오에서 사용되는 샘플 속도
+	 32,000Hz - miniDV 디지털 비디오 캠코더용 샘플링 속도, DAT(LP 모드)
+	 44,100Hz - MPEG-1 오디오(VCD, SVCD, MP3)에서 사용되는 샘플링 속도에도 일반적으로 사용되는 오디오 CD
+	 47,250Hz - 상업용 PCM 레코더에서 사용되는 샘플 속도
+	 48,000Hz - miniDV, 디지털 TV, DVD, DAT, 영화 및 전문 오디오에서 사용되는 디지털 사운드의 샘플 속도
+	 50,000Hz - 상업용 디지털 레코더에서 사용되는 샘플 속도
+	 96,000 또는 192,000Hz - DVD-Audio, 일부 LPCM DVD 오디오 트랙, BD-ROM(Blu-ray Disc) 오디오 트랙 및 HD-DVD(High Definition DVD) 오디오 트랙에서 사용되는 샘플 속도
+	 2.8224MHz - Direct Stream Digital의 1비트 시그마-델타 변조 프로세스에서 사용하는 샘플링 속도입니다.
