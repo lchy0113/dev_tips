@@ -82,11 +82,17 @@ crw-rw----  1 system audio 116,  33 2014-05-25 17:25 timer
 
 
 
+<br />
+
+<hr/>
+
+## ANDROID AUDIO SYSTEM ANALYSIS
 
 
 
+<br />
 
-
+<hr/>
 
 ```bash
 
