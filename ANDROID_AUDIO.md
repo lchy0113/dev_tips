@@ -150,6 +150,34 @@ ctl type num name value
 1 INT 1 Mic Capture Volume 250
 ```
 
+tinyplay : playback process
+```c
+external/tinyalsa/tinyplay.c
+main()
+  + Parameter analysis
+  + play_sample()
+      + pcm_open()
+      |   + snprintf(fn, sizeof(fn), "/dev/snd/pcmC%uD%u%c", card, device,
+      |   |          flags & PCM_IN ? 'c' : 'p');
+      |   + pcm->fd = open(fn, O_RDWR|O_NONBLOCK); // Open / dev/snd equipment
+      |   | 
+      |   + ioctl(pcm->fd, SNDRV_PCM_IOCTL_HW_PARAMS, &params)
+      |   + ioctl(pcm->fd, SNDRV_PCM_IOCTL_SW_PARAMS, &sparams)
+      |
+      + do { pcm_write() } while()
+      |   + // pcm_write()
+      |   + if (!pcm->running) {
+      |   |   pcm_prepare(pcm); // ioctl(pcm->fd, SNDRV_PCM_IOCTL_PREPARE)
+      |   |   ioctl(pcm->fd, SNDRV_PCM_IOCTL_WRITEI_FRAMES, &x)
+      |   |   return 0;
+      |   | }
+      |   |
+      |   + // Write data through ioctl
+      +   + ioctl(pcm->fd, SNDRV_PCM_IOCTL_WRITEI_FRAMES, &x)
+```
+
+pcm_open(), pcm_prepare(), pcm_write() 함수는 ioctl을 통해 커널과 상호작용한다.
+
 <br />
 
 <hr/>
