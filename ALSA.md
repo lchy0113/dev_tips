@@ -624,6 +624,48 @@ ex)
  - system이 무음 : codec system clock, codec_dai bit clock 및 frame clock이 활성화 되어 있는지 확인 하십시오. 
  - 소리가 왜곡됨 : 오디오 데이터의 sampling rate 가 codec_dai frame clock 과 일치하는지 확인 하십시오.
  - 간헐적인 소리 : Codec system clock이 bit clock, frame clock과 일치하는지 확인 하십시오. 이는 sysclk와 BCLK/LRCK가 동일한 clock source로 나누어지지 않기 때문입니다.
+
+### 3.5 DAPM description
+// TODO : https://blog.csdn.net/zyuanyun/article/details/59170418?spm=1001.2014.3001.5501
+
+### 3.6 Codec register
+// TODO : https://blog.csdn.net/zyuanyun/article/details/59170418?spm=1001.2014.3001.5501
+
+## 4. Platform
+ audio platform driver는 audio data transmission에 사용되며 2가지 파트로 구분할 수 있습니다.
+ - dma device를 시작하고 dma buffer에서 cpu_dai FIFO로 audio data를 전송합니다. driver의 이부분은 snd_soc_platform_driver에 의해 동작합니다.
+ - digital audio interface control(I2S/PCM/AC97)를 시작하고 cpu_dai FIFO에서 codec_dai 로 audio data 를 전송합니다. snd_soc_dai_driver에 의해 동작합니다.
+ 
+ 그렇다면 dma 버퍼의 오디오 데이터는 어디에서 오는 것일까요? 이 문제는 이후 장 pcm 기본 분석에서 유지하십시오.
+
+
+platform_drv에서 연한 파란색 부분은 cpu_dai와 관련되고 연한 녹색 부분은 pcm_dma와 관련된 몇 가지 중요한 구조를 살펴보겠습니다.
+snd_soc_dai는 cpu_dai 등록 시 생성되는 dai 인스턴스이고 snd_soc_platform은 pcm_dma 등록 시 생성되는 플랫폼 인스턴스로 soc-core 관리에 편리합니다.
+
+ ![](./images/ALSA-13.png)
+
+// TODO : https://blog.csdn.net/zyuanyun/article/details/59170418?spm=1001.2014.3001.5501
+
+### 4.1 cpu dai
+// TODO : https://blog.csdn.net/zyuanyun/article/details/59170418?spm=1001.2014.3001.5501
+
+### 4.2 pcm dma
+// TODO : https://blog.csdn.net/zyuanyun/article/details/59170418?spm=1001.2014.3001.5501
+
+#### 4.2.1 pcm operations
+// TODO : https://blog.csdn.net/zyuanyun/article/details/59170418?spm=1001.2014.3001.5501
+
+#### 4.2.2 dma buffer allocation
+// TODO : https://blog.csdn.net/zyuanyun/article/details/59170418?spm=1001.2014.3001.5501
+
+#### 4.2.3 pcm dma register
+// TODO : https://blog.csdn.net/zyuanyun/article/details/59170418?spm=1001.2014.3001.5501
+
+## 5. Machine
+// TODO : https://blog.csdn.net/zyuanyun/article/details/59170418?spm=1001.2014.3001.5501
+
+
+
 ——————————————
 저작권 진술: 이 기사는 CSDN 블로거 "zyuanyun"의 원본 기사이며 CC 4.0 BY-SA 저작권 계약을 따릅니다. 재인쇄를 위해 원본 소스 링크와 이 진술을 첨부하십시오.
 원본 링크: https://blog.csdn.net/zyuanyun/article/details/59170418
