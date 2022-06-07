@@ -117,12 +117,36 @@ MultiMedia는 AudioTrack을 통해 decodein된 데이터를 출력하고, AudioR
 	 MediaPlay는 mp3, flac, wma, ogg, wav 등과 같은 여러 형식의 audio source를 재생할 수 있습니다.
  - AudioTrack
 	 AudioTrack는 decording된 PCM data stream 형식의 audio sources만을 출력가능합니다. 
+ 위의 Android audio system architecture diagram에서 MediaPlayer는 Native layer에 해당하는 Audio decoder를 생성합니다. AudioTrack은 native layer에 위치합니다. 그리고 decoded data는 AudioTrack에 의해 출력됩니다. 
+ MediaPlayer는 더 넓은 범위의 Application 에서 일반적으로 사용되며, sound delay 와 같은 요구사항이 필요한 scenarios에서는 AudioTrack을 사용합니다.
+
+#### 2.1 AudioTrack Java API
+ AudioTrack Java API 는 2가지 data transmission modes가 있습니다.
+
+| Transfer Mode 	| Description                                                                                                                                                                                                                                                              	|
+|---------------	|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
+| MODE_STATIC   	| 애플리케이션 프로세서는 playback data를 AudioTrack에 한번 전달하므로,   data volume 작고, 대기 시간이 긴 scenarios에 적합합니다.                                                                                                                                         	|
+| MODE_STREAM   	| user process는 FIFO에 데이터를 write하기 위해 write()를 계속 호출하여 사용해야합니다.  데이터를 write할 때, blocking  (waiting for AudioFlinger::PlaybackThread to consume the previous data)이  발생될 수 있습니다.   기본적으로 모든 audio scenarios에 적용가능합니다. 	|
+
+ AudioTrack Java API audio stream types:
+ Android 는 Audio stream volume 관리, 즉, 다른 type의 audio stream에 영향을 주지 않고 한 type의 audio strea volume  제어 와 같은 기능을 위해 다수의 audio stream을 제공합니다.
+
+ 
+
+| Stream Type         	| Description                                                    	|
+|---------------------	|----------------------------------------------------------------	|
+| STREAM_VOICE_CALL   	| Phone voice                                                    	|
+| STREAM_SYSTEM       	| System sound                                                   	|
+| STREAM_RING         	| Ringtone sounds, such as call ringtones, alarm ringtones, etc. 	|
+| STREAM_MUSIC        	| Music sound                                                    	|
+| STREAM_ALARM        	| Warning tone                                                   	|
+| STREAM_NOTIFICATION 	| Notification tone                                              	|
+| STREAM_DTMF         	| DTMF tone (dial pad touch tone)                                	|
 
 
+## 3. AudioFlinger overview
 
-위의 Android 오디오 시스템 아키텍처 다이어그램에서: MediaPlayer는 네이티브 레이어에 해당 오디오 디코더와 AudioTrack을 생성하고 디코딩된 데이터는 AudioTrack에서 출력합니다.
 
-  따라서 MediaPlayer에는 더 넓은 범위의 응용 프로그램 시나리오가 있으며 일반적으로 사용하는 것이 더 편리합니다. 매우 까다로운 사운드 지연이 필요한 일부 응용 프로그램 시나리오에만 AudioTrack이 필요합니다.
 <br />
 
 <hr/>
