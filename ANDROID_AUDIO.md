@@ -209,6 +209,7 @@ MultiMedia는 AudioTrack을 통해 decodein된 데이터를 출력하고, AudioR
 
 0 directories, 54 files
 ```
+
 Android 2.2-Froyo 버전의 AudioFlinger는 오직 3 개의 소스파일(AudioFlinger.cpp, AudioMixer.cpp, AudioResampler.cpp)만 존재했습니다. 현재 코드는 더 많아지고 복잡해졌지만 기본 동작 순서는 변하지 않았습니다. 구글은 Threads.cpp, Tracks.cpp, Effects.cpp, AudioFlinger.cpp와 같은 카테고리로 모듈화 했습니다. 
 service interface 또한 teesink, Offload, FastMixer, FastCapture, FastThread, PatchPanel, etc 과 같이 이전보다 더 많은 기능이 추가되었습니다.
 
@@ -223,8 +224,88 @@ service interface 또한 teesink, Offload, FastMixer, FastCapture, FastThread, P
 	 재생 스레드 및 녹음 스레드 클래스; 재생 스레드는 FIFO에서 재생 데이터를 읽고 혼합한 다음 데이터를 출력 스트림 장치에 씁니다. 녹음 스레드는 입력 스트림 장치에서 녹음 데이터를 읽고 다시 샘플링한 다음 데이터를 FIFO에 씁니다.
  - AudioFlinger.cpp : AudioFlinger의 Service interface로 제공됩니다.
 
+### 3.2 AudioFlinger service start
+system이 시작될 때, AudioFlinger는 audioserver에 의해 load됩니다. (이전 버전은 mediaserver에 의해 load 됩니다.)
+(frameworks/av/media/audioserver/main_audioserver.cpp
+```cpp
+
+45 int main(int argc __unused, char **argv)
+46 
+(...)
+131         sp<ProcessState> proc(ProcessState::self());
+132         sp<IServiceManager> sm = defaultServiceManager();
+133         ALOGI("ServiceManager: %p", sm.get());
+134         AudioFlinger::instantiate();
+135         AudioPolicyService::instantiate();
+136
+```
+audioserver는 audio관련 서비스를 모두 load합니다. (AudioFlinger, AudioPolicyService, RadioService, SoundTriggerHwService)
+
+main_audioserver.cpp에 의해 컴파일된 실행 파일은 /system/bin/audioserver에 저장되며, 시스템 시작 시 init 프로세스에 의해 실행됩니다.
+자세한 내용은 frameworks/av/media/audioserver/audioserver.rc를 참조하세요.
+
+```
+1 service audioserver /system/bin/audioserver
+2     class main
+3     user audioserver
+4     # media gid needed for /dev/fm (radio) and for /data/misc/media (tee)
+5     group audio camera drmrpc inet media mediadrm net_bt net_bt_admin net_bw_acct
+6     ioprio rt 4
+7     writepid /dev/cpuset/foreground/tasks /dev/stune/foreground/tasks
+8     onrestart restart audio-hal-2-0
+9
+10 on property:vts.native_server.on=1
+11     stop audioserver
+12 on property:vts.native_server.on=0
+13     start audioserver
+```
+
+AudioFlinger 서비스가 시작된 후 다른 프로세스는 ServiceManager를 통해 Proxy object IAudioFlinger를 얻을 수 있t습니다.
+IAudioFlinger를 통해 다양한 서비스 요청을 AudioFlinger로 보내 own audio service를 완료할 수 있습니다.
 
 
+### 3.3 AudioFlinger service interface
+AudioFlinger는 아래 main service interface를 제공합니다.
+
+| **Interface**   	| **Description**                                                                                                                                                                                       	|
+|-----------------	|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
+| sampleRate      	| Get the sampling rate of the hardware device                                                                                                                                                          	|
+| format          	| Get the audio format of the hardware device                                                                                                                                                           	|
+| frameCount      	| Get the periodic frame number of the hardware device                                                                                                                                                  	|
+| latency         	| Get the transmission delay of the hardware device                                                                                                                                                     	|
+| setMasterVolume 	| Adjust the volume of the main output device                                                                                                                                                           	|
+| setMasterMute   	| Mute the main output device                                                                                                                                                                           	|
+| setStreamVolume 	| Adjust the volume of the specified type of audio stream, this adjustment does not affect the volume of other types of audio streams                                                                   	|
+| setStreamMute   	| Mute the specified type of audio stream                                                                                                                                                               	|
+| setVoiceVolume  	| Adjust call volume                                                                                                                                                                                    	|
+| setMicMute      	| Mute microphone input                                                                                                                                                                                 	|
+| setMode         	| Switch audio mode: There are 4 audio modes, namely Normal, Ringtone, Call, Communicatoin                                                                                                              	|
+| setParameters   	| Set audio parameters: call down the corresponding interface of the HAL layer, often used to switch audio channels                                                                                     	|
+| getParameters   	| Obtain audio parameters: call down the corresponding interface of the HAL layer                                                                                                                       	|
+| openOutput      	| Open the output stream: open the output stream device and create a PlaybackThread object                                                                                                              	|
+| closeOutput     	| Close the output stream: remove and destroy all the tracks hanging on the PlaybackThread, exit the PlaybackThread, close the output stream device                                                     	|
+| openInput       	| Open the input stream: open the input stream device, and create a RecordThread object                                                                                                                 	|
+| closeInput      	| Close the input stream: exit RecordThread, close the input stream device                                                                                                                              	|
+| createTrack     	| Create a new output stream management object: Find the corresponding PlaybackThread, create an output stream management object Track, and then create and return the track's proxy object TrackHandle 	|
+| openRecord      	| Create a new input stream management object: find RecordThread, create an input stream management object RecordTrack, and then create and return the RecordHandle proxy object of the RecordTrack     	|
+|                 	|                                                                                                                                                                                                       	|
+|                 	|                                                                                                                                                                                                       	|
+
+ AudioFlinger가 제공하는 주요 servier 는  아래와 같습니다.
+ - hardware device 설정 정보
+ - volume 제어
+ - 음소거
+ - audio mode 전환
+ - audio parameter 세팅
+ - input, output stream device 관리
+ - audio stream 관리
+
+### 3.4 AudioFlinger playback recording thread
+ Android의 Audio system engine인 AudioFlinger는 input, output stream device의 관리와 audio stream data 처리 및 전송을 담당합니다.  
+ 이 기능은 playback thread(PlaybackThread and its derived subclasses) 와 recording thread(RecordThread)에 의해 수행됩니다. 
+
+ // TODO: ...
+ - reference :https://blog.actorsfit.com/a?ID=00500-9a9a688e-9f70-46d9-976a-a1e307e69c8b
 <br />
 
 <hr/>
