@@ -145,6 +145,84 @@ MultiMedia는 AudioTrack을 통해 decodein된 데이터를 출력하고, AudioR
 
 
 ## 3. AudioFlinger overview
+ AudioPolicyService 와 AudioFlinger 는 Android audio system의 2가지 기본 서비스 입니다. 
+ AudioPolicyService는 Audio system strategy를 생성하며, audio device 전환 및 볼륨 제어, 등의 제어를 담당합니다. 
+ AudioFlinger는 audio stream device 관리와 audio stream data 처리 및 전송을 담당합니다. AudioFlinger는 Android audio system의 engine으로 생각하기도 합니다.
+
+### 3.1 AudioFlinger code file structre
+```bash
+./frameworks/av/services/audioflinger/
+├── Android.mk
+├── AudioFlinger.cpp
+├── AudioFlinger.h
+├── AudioHwDevice.cpp
+├── AudioHwDevice.h
+├── AudioStreamOut.cpp
+├── AudioStreamOut.h
+├── AudioWatchdog.cpp
+├── AudioWatchdog.h
+├── AutoPark.h
+├── BufLog.cpp
+├── BufLog.h
+├── Configuration.h
+├── Effects.cpp
+├── Effects.h
+├── FastCapture.cpp
+├── FastCaptureDumpState.cpp
+├── FastCaptureDumpState.h
+├── FastCapture.h
+├── FastCaptureState.cpp
+├── FastCaptureState.h
+├── FastMixer.cpp
+├── FastMixerDumpState.cpp
+├── FastMixerDumpState.h
+├── FastMixer.h
+├── FastMixerState.cpp
+├── FastMixerState.h
+├── FastThread.cpp
+├── FastThreadDumpState.cpp
+├── FastThreadDumpState.h
+├── FastThread.h
+├── FastThreadState.cpp
+├── FastThreadState.h
+├── MmapTracks.h
+├── MODULE_LICENSE_APACHE2
+├── NOTICE
+├── OWNERS
+├── PatchPanel.cpp
+├── PatchPanel.h
+├── PlaybackTracks.h
+├── RecordTracks.h
+├── ServiceUtilities.cpp
+├── ServiceUtilities.h
+├── SpdifStreamOut.cpp
+├── SpdifStreamOut.h
+├── StateQueue.cpp
+├── StateQueue.h
+├── StateQueueInstantiations.cpp
+├── Threads.cpp
+├── Threads.h
+├── TrackBase.h
+├── Tracks.cpp
+├── TypedLogger.cpp
+└── TypedLogger.h
+
+0 directories, 54 files
+```
+Android 2.2-Froyo 버전의 AudioFlinger는 오직 3 개의 소스파일(AudioFlinger.cpp, AudioMixer.cpp, AudioResampler.cpp)만 존재했습니다. 현재 코드는 더 많아지고 복잡해졌지만 기본 동작 순서는 변하지 않았습니다. 구글은 Threads.cpp, Tracks.cpp, Effects.cpp, AudioFlinger.cpp와 같은 카테고리로 모듈화 했습니다. 
+service interface 또한 teesink, Offload, FastMixer, FastCapture, FastThread, PatchPanel, etc 과 같이 이전보다 더 많은 기능이 추가되었습니다.
+
+ - AudioResampler.cpp : Resampling processing class.     sample rate 변환 및 Channel 변환 기능을 수행합니다.   AudioFlinger::RecordThread에서 사용합니다.
+ - AudioMixer.cpp : Audio mixing processing class.     resampling, volume 제어, channel 변환 등. resampling은 AudioResampler로 다중화 됩니다. playback thread AudioFlinger::MixerThread에서 직접 사용합니다.
+ - Effects.cpp : Sound effect processing class
+ - Tracks.cpp : Audio stream management class.     audio stream의 상태(start, stop, pause)를 제어합니다. 
+ - Threads.cpp : 
+   playback thread 와 recording thrad class.   playback thread는 FIFO에서 playback data를 read 후, mix 합니다. 이후 data를 output stream device 로 write 합니다.
+   recording thread 는 input stream device 에서 recording data를 read 후, resamples 합니다. 이후 FIFO에 data를 write합니다.
+
+	 재생 스레드 및 녹음 스레드 클래스; 재생 스레드는 FIFO에서 재생 데이터를 읽고 혼합한 다음 데이터를 출력 스트림 장치에 씁니다. 녹음 스레드는 입력 스트림 장치에서 녹음 데이터를 읽고 다시 샘플링한 다음 데이터를 FIFO에 씁니다.
+ - AudioFlinger.cpp : AudioFlinger의 Service interface로 제공됩니다.
+
 
 
 <br />
