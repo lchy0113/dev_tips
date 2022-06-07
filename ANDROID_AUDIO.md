@@ -101,26 +101,26 @@ tinyalsa는 Android 4.0 에 AOSP코드에 포함되었으며, alsa 커널을 기
 tinyalsa의 main header file 과 data structre 는 아래 이미지와 같으며,  kernel alsa 와 ioctl을 통해 동작합니다.
 ![class tinyalsa](./image/ANDROID_AUDIO-03.png)
 
-pcm device 는 tinyalsa에 의해 code를 읽고, Android에서 오디오 장치 노드로 보여집니다. 
-Android에서 pcm device는 최대 하나의 mixer device 를 가질 수 있습니다. 
-	/dev/snd/controlC%u" (usually controlC0)
-	/dev/snd_pcmC%uD%uc  (usually pcmC0D0c)
-	/dev/snd/pcmC%uD%u%p (usually pcmC0D0p)
-pcm device에서 C 의미는 Card, D 의미는 Device, c 의미는 Capture, p 의미는 playback을 나타냅니다. 
-PCM sound card가 추가되면  C의 값은 +1 증가되며, 그 외의 값은 변화되지 않습니다. 
-pcmC1D0c,   pcmC1D0p
-
-tinyalsa가 제공하는 external header파일은 "asoundlib.h"로써 기본적인 pcm 및 mixer 기능을 제공합니다.
-기능 구현 파일은 pcm.c(pcm api 구현)와 mixer.c(mixer api 구현) 입니다. soundlib.h 의 정보를 보면 tinypcminfo, tinyplay, tinycap, tinymix 함수가 작성되었습니다.
- 이 4가지 기능은 system 명령으로 편리하게 동작됩니다.
-
- tinypcminfo 는 tinypcminfo.c에서 구현되었습니다.
- tinyplay 는 tinyplay.c 에서 구현되었습니다.
- tinycap 은 tinycap.c 에서 구현되었습니다. 
- tinymix 는 tinymix.c에서 구현되었습니다.
-
- 이러한 명령어가 실행될때, tinypcminfo가 먼저 pcm device의 capabilities를 체크합니다.
-
+pcm device 는 tinyalsa에 의해 code를 읽고, Android에서 오디오 장치 노드로 보여집니다.   
+Android에서 pcm device는 최대 하나의 mixer device 를 가질 수 있습니다.   
+	/dev/snd/controlC%u" (usually controlC0)  
+	/dev/snd_pcmC%uD%uc  (usually pcmC0D0c)  
+	/dev/snd/pcmC%uD%u%p (usually pcmC0D0p)  
+pcm device에서 C 의미는 Card, D 의미는 Device, c 의미는 Capture, p 의미는 playback을 나타냅니다.   
+PCM sound card가 추가되면  C의 값은 +1 증가되며, 그 외의 값은 변화되지 않습니다.   
+pcmC1D0c,   pcmC1D0p  
+  
+tinyalsa가 제공하는 external header파일은 "asoundlib.h"로써 기본적인 pcm 및 mixer 기능을 제공합니다.  
+기능 구현 파일은 pcm.c(pcm api 구현)와 mixer.c(mixer api 구현) 입니다. soundlib.h 의 정보를 보면 tinypcminfo, tinyplay, tinycap, tinymix 함수가 작성되었습니다.  
+ 이 4가지 기능은 system 명령으로 편리하게 동작됩니다.  
+  
+ tinypcminfo 는 tinypcminfo.c에서 구현되었습니다.  
+ tinyplay 는 tinyplay.c 에서 구현되었습니다.  
+ tinycap 은 tinycap.c 에서 구현되었습니다.   
+ tinymix 는 tinymix.c에서 구현되었습니다.  
+  
+ 이러한 명령어가 실행될때, tinypcminfo가 먼저 pcm device의 capabilities를 체크합니다.  
+  
 mixer 를 이용한 제어
 ```bash
 //Original state
