@@ -80,8 +80,49 @@ crw-rw----  1 system audio 116,  33 2014-05-25 17:25 timer
   * 입력 : 마이크 혹은 line-in 등.
  Audio system의 기반이 되는 HAL을 제어하는 AudioFlinger는 다음과 같이 mediaserver daemon이 시작되면서 시작합니다.
 
+<br />
+
+<hr/> 
+
+## Android audio system : from AudioTrack to AudioFlinger
+
+### 1.  Overview of Android Audio Framework 
+> Android 7.0-Nougat
+
+![](./image/ANDROID_AUDIO-04.png)
+
+ 오디오는 Android platform 내에서 매우 중요한 부분  입니다. 오디오 데이터 input & output, audio stream 제어, audio device 관리, volume 조정, 등을 담당합니다. 
+
+- Audio Application Framework  
+  * AudioTrack : Android 애플리케이션 프레임워크 API에서 data playback 기능 담당.
+  * AudioRecord : Android 애플리케이션 프레임워크 API에서 recording data 기능 담당.
+  * AudioSystem : Android 애플리케이션 프레임워크 API에서 audio affairs(기능)에 대한 종합적인 관리 담당.
+- Audio Native Framework : Audio Native Framework 
+  * AudioTrack : Android native framework API에서 data playback 기능 담당.
+  * AudioRecord : Android native framework API에서 recording data 기능 담당.
+  * AudioSystem : Android native framework API에서 audio 기능에 대한 종합적인 관리 담당.
+- Audio Service
+  * AudioPolicyService : The maker of audio policy,    audio 장치 선택 및 전환, 볼륨 제어 정책 등 담당.
+  * AudioFlinger : The executor of the audio strategy,     input 및 output stream 장치 관리와 audio stream data 처리 및 전송 담당.
+- Audio HAL : Audio 장치 HAL,    AudioFlinger에서 Audio hardware devices를 호출 할 수 있도록 기능 담당
+
+Audio는 MultiMedia와 밀접한 관련이 있습니다. MultiMedia는 Audio 및 Vide의 encoding 및 decoding을 담당합니다. 
+MultiMedia는 AudioTrack을 통해 decodein된 데이터를 출력하고, AudioRecord에서 입력된 recording data는 MultiMedia로 encoding됩니다.
 
 
+### 2. AudioTrack API Overview
+ sound를 재생하려면 MediaPlayer & AudioTrack을 사용합니다. 둘 다 Application developers을 위한 Java API를 통해 제공합니다. 
+ 둘의 차이점은 아래와 같습니다.
+ - MediaPlayer 
+	 MediaPlay는 mp3, flac, wma, ogg, wav 등과 같은 여러 형식의 audio source를 재생할 수 있습니다.
+ - AudioTrack
+	 AudioTrack는 decording된 PCM data stream 형식의 audio sources만을 출력가능합니다. 
+
+
+
+위의 Android 오디오 시스템 아키텍처 다이어그램에서: MediaPlayer는 네이티브 레이어에 해당 오디오 디코더와 AudioTrack을 생성하고 디코딩된 데이터는 AudioTrack에서 출력합니다.
+
+  따라서 MediaPlayer에는 더 넓은 범위의 응용 프로그램 시나리오가 있으며 일반적으로 사용하는 것이 더 편리합니다. 매우 까다로운 사운드 지연이 필요한 일부 응용 프로그램 시나리오에만 AudioTrack이 필요합니다.
 <br />
 
 <hr/>
