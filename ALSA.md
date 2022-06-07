@@ -121,3 +121,48 @@
  - 붉은색 Diagram은 embedded system에서 sound를 출력하는 형태.
  - 파란색 Diagram은 Android platform에서 sound를 출력하는 형태.
 	 ![](./image/ALSA-08.png)
+
+<hr/>
+
+# ALSA audio system
+
+## 1. Overview
+ 사용 버전 : 
+ - kernel : 3.18.24
+ - SoC : Telechips series
+ - CODEC : cx20703, ak7755
+ - userspace : tinyalsa
+	
+ Linux ALSA audio system Architecture 는 아래와 같습니다. 
+
+```bash
+			+--------+  +--------+  +--------+
+			|tinyplay|  |tinycap |  |tinymix |
+			+--------+  +--------+  +--------+
+				 |           ^           ^
+				 V           |           V
+			+--------------------------------+
+			|        ALSA Library API        |
+			|      (tinyalsa, alsa-lib)      |
+			+--------------------------------+
+user space                   ^
+-----------------------------|--------------------
+kernel space 
+			+--------------------------------+
+			|             ALSA CORE          |
+			| +-------+ +-------+ +-----+    |
+			| |  PCM  | |CONTROL| | MIDI|....|
+			| +-------+ +-------+ +-----+    |
+			+--------------------------------+
+                             |
+			+--------------------------------+
+			|            ASoC CORE           |
+			+--------------------------------+
+                             |
+			+--------------------------------+
+			|          hardware driver       |
+			| +-------+ +--------+ +-----+   |
+			| |Machine| |Platform| |Codec|   |
+			| +-------+ +--------+ +-----+   |
+			+--------------------------------+
+```
