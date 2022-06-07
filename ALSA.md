@@ -237,10 +237,40 @@ platform="samsung-audio"
  };
  ```
 
+ *hw constraints* : 지원되는 channel 갯수/샘플링 속도/데이터 형식, DMA에서 지원하는 data period size period 갯수, 등과 같은 플랫폼 자체의 하드웨어 spec을 나타냅니다. 
+  snd_pcm_hardware structure :
+```c
+static const struct snd_pcm_hardware dma_hardware = {
+	.info = SNDRV_PCM_INFO_INTERLEAVED |
+			SNDRV_PCM_INFO_BLOCK_TRANSFER |
+			SNDRV_PCM_INFO_MMAP |
+			SNDRV_PCM_INFO_MMAP_VALID |
+			SNDRV_PCM_INFO_PAUSE |
+			SNDRV_PCM_INFO_RESUME,
+	.format = SNDRV_PCM_FMTBIT_S16_LE |
+				SNDRV_PCM_FMTBIT_U16_LE |
+				SNDRV_PCM_FMTBIT_U8 |
+				SNDRV_PCM_FMTBIT_S8,
+	.channels_min = 2,
+	.channels_max = 2,
+	.buffer_bytes_max = 128*1024,
+	.period_bytes_min = PAGE_SIZE,
+	.period_bytes_max = PAGE_SIZE*2,
+	.period_min = 2,
+	.period_max = 128,
+	.fifo_size = 32,
+};
+```
+
+ *hw params* : channels, sample rate, pcm format, period size, period count와 같은 사용자 계층에서 설정한 하드웨어 매개변수; 이러한 매개변수는 hw 제약 조건에 의해 제한됩니다.
+ *sw params* : start threshold, stop threshold, silence threshold 과 같이 사용자 계층에서 설정한 소프트웨어 매개변수.
 
 
+ 아래 그림은 goni_wm8994 의 diagram입니다.  
+ ![](./image/ALSA-10.png)
 
-
+ 아래 그림은 ak7755 의 diagram 입니다.
+ ![](./image/ALSA-11.png)
 
 
 
