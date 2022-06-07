@@ -244,7 +244,6 @@ platform="samsung-audio"
 
 
 
-dai_link: 코덱, codec_dai, cpu_dai 및 링크에서 사용하는 플랫폼을 지정하는 머신 드라이버에 정의된 오디오 데이터 링크. 예를 들어 goni_wm8994 플랫폼의 미디어 링크: codec="wm8994-codec", codec_dai="wm8994-aif1", cpu_dai="samsung-i2s", platform="samsung-audio", 이 네 가지는 오디오 데이터 링크는 멀티미디어 사운드의 재생 및 녹음에 사용됩니다. 시스템에는 미디어 및 음성과 같은 여러 오디오 데이터 링크가 있을 수 있으므로 여러 dai_link를 정의할 수 있습니다. WM8994의 일반적인 디자인과 같이 AP<>AIF1의 "HIFI"(멀티미디어 음성 링크), BP<>AIF2의 "Voice"(통화 음성 링크) 및 BT<>AIF3(Bluetooth SCO)의 세 가지 dai_link가 있습니다. 음성 링크).
 ———————————————
 저작권 진술: 이 기사는 CSDN 블로거 "zyuanyun"의 원본 기사이며 CC 4.0 BY-SA 저작권 계약을 따릅니다. 재인쇄를 위해 원본 소스 링크와 이 진술을 첨부하십시오.
 원본 링크: https://blog.csdn.net/zyuanyun/article/details/59170418
