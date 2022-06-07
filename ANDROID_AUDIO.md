@@ -89,7 +89,7 @@ crw-rw----  1 system audio 116,  33 2014-05-25 17:25 timer
 ### 1.  Overview of Android Audio Framework 
 > Android 7.0-Nougat
 
-![](./image/ANDROID_AUDIO-04.png)
+![Android audio system architecture diagram](./image/ANDROID_AUDIO-04.png)
 
  오디오는 Android platform 내에서 매우 중요한 부분  입니다. 오디오 데이터 input & output, audio stream 제어, audio device 관리, volume 조정, 등을 담당합니다. 
 
