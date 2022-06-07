@@ -166,3 +166,44 @@ kernel space
             | +-------+ +--------+ +-----+   |
             +--------------------------------+
 ```
+
+ - Native ALSA Application : tinyplay/tinycap/tinymix, 사용자 프로그램은 alsa user space library interface를 직접 호출하여 playback, recording 및 control를 실현합니다.
+ - ALSA library API: alsa userspace library interface, 일반적으로 tinyalsa, alsa-lib
+ - ALSA CORE: alsa core layer, logical device(PCM/CTL/MIDI/TIMER/...) 시스템 호출을 상위레이어에게 제공하고 lower layer인 hardware device를 구동(Machine/I2S/DMA/CODEC)
+ - ASoC CORE: asoc은 모바일 기기에 적용되는 임베디드 시스템과 오디오 코덱을 더 잘 지원하기 위해 표준 alsa 코어를 기반으로 하는 소프트웨어 시스템입니다.
+ - Hardware Driver : machine, platform, codec의 세 부분으로 구성된 오디오 하드웨어 장치 드라이버
+
+### ALSA / ASoC 간 Hardware device 관계
+
+```bash
++--------------------------------------+
+|                Machine               |
+| +-------------+       +------------+ |
+| |   platform  |       |   Codec    | |
+| |             |  I2S  |            | |
+| |      cpu_dai|<----->|codec_dai   | |
+| |             |       |            | |
+| +-------------+       +------------+ |
++--------------------------------------+
+```
+ - platofrm : exynox, omap, qcom 등과 같은 특정 SoC  platform의 audio module을 의미 합니다. platform은 2가지 부분으로 나눌 수 있습니다.
+   + cpu dai : embedded system에서 일반적으로 i2s tx fifo에서 codec 장치로 audio data를 전송하는 역할을 하는 SoC의 I2S 및 PCM bus controller를 나타냅니다. cpu_dai는 snd_soc_register_dai()로 등록됩니다.
+	   Note : DAI는 Digital Audio Interface의 약자로 I2S/PCM bus를 통해 연결되는 cpu_dai와 codec_dai로 구분되며, AIF는 Audio Interface 의 약자로 일반적으로 임베디드 시스템에서 I2S와 PCM Interface를 의미 합니다.
+   + pcm dma : dma buffer의 audio data를 I2S tx FIFO로 이동하는 역할을 담당합니다. modem 자체가 이미 FIFO에 데이터를 전송한 다음 데이터 수신을 위해 codec_dai를 시작하기 때문에 모뎀과 코덱 간의 직접 연결과 같은 일부 경우에는 dma 작업이 필요하지 않습니다. 이 경우, machine driver인 dai_link .platform_name = "snd-soc-dummy"를 설정해야 합니다. 이것은 가상 dma driver입니다. 구현에 대해서는 sound/soc/soc-utils.c 를 참조하십시오.  오디오 dma 드라이버는 snd_soc_register_platform()을 통해서 등록되므로 platform은 일반적으로 audio dma driver를 참조하는 데에도 사용됩낟. (여기서 플랫폼은 SoC 플랫폼과 구별되어야 함.)
+ - codec : playback을 위해 userspace에서 보내는 audio data는 샘플링되고 양자화된 digital 신호이며, 코덱의 DAC에 의해 아날로그 신호로 변환된 다음 AMP나 헤드폰으로 출력되어 소리를 들을 수 있습니다. codec은 말 그대로 codec을 의미하지만 칩에 많은 기능 구성 요소가 있으며 일반적인 것은 AIF, DAC, ADC, mixer, PGA, Line input, Line output이며 일부 고급 codec 칩에는 EQ, DSP, SRC 기능도 있습니다. 
+ - machine : dai_link를 설정하여 cpu_dai, codec_dai, modem_dai의 audio interface를 audio link로 연결한 후, snd_soc-card를 등록합니다. 위의 두 가지와 달리 Platform 및 CODEC 드라이버는 일반적으로 재사용이 가능한 반면 Machine 은 고유한 하드웨어 특성이 있어 재사용이 거의 불가능 합니다. 
+
+
+머신: 특정 머신을 말하며, dai_link를 설정하여 cpu_dai, codec_dai, modem_dai의 오디오 인터페이스를 오디오 링크로 연결한 후 snd_soc_card를 등록합니다. 위의 두 가지와 달리 Platform 및 CODEC 드라이버는 일반적으로 재사용이 가능한 반면 Machine은 고유한 하드웨어 특성이 있어 재사용이 거의 불가능합니다. 소위 하드웨어 기능은 SoC 플랫폼과 코덱의 차이점, DAI 간의 연결 방식, GPIO를 통한 증폭기 켜기, GPIO를 통한 헤드폰 연결 및 분리 감지, 코덱 클럭 소스 등을 말합니다.
+
+위의 설명에서 Playback 동작에 대한 PCM 데이터 흐름은 다음과 같습니다.
+```bash
+            copy_from_user                 DMA                        I2S                  DAC
++-----------+      |     |-----------+      |     +------------+       |      +------+      |     +-------+
+| userspace +------------>DMA buffer +------------>I2S TX FIFO +-------------->CODEC +------------>SPK/HP |
++-----------+            +-----------+            +------------+              +------+            +-------+
+```
+
+———————————————
+저작권 진술: 이 기사는 CSDN 블로거 "zyuanyun"의 원본 기사이며 CC 4.0 BY-SA 저작권 계약을 따릅니다. 재인쇄를 위해 원본 소스 링크와 이 진술을 첨부하십시오.
+원본 링크: https://blog.csdn.net/zyuanyun/article/details/59170418
