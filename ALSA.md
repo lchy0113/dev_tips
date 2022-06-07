@@ -203,39 +203,39 @@ kernel space
 ```
  *dai_link* : codec, codec_dai, cpu_dai 및 link에서 사용하는 platform을 지정하는 machine driver에 정의된 audio data link.  
      ex) goni_wm8994 platform 의 media link : 아래 4가지의 audio data link는 Multimedia 사운드의 playback 및 recording 에 사용됩니다. 시스템에는 media 및 음성과 같은 여러 audio data link가 있을 수 있으므로 여러 dai_link를 정의할 수 있습니다. 
-	 ```
-	 codec="wm8994-codec", 
-	 codec_dai="wm8994-aif1",
-	 cpu_dai="samsung-i2s",
-	 platform="samsung-audio"
-	 ```
 
-	 ![](./image/ALSA-09.png)
+```
+codec="wm8994-codec", 
+codec_dai="wm8994-aif1",
+cpu_dai="samsung-i2s",
+platform="samsung-audio"
+```
+
+ ![](./image/ALSA-09.png)
 
 
-	 WM8994의 구조와 같이 AP<->AIF1의 "HIFI"(멀티미디어 음성 링크), BP<->AIF2의 "Voice"(통화음성 링크) 및 BT<->AIF3(Bluetooth SCO)의 3가지 dai_link가 있습니다.
+ WM8994의 구조와 같이 AP<->AIF1의 "HIFI"(멀티미디어 음성 링크), BP<->AIF2의 "Voice"(통화음성 링크) 및 BT<->AIF3(Bluetooth SCO)의 3가지 dai_link가 있습니다.
 
-	 code 
-	 ```c
-	 static struct snd_soc_dai_link goni_dai[] = {
-	 	.name = "WM8994",
-		.stream_name = "WM8994 HIFI",
-		.cpu_dai_name = "samsung-i2s.0",
-		.codec_dai_name = "wm8994-aif1",
-		.platform_name = "samsung-audio",
-		.codec_name = "wm8994-codec.0-001a",
-		.init = goni_wm8994_init,
-		.ops = &goni_hifi_ops,
-	 }, {
-	 	.name = "WM8994 Voice",
-		.stream_name = "Voice",
-		.cpu_dai_name = "goni-voice-dai",
-		.codec_dai_name = "wm8994-aif2",
-		.codec_name = "wm8994-codec.0-001a",
-		.ops = &goni_voice_ops,
-	 };
-
-	 ```
+ code 
+ ```c
+ static struct snd_soc_dai_link goni_dai[] = {
+ 	.name = "WM8994",
+	.stream_name = "WM8994 HIFI",
+	.cpu_dai_name = "samsung-i2s.0",
+	.codec_dai_name = "wm8994-aif1",
+	.platform_name = "samsung-audio",
+	.codec_name = "wm8994-codec.0-001a",
+	.init = goni_wm8994_init,
+	.ops = &goni_hifi_ops,
+ }, {
+ 	.name = "WM8994 Voice",
+	.stream_name = "Voice",
+	.cpu_dai_name = "goni-voice-dai",
+	.codec_dai_name = "wm8994-aif2",
+	.codec_name = "wm8994-codec.0-001a",
+	.ops = &goni_voice_ops,
+ };
+ ```
 
 
 
