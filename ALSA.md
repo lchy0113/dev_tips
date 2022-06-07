@@ -219,7 +219,7 @@ platform="samsung-audio"
  code 
  ```c
  static struct snd_soc_dai_link goni_dai[] = {
- 	.name = "WM8994",
+    .name = "WM8994",
 	.stream_name = "WM8994 HIFI",
 	.cpu_dai_name = "samsung-i2s.0",
 	.codec_dai_name = "wm8994-aif1",
@@ -228,7 +228,7 @@ platform="samsung-audio"
 	.init = goni_wm8994_init,
 	.ops = &goni_hifi_ops,
  }, {
- 	.name = "WM8994 Voice",
+    .name = "WM8994 Voice",
 	.stream_name = "Voice",
 	.cpu_dai_name = "goni-voice-dai",
 	.codec_dai_name = "wm8994-aif2",
