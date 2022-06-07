@@ -103,9 +103,11 @@ tinyalsa의 main header file 과 data structre 는 아래 이미지와 같으며
 
 pcm device 는 tinyalsa에 의해 code를 읽고, Android에서 오디오 장치 노드로 보여집니다.   
 Android에서 pcm device는 최대 하나의 mixer device 를 가질 수 있습니다.   
+
     	/dev/snd/controlC%u" (usually controlC0)  
     	/dev/snd_pcmC%uD%uc  (usually pcmC0D0c)  
     	/dev/snd/pcmC%uD%u%p (usually pcmC0D0p)  
+
 pcm device에서 C 의미는 Card, D 의미는 Device, c 의미는 Capture, p 의미는 playback을 나타냅니다.   
 PCM sound card가 추가되면  C의 값은 +1 증가되며, 그 외의 값은 변화되지 않습니다.   
 pcmC1D0c,   pcmC1D0p  
