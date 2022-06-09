@@ -23,7 +23,7 @@
    * ALSA Kernel Driver는 User space의 Sound Card Device Drier의 인터페이스를 담당하고 Audio Buffer 및 Signal을 관리 및 운용
   ![](./image/ALSA-02.png)
 
-  - ALSA Library
+ - ALSA Library
    * Application에게 공통된 API를 제공하여 ALSA Kernel Driver를 사용 할 수 있도록 합니다.
    * ALSA Library가 /dev/snd/* 경로의 device file을 제어함으로써 Application에서 직접 device file을 제어할 필요가 없습니다.
   ![](./image/ALSA-03.png)
