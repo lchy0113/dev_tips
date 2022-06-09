@@ -1,6 +1,5 @@
 # ALSA
 
-<hr/>
 
 ## Introduce ALSA
 
