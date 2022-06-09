@@ -741,13 +741,13 @@ ex)
 
 ![](./image/ALSA-15.png)
 
- 위의 예에서 codec의 audio path는 AIF1 > DAC1 > OUTMIXER > SPKOUT 입니다. AIF1은 input endpoint이고, SPKOUT은 output endpoint입니다. 이 path의 위치한 component에 전원이 공급되어야 합니다. 또한 다른 component에는 전원 공급이 차단되어야 합니다.
- 그리고 audio compoent는 전원을 켜고 끌 때 일시적인 영향으로 인해 터지는 소리를 생성합니다. 이를 POP라고 합니다. POP는 전기적 특성이므로 완전히 제거할 수 없으며 하드웨어와 소프트웨어를 최적화하여 인간의 귀가 인식할 수 없을 정도로 약화시킬 수 있습니다. DAPM에서는 팝핑 소리를 억제하기 위해 엄격한 순서로 구성 요소의 전원을 켜고 끕니다. 일반적으로 전원 켜기 순서는 입력 끝점에서 출력 끝점으로, 전원 끄기 순서는 출력 끝점에서 입력 끝점입니다.
-
- driver에서 DAPM widget과 DAPM path를 만드는 방법입니다. 가장 일반적인 mixer widget을 예로 들면, 
- 여러 아날로그 신호를 단일 아날로그 신호로 혼합합니다. WM8994의 SPKMIXL과 같이 여러 아날로그 신호를 하나의 출력으로 혼합할 수 있습니다. 
- ![](.image/ALSA-16.png)
- 그림과 같이 SPKMIXL에는 MIXINL, IN1LP, DAC1L, DAC2L, MIXEROUTL의 5개 입력이 있으며 여기에 5개의 채널을 구성 할 수 있습니다.
+ 위의 예에서 codec의 audio path는 AIF1 > DAC1 > OUTMIXER > SPKOUT 입니다. AIF1은 input endpoint이고, SPKOUT은 output endpoint입니다. 이 path의 위치한 component에 전원이 공급되어야 합니다. 또한 다른 component에는 전원 공급이 차단되어야 합니다.  
+ 그리고 audio compoent는 전원을 켜고 끌 때 일시적인 영향으로 인해 터지는 소리를 생성합니다. 이를 POP라고 합니다. POP는 전기적 특성이므로 완전히 제거할 수 없으며 하드웨어와 소프트웨어를 최적화하여 인간의 귀가 인식할 수 없을 정도로 약화시킬 수 있습니다. DAPM에서는 팝핑 소리를 억제하기 위해 엄격한 순서로 구성 요소의 전원을 켜고 끕니다. 일반적으로 전원 켜기 순서는 입력 끝점에서 출력 끝점으로, 전원 끄기 순서는 출력 끝점에서 입력 끝점입니다.  
+  
+ driver에서 DAPM widget과 DAPM path를 만드는 방법입니다. 가장 일반적인 mixer widget을 예로 들면,   
+ 여러 아날로그 신호를 단일 아날로그 신호로 혼합합니다. WM8994의 SPKMIXL과 같이 여러 아날로그 신호를 하나의 출력으로 혼합할 수 있습니다.   
+ ![](.image/ALSA-16.png)  
+ 그림과 같이 SPKMIXL에는 MIXINL, IN1LP, DAC1L, DAC2L, MIXEROUTL의 5개 입력이 있으며 여기에 5개의 채널을 구성 할 수 있습니다.  
 
  다음 5가지 control은 SPKMIXL입력을 제어합니다.
 ```c
