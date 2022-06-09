@@ -3,9 +3,9 @@
 
 ## Introduce ALSA
 
-A. ALSA 는 X86의 Sound Card를 위해 만들어 졌습니다.
-B. Embedded processor 용에 대응하기 위하여 ALSA System On Chip(SoC) Layer가 존재.
-C. ASoC는 다음 목표로 설계 되었다.
+A. ALSA 는 X86의 Sound Card를 위해 만들어 졌습니다.  
+B. Embedded processor 용에 대응하기 위하여 ALSA System On Chip(SoC) Layer가 존재.  
+C. ASoC는 다음 목표로 설계 되었습니다.  
 
    1) Audio Codec Driver 독립적 및 재사용 가능 하도록 설계
    2) Audio Codec 과 I2S 및 PCM Audio interfac의 연결을 쉽도록 설계
