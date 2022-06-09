@@ -735,10 +735,176 @@ ex)
  - 간헐적인 소리 : Codec system clock이 bit clock, frame clock과 일치하는지 확인 하십시오. 이는 sysclk와 BCLK/LRCK가 동일한 clock source로 나누어지지 않기 때문입니다.
 
 ### 3.5 DAPM description
-// TODO : https://blog.csdn.net/zyuanyun/article/details/59170418?spm=1001.2014.3001.5501
+ DAPM : Dynamic Audio Power Management 의 약어이며, embedded 및 모바일장치 용으로 설계되어 Audio system이 항상 낮은 전력 소비 상태에서 작동하도록 합니다.
+ 목적 : Audio system이 작동하는데 필요한 최소한의 구성요소를 활성화 합니다.
+ 원칙 : Audio path가 변경될 때(ex. upper layer에서 tinymix을 사용하여 audio path를 세팅합니다.) 또는 data flow 이벤트가 발생 될 때(ex. playback이 시작 및 정지), dapm은 Audio codec component를 트리거 합니다.  dapm은 정책에 따라 component의 전원을 독립적으로 enable/disable합니다. 
+
+![](./images/ALSA-15.png)
+
+ 위의 예에서 codec의 audio path는 AIF1 > DAC1 > OUTMIXER > SPKOUT 입니다. AIF1은 input endpoint이고, SPKOUT은 output endpoint입니다. 이 path의 위치한 component에 전원이 공급되어야 합니다. 또한 다른 component에는 전원 공급이 차단되어야 합니다.
+ 그리고 audio compoent는 전원을 켜고 끌 때 일시적인 영향으로 인해 터지는 소리를 생성합니다. 이를 POP라고 합니다. POP는 전기적 특성이므로 완전히 제거할 수 없으며 하드웨어와 소프트웨어를 최적화하여 인간의 귀가 인식할 수 없을 정도로 약화시킬 수 있습니다. DAPM에서는 팝핑 소리를 억제하기 위해 엄격한 순서로 구성 요소의 전원을 켜고 끕니다. 일반적으로 전원 켜기 순서는 입력 끝점에서 출력 끝점으로, 전원 끄기 순서는 출력 끝점에서 입력 끝점입니다.
+
+ driver에서 DAPM widget과 DAPM path를 만드는 방법입니다. 가장 일반적인 mixer widget을 예로 들면, 
+ 여러 아날로그 신호를 단일 아날로그 신호로 혼합합니다. WM8994의 SPKMIXL과 같이 여러 아날로그 신호를 하나의 출력으로 혼합할 수 있습니다. 
+ ![](.image/ALSA-16.png)
+ 그림과 같이 SPKMIXL에는 MIXINL, IN1LP, DAC1L, DAC2L, MIXEROUTL의 5개 입력이 있으며 여기에 5개의 채널을 구성 할 수 있습니다.
+
+ 다음 5가지 control은 SPKMIXL입력을 제어합니다.
+```c
+static const struct snd_kcontrol_new left_speaker_mixer[] = {
+SOC_DAPM_SINGLE("DAC2 Switch", WM8994_SPEAKER_MIXER, 9, 1, 0),
+SOC_DAPM_SINGLE("Input Switch", WM8994_SPEAKER_MIXER, 7, 1, 0),
+SOC_DAPM_SINGLE("IN1LP Switch", WM8994_SPEAKER_MIXER, 5, 1, 0),
+SOC_DAPM_SINGLE("Output Switch", WM8994_SPEAKER_MIXER, 3, 1, 0),
+SOC_DAPM_SINGLE("DAC1 Switch", WM8994_SPEAKER_MIXER, 1, 1, 0),
+};
+```
+ 
+ SPKMIXL용 dapm widget을 정의합니다.
+```c
+SND_SOC_DAPM_MIXER_E("SPKL", WM8994_POWER_MANAGEMENT_3, 8, 0,
+		     left_speaker_mixer, ARRAY_SIZE(left_speaker_mixer),
+		     late_enable_ev, SND_SOC_DAPM_PRE_PMU),
+```
+
+ WM8994_POWER_MANAGEMENT_3 레지스터의 bit 8은 SPKMIXL의 power enable & disable을 제어합니다.
+
+ SPKMIXL 의 path 정의 :
+```c
+static const struct snd_soc_dapm_route intercon[] = {
+ // ...
+	{ "SPKL", "DAC1 Switch", "DAC1L" },
+	{ "SPKL", "DAC2 Switch", "DAC2L" },
+```
+
+ 마지막으로 upper layer에는 "SPKL DAC1 Switch" 및 "SPKL DAC2 Switch" 라는 2가지 control이 출력됩니다.
+ SPKL DAC1 Switch는 "SPKL"이 입력으로 "DAC1L"을 선택 하는데 사용되고,
+ SPKL DAC2 Switch는 "SPKL"이 입력으로 "DAC2L"을 선택하는데 사용됩니다.
 
 ### 3.6 Codec register
-// TODO : https://blog.csdn.net/zyuanyun/article/details/59170418?spm=1001.2014.3001.5501
+
+ platform_driver :
+```c
+static struct platform_driver wm8994_codec_driver = {
+	.driver = {
+		.name = "wm8994-codec",
+		.owner = THIS_MODULE,
+		.pm = &wm8994_pm_ops,
+	},
+	.probe = wm8994_probe,
+	.remove = wm8994_remove,
+};
+
+```
+ platform_device를 .name = "wm8994-codec"(platform_device는 driver/mfd/wm8994-core.c에 등록됨)와 일치 시킨 후, 
+ wm8994_probe()함수를 호출하여 codec을 등록시킵니다.
+
+```c
+static int wm8994_probe(struct platform_device *pdev)
+{
+	struct wm8994_priv *wm8994;
+
+	wm8994 = devm_kzalloc(&pdev->dev, sizeof(struct wm8994_priv),
+			      GFP_KERNEL);
+	if (wm8994 == NULL)
+		return -ENOMEM;
+	platform_set_drvdata(pdev, wm8994);
+
+	wm8994->wm8994 = dev_get_drvdata(pdev->dev.parent);
+
+	pm_runtime_enable(&pdev->dev);
+	pm_runtime_idle(&pdev->dev);
+
+	return snd_soc_register_codec(&pdev->dev, &soc_codec_dev_wm8994,
+			wm8994_dai, ARRAY_SIZE(wm8994_dai));
+}
+```
+snd_soc_register_codec : soc-core에 codec_driver 및 codec_dai_driver를 등록합니다.
+```c
+/**
+ * snd_soc_register_codec - Register a codec with the ASoC core
+ *
+ * @codec: codec to register
+ */
+int snd_soc_register_codec(struct device *dev,
+			   const struct snd_soc_codec_driver *codec_drv,
+			   struct snd_soc_dai_driver *dai_drv,
+			   int num_dai)
+
+```
+codec_drv(snd_soc_dai_driver) 관련 정보를 포함하는 snd_soc_codec 인스턴스를 생성하고, 이를 soc-core용으로 캡슐화 합니다. 
+```c
+	struct snd_soc_codec *codec;
+	struct snd_soc_dai *dai;
+	int ret, i;
+
+	dev_dbg(dev, "codec register %s\n", dev_name(dev));
+
+	codec = kzalloc(sizeof(struct snd_soc_codec), GFP_KERNEL);
+	if (codec == NULL)
+		return -ENOMEM;
+
+	codec->component.dapm_ptr = &codec->dapm;
+	codec->component.codec = codec;
+
+	ret = snd_soc_component_initialize(&codec->component,
+			&codec_drv->component_driver, dev);
+	if (ret)
+		goto err_free;
+
+	if (codec_drv->controls) {
+		codec->component.controls = codec_drv->controls;
+		codec->component.num_controls = codec_drv->num_controls;
+	}
+	if (codec_drv->dapm_widgets) {
+		codec->component.dapm_widgets = codec_drv->dapm_widgets;
+		codec->component.num_dapm_widgets = codec_drv->num_dapm_widgets;
+	}
+	if (codec_drv->dapm_routes) {
+		codec->component.dapm_routes = codec_drv->dapm_routes;
+		codec->component.num_dapm_routes = codec_drv->num_dapm_routes;
+	}
+
+	if (codec_drv->probe)
+		codec->component.probe = snd_soc_codec_drv_probe;
+	if (codec_drv->remove)
+		codec->component.remove = snd_soc_codec_drv_remove;
+	if (codec_drv->write)
+		codec->component.write = snd_soc_codec_drv_write;
+	if (codec_drv->read)
+		codec->component.read = snd_soc_codec_drv_read;
+	codec->component.ignore_pmdown_time = codec_drv->ignore_pmdown_time;
+	codec->dapm.idle_bias_off = codec_drv->idle_bias_off;
+	codec->dapm.suspend_bias_off = codec_drv->suspend_bias_off;
+	if (codec_drv->seq_notifier)
+		codec->dapm.seq_notifier = codec_drv->seq_notifier;
+	if (codec_drv->set_bias_level)
+		codec->dapm.set_bias_level = snd_soc_codec_set_bias_level;
+	codec->dev = dev;
+	codec->driver = codec_drv;
+	codec->component.val_bytes = codec_drv->reg_word_size;
+	mutex_init(&codec->mutex);
+```
+ codec instance를 codec_list의 Linkd list에 추가합니다.(사운드 카드가 등록되면 linkd list를 순회하며 dai_link가 선언한 코덱을 찾아서 binding합니다.)
+```c
+	list_add(&codec->list, &codec_list);
+```
+
+ codec_drv(ak7755에는 1개의 dias, wm8994에는 3개의 dias)에 snd_soc_dai_driver를 soc-core에 등록합니다.
+```c
+	ret = snd_soc_register_dais(&codec->component, dai_drv, num_dai, false);
+	if (ret < 0) {
+		dev_err(dev, "ASoC: Failed to regster DAIs: %d\n", ret);
+		goto err_cleanup;
+	}
+```
+
+snd_soc_register_dais()는 dai를 dai_list linkd list에 추가합니다. 
+(sound card가 등록되면 linkd list를 탐색하여 dai_link에 의해 서넌된 codec_dai를 찾아 binding합니다.)
+```c
+		list_add(&dai->list, &component->dai_list);
+```
+
 
 ## 4. Platform
  audio platform driver는 audio data transmission에 사용되며 2가지 파트로 구분할 수 있습니다.
@@ -753,28 +919,3 @@ snd_soc_dai는 cpu_dai 등록 시 생성되는 dai 인스턴스이고 snd_soc_pl
 
  ![](./images/ALSA-13.png)
 
-// TODO : https://blog.csdn.net/zyuanyun/article/details/59170418?spm=1001.2014.3001.5501
-
-### 4.1 cpu dai
-// TODO : https://blog.csdn.net/zyuanyun/article/details/59170418?spm=1001.2014.3001.5501
-
-### 4.2 pcm dma
-// TODO : https://blog.csdn.net/zyuanyun/article/details/59170418?spm=1001.2014.3001.5501
-
-#### 4.2.1 pcm operations
-// TODO : https://blog.csdn.net/zyuanyun/article/details/59170418?spm=1001.2014.3001.5501
-
-#### 4.2.2 dma buffer allocation
-// TODO : https://blog.csdn.net/zyuanyun/article/details/59170418?spm=1001.2014.3001.5501
-
-#### 4.2.3 pcm dma register
-// TODO : https://blog.csdn.net/zyuanyun/article/details/59170418?spm=1001.2014.3001.5501
-
-## 5. Machine
-// TODO : https://blog.csdn.net/zyuanyun/article/details/59170418?spm=1001.2014.3001.5501
-
-
-
-——————————————
-저작권 진술: 이 기사는 CSDN 블로거 "zyuanyun"의 원본 기사이며 CC 4.0 BY-SA 저작권 계약을 따릅니다. 재인쇄를 위해 원본 소스 링크와 이 진술을 첨부하십시오.
-원본 링크: https://blog.csdn.net/zyuanyun/article/details/59170418
