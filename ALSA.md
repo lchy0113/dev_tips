@@ -87,7 +87,8 @@
 
 <hr/>
 
-- ASoC 는 기본적으로 4가지의 driver로 구성됩니다.
+- Hardware driver 구성
+ ASoC 는 기본적으로 4가지의 driver로 구성됩니다.
 
   * codec driver : Audio Codec 내 control을 제어한다.   
 	: DAC 또는 AMP를 device에 붙이게 된다면 vendor사에서 기본적으로 제공하는 driver입니다. 또한 sound/soc/codecs directory에도 있으니 참조하면 됩니다.  
@@ -105,7 +106,7 @@
   * machine driver : embedded board의 audio 관련 device의 연결상태를 선언 및 제어합니다.(sound card등록)  
 	: sound card를 등록하고 dai(digital audio interface)-i2s 및 codec device 관계를 설정.  
 	: 즉, ASoC machine driver는 모든 구성 요소 driver(e.g. codecs driver, platform driver, component driver)를 하나로 묶는 코드입니다.  
-	: 기존에 machine driver를 참고하여 개발하거나 기존 reference code를 참고하여 개발하면 됨.  
+	: 기존에 machine driver를 참고하여 개발하거나 기존 reference code를 참고하여 개발하면 됩니다.  
 	: ex) sound/soc/tcc/tcc_board_ak7755.c  
 	![](./image/ALSA-06.png)  
 
@@ -123,7 +124,10 @@
  - 파란색 Diagram은 Android platform에서 sound를 출력하는 형태.
 	 ![](./image/ALSA-08.png)
 
+<br />
+
 <hr/>
+
 
 # ALSA audio system : Physical Links
 
@@ -131,7 +135,7 @@
  사용 버전 : 
  - kernel : 3.18.24
  - SoC : Telechips series
- - CODEC : cx20703, ak7755
+ - CODEC : cx20703, ak7755, wm8994
  - userspace : tinyalsa
 	
  Linux ALSA audio system Architecture 는 아래와 같습니다. 
@@ -169,8 +173,8 @@ kernel space
 ```
 
  - Native ALSA Application : tinyplay/tinycap/tinymix, 사용자 프로그램은 alsa user space library interface를 직접 호출하여 playback, recording 및 control합니다.
- - ALSA library API: alsa userspace library interface, 일반적으로 tinyalsa, alsa-lib
- - ALSA CORE: alsa core layer, logical device(PCM/CTL/MIDI/TIMER/...) 시스템 호출을 upper layer에게 제공하고 lower layer인 hardware device를 구동(Machine/I2S/DMA/CODEC)
+ - ALSA library API: alsa userspace library interface, 일반적으로 tinyalsa, alsa-lib 을 사용합니다.
+ - ALSA CORE: alsa core layer, logical device(PCM/CTL/MIDI/TIMER/...) 시스템 호출을 upper layer에게 제공하고 lower layer인 hardware device를 구동합니다.(Machine/I2S/DMA/CODEC)
  - ASoC CORE: asoc은 모바일 기기에 적용되는 임베디드 시스템과 오디오 코덱을 더 잘 지원하기 위해 표준 alsa 코어를 기반으로 하는 소프트웨어 시스템입니다.
  - Hardware Driver : machine, platform, codec의 세 부분으로 구성된 오디오 하드웨어 장치 드라이버
 
@@ -190,9 +194,9 @@ kernel space
  - *platform* : telechips, exynox, omap, qcom 등과 같은 특정 SoC  platform의 audio module을 의미 합니다. platform은 2가지 부분으로 나눌 수 있습니다.
    + *cpu dai* : embedded system에서 일반적으로 i2s tx fifo에서 codec 장치로 audio data를 전송하는 역할을 하는 SoC의 I2S 및 PCM bus controller를 나타냅니다. cpu_dai는 snd_soc_register_dai()로 등록됩니다.
 	   Note : DAI는 Digital Audio Interface의 약자로 I2S/PCM bus를 통해 연결되는 cpu_dai와 codec_dai로 구분되며, AIF는 Audio Interface 의 약자로 일반적으로 임베디드 시스템에서 I2S와 PCM Interface를 의미 합니다.
-   + *pcm dma* : dma buffer의 audio data를 I2S tx FIFO로 이동하는 역할을 담당합니다. ;modem 자체가 이미 FIFO에 데이터를 전송한 다음 데이터 수신을 위해 codec_dai를 시작하기 때문에 모뎀과 코덱 간의 직접 연결과 같은 일부 경우에는 dma 작업이 필요하지 않습니다. 이 경우, machine driver인 dai_link .platform_name = "snd-soc-dummy"를 설정해야 합니다. 이것은 가상 dma driver입니다. 구현에 대해서는 sound/soc/soc-utils.c 를 참조하십시오.  오디오 dma 드라이버는 snd_soc_register_platform()을 통해서 등록되므로 platform은 일반적으로 audio dma driver를 참조하는 데에도 사용됩낟. (여기서 플랫폼은 SoC 플랫폼과 구별되어야 함.)
- - *codec* : playback을 위해 userspace에서 보내는 audio data는 샘플링되고 양자화된 digital 신호이며, 코덱의 DAC에 의해 아날로그 신호로 변환된 다음 AMP나 헤드폰으로 출력되어 소리를 들을 수 있습니다. codec은 말 그대로 codec을 의미하지만 칩에 많은 기능 구성 요소가 있으며 일반적인 것은 AIF, DAC, ADC, mixer, PGA, Line input, Line output이며 일부 고급 codec 칩에는 EQ, DSP, SRC 기능도 있습니다. 
- - *machine* : dai_link를 설정하여 cpu_dai, codec_dai, modem_dai의 audio interface를 audio link로 연결한 후, snd_soc-card를 등록합니다. 위의 두 가지와 달리 Platform 및 CODEC 드라이버는 일반적으로 재사용이 가능한 반면 Machine 은 고유한 하드웨어 특성이 있어 재사용이 거의 불가능 합니다. 
+   + *pcm dma* : dma buffer의 audio data를 I2S tx FIFO로 이동하는 역할을 담당합니다.
+ - *codec* : playback을 위해 userspace에서 보내는 audio data는 샘플링되고 양자화된 digital 신호이며, codec의 DAC에 의해 아날로그 신호로 변환된 다음 AMP나 헤드폰으로 출력되어 소리를 들을 수 있습니다. codec은 말 그대로 codec을 의미하지만 칩에 많은 기능 구성 요소가 있으며 일반적인 것은 AIF, DAC, ADC, mixer, PGA, Line input, Line output이며 일부 고급 codec 칩에는 EQ, DSP, SRC 기능도 있습니다. 
+ - *machine* : dai_link를 설정하여 cpu_dai, codec_dai, modem_dai의 audio interface를 audio link로 연결한 후, snd_soc-card를 등록합니다. 위의 두 가지와 달리 Platform 및 Codec 드라이버는 일반적으로 재사용이 가능한 반면 Machine 은 고유한 하드웨어 특성이 있어 재사용이 거의 불가능 합니다. 
 
 
 위의 설명에서 Playback 동작에 대한 PCM 데이터 흐름은 다음과 같습니다.
@@ -206,6 +210,8 @@ kernel space
      ex) goni_wm8994 platform 의 media link : 아래 4가지의 audio data link는 Multimedia 사운드의 playback 및 recording 에 사용됩니다. 시스템에는 media 및 음성과 같은 여러 audio data link가 있을 수 있으므로 여러 dai_link를 정의할 수 있습니다. 
 
 ```
+codec_dai="ak7755-hifi"
+codec_dai="cx2070x-dp1"
 codec="wm8994-codec", 
 codec_dai="wm8994-aif1",
 cpu_dai="samsung-i2s",
@@ -214,6 +220,22 @@ platform="samsung-audio"
 
  ![](./image/ALSA-09.png)
 
+
+ AK7755의 구조와 같이 AP<->AIF1의 "HIFI"(멀티미디어 음성 링크)의 dai_link가 있습니다.
+
+ code
+ ```c
+ static struct snd_soc_dai_link ak7755_dai_link[] = {
+ 	{
+ 		.name = "AK7755",
+ 		.stream_name = "AK7755",
+ 		.codec_dai_name = "ak7755-hifi",
+ 		.init = ak7755_dai_init,
+ 		.ops = &ak7755_ops,
+ 	},
+ };
+ 
+ ```
 
  WM8994의 구조와 같이 AP<->AIF1의 "HIFI"(멀티미디어 음성 링크), BP<->AIF2의 "Voice"(통화음성 링크) 및 BT<->AIF3(Bluetooth SCO)의 3가지 dai_link가 있습니다.
 
@@ -238,7 +260,7 @@ platform="samsung-audio"
  };
  ```
 
- *hw constraints* : 지원되는 channel 갯수/샘플링 속도/데이터 형식, DMA에서 지원하는 data period size period 갯수, 등과 같은 플랫폼 자체의 하드웨어 spec을 나타냅니다. 
+ *hw constraints* : 지원되는 channel 갯수/sample rate/data format, DMA에서 지원하는 data period size period 갯수, 등과 같은 플랫폼 자체의 하드웨어 spec을 나타냅니다. 
   snd_pcm_hardware structure :
 ```c
 static const struct snd_pcm_hardware dma_hardware = {
@@ -263,29 +285,33 @@ static const struct snd_pcm_hardware dma_hardware = {
 };
 ```
 
- *hw params* : channels, sample rate, pcm format, period size, period count와 같은 사용자 계층에서 설정한 하드웨어 매개변수; 이러한 매개변수는 hw 제약 조건에 의해 제한됩니다.
- *sw params* : start threshold, stop threshold, silence threshold 과 같이 사용자 계층에서 설정한 소프트웨어 매개변수.
+ *hw params* : channels, sample rate, pcm format, period size, period count와 같은 user layer에서 설정한 하드웨어 매개변수; 이러한 매개변수는 hw 제약 조건에 의해 제한됩니다.
+ *sw params* : start threshold, stop threshold, silence threshold 과 같이 user layer에서 설정한 소프트웨어 매개변수.
 
 
 ## 2. ASoC
-ASoC: ALSA System on Chip은 표준 ALSA 드라이버를 기반으로 하며 임베디드 시스템과 모바일 장치에 적용되는 오디오 코덱용 소프트웨어 시스템 세트를 더 잘 지원하기 위해 표준 ALSA 드라이버 프레임워크에 의존합니다. 핵심 문서 Documentation/alsa/soc/overview.txt는 ASoC의 원래 설계 의도에 대해 자세히 설명하며 여기에 인용되지 않고 다음과 같이 간단히 설명됩니다.
- - 독립 코덱 드라이버인 표준 ALSA 드라이버 프레임워크의 코덱 드라이버는 종종 SoC/CPU와 너무 밀접하게 결합되어 다양한 플랫폼/머신에서 이식 및 재사용에 적합하지 않습니다.
+ASoC: ALSA System on Chip은 표준 ALSA 드라이버를 기반으로 하며 임베디드 시스템과 모바일 장치에 적용되는 오디오 코덱용 소프트웨어 시스템 세트를 더 잘 지원하기 위해 표준 ALSA 드라이버 프레임워크에 의존합니다. 
+ Note : Documentation/alsa/soc/overview.txt
+ - 독립 코덱 드라이버인 표준 ALSA 드라이버 프레임워크의 코덱 드라이버는 종종 SoC/CPU와 너무 밀접하게 결합되어 다양한 platform/machine에서 이식 및 재사용에 적합하지 않습니다.
  - 코덱이 PCM/I2S 버스를 통해 SoC와 연결하는 것이 편리합니다.
- - 코덱이 항상 가장 낮은 전력 상태에서 작동하도록 하고 오디오 라우팅 생성을 담당하는 동적 오디오 전원 관리 DAPM
+ - 코덱이 항상 가장 낮은 전력 상태에서 작동하도록 하고 오디오 라우팅 생성을 담당하는 동적 오디오 전원 관리 DAPM 기능
  - 적절한 오디오 구성 요소 전원 켜기 시퀀스에 의해 ASoC에서 구현되는 POP 및 클릭 억제 완화
  - 헤드폰 및 마이크의 플러그인 감지 및 외부 증폭기 전환과 같은 기계 구동식 특정 제어
-
- 아래 그림은 goni_wm8994 의 diagram입니다.  
- ![](./image/ALSA-10.png)
 
  아래 그림은 ak7755 의 diagram 입니다.
  ![](./image/ALSA-11.png)
 
+ 아래 그림은 goni_wm8994 의 diagram입니다.  
+ ![](./image/ALSA-10.png)
+
+
 ## 3. Codec
- 이전 장에서는 기본적으로 커널 문서 Documentation/sound/alsa/soc/codec.txt의 내용을 기반으로 아래에 하나씩 소개되는 codec_drv의 여러 구성 요소에 대해 언급했습니다. 코덱의 역할은 앞에서 설명했지만 이 장에서는 코덱 드라이버에서 중요한 데이터 구조와 등록 프로세스를 주로 나열합니다.
+ Codec data structure와 Codec drier 등록 과정에 대해 설명합니다.
 
-먼저 WM8994를 예로 들어 코덱의 하드웨어 블록 다이어그램을 살펴보겠습니다.
+ cx20703을 예로 들어 코덱의 하드웨어 블록 다이어그램을 설명합니다.
+ ![](./image/ALSA-14.png)
 
+ wm8994를 예로 들어 코덱의 하드웨어 블록 다이어그램을 설명합니다.
  ![](./image/ALSA-12.png)
 
  | **Widget** 	| **Description**                                                                  	|
@@ -299,7 +325,7 @@ ASoC: ALSA System on Chip은 표준 ALSA 드라이버를 기반으로 하며 임
 
 
 ### 3.1 Codec DAI and PCM configuration
-codec_dai 및 pcm의 구성 정보는 dai의 기능 설명 및 작동 인터페이스를 포함하여 snd_soc_dai_driver 구조로 설명되며 snd_soc_dai_driver는 결국 soc-core에 등록됩니다.
+codec_dai 및 pcm의 구성 정보는 dai의 기능 설명 및 operation 인터페이스를 포함하여 snd_soc_dai_driver 구조로 설명되며 snd_soc_dai_driver는 결국 soc-core에 등록됩니다.
 
 ```c
 /*
@@ -348,6 +374,28 @@ struct snd_soc_dai_driver {
  - capture : 채널 수, sample rate 및 녹음 장치에서 지원하는 오디오 형식과 같은 녹음 기능에 대한 설명
  - ops: codec_dai의 연산 함수 집합 이 함수 집합은 매우 중요하며 dai의 클럭 설정, 포맷 설정, 하드웨어 파라미터 설정에 사용됩니다.
 
+ 예를 들어, ak7755에는 1개의 DAI가 있습니다.
+```c
+static struct snd_soc_dai_driver ak7755_dai = {   
+	.name = "ak7755-hifi",
+	.playback = {
+		   .stream_name = "Playback",
+		   .channels_min = 1,
+		   .channels_max = 2,
+		   .rates = AK7755_RATES,
+		   .formats = AK7755_FORMATS,
+	},
+	.capture = {
+		   .stream_name = "Capture",
+		   .channels_min = 1,
+		   .channels_max = 2,
+		   .rates = AK7755_RATES,
+		   .formats = AK7755_FORMATS,
+	},
+	.ops = &ak7755_dai_ops,
+};
+```
+
  예를 들어, wm8994에는 3개의 DAI가 있으며 그 중 하나만 여기에 나열되어 있습니다.
 
 ```c
@@ -376,7 +424,7 @@ static struct snd_soc_dai_driver wm8994_dai[] = {
 ```
 
 ### 3.2 Codec control IO
-embedded device의 오디오 코덱의 경우 제어 인터페이스는 일반적으로 I2C 또는 SPI이며 제어 인터페이스는 코덱 레지스터를 읽고 쓰는 데 사용됩니다. 
+ embedded device의 오디오 코덱의 경우 제어 인터페이스는 일반적으로 I2C 또는 SPI이며 제어 인터페이스는 코덱 레지스터를 읽고 쓰는 데 사용됩니다. 
 snd_soc_codec_driver 구조에서 다음 필드는 코덱의 제어 인터페이스를 설명합니다.
 
 ```c
@@ -427,8 +475,8 @@ struct snd_soc_codec_driver {
 ```
  - read : read register
  - write : write register
- - volatile_register: 지정된 레지스터가 휘발성 속성인지 확인하고, 그렇다면 레지스터를 읽을 때 캐시를 읽지 않고 하드웨어에 직접 액세스합니다.
- - readable_register: 지정된 레지스터를 읽을 수 있는지 여부를 결정합니다.
+ - volatile_register: 지정된 레지스터가 휘발성 속성인지 확인 후, 레지스터를 읽을 때 캐시를 읽지 않고 하드웨어에 직접 액세스합니다.
+ - readable_register: 지정된 레지스터  read 가능 여부를 결정합니다. 
  - reg_cache_default: 레지스터의 기본값;
  - reg_cache_size: 기본 regiser 값 배열 크기;
  - reg_word_size: register 너비.
@@ -437,7 +485,6 @@ struct snd_soc_codec_driver {
  Soc-core는 regmap이 사용되는지 여부를 판단하고 사용하는 경우, regmap 인터페이스를 호출합니다. 
 
  regmap을 사용하여 제어 인터페이스를 추상화합니다. 
- codec_drv는 현재 제어 모드가 무엇인지 신경 쓸 필요가 없습니다. 
  regmap 온라인 디버깅 디렉토리는 /sys/kernel/debug/regmap입니다.
  wm8994의 regmap 설명은 driver/mfd/wm8994-regmap.c를 참조하십시오.
 
@@ -573,6 +620,69 @@ clock configuration과 format configuration interface에 중점되었습니다.
  - hw_params : codec_dai hardware parameter 설정.  upper layer 에서 설정한 채널 수, sample rate, data foramt에 따라서 codec_dai 관련 레지스터를 구성합니다. 
 
  위의 인터페이스는 machine driver에서 다시 호출됩니다. 
+ machine driver tcc_board_ak7755.c의 ak7755_hw_params() 함수를 살펴보겠습니다.
+```c
+static int ak7755_hw_params(struct snd_pcm_substream *substream,
+			struct snd_pcm_hw_params *params)
+{
+	struct snd_soc_pcm_runtime *rtd = substream->private_data;
+	struct snd_soc_dai *codec_dai = rtd->codec_dai;
+	struct snd_soc_dai *cpu_dai = rtd->cpu_dai;
+	unsigned int clk = 0;
+	int ret = 0;
+
+	switch (params_rate(params))	{
+        case 8000:
+        case 16000:
+        case 48000:
+        case 96000:
+            clk = 12288000;
+            break;
+        case 11025:
+        case 22050:
+        case 32000:
+        case 44100:
+        default:
+            clk = 11289600;
+            break;
+	}
+
+	/* set codec DAI configuration */
+	ret = snd_soc_dai_set_fmt(codec_dai, SND_SOC_DAIFMT_I2S | 
+			SND_SOC_DAIFMT_NB_NF | SND_SOC_DAIFMT_CBS_CFS);
+	if (ret < 0)	{
+		printk("%s codec_dai: set_fmt error[%d]\n", __func__, ret);
+		return ret;
+	}
+
+	/* set cpu DAI configuration */
+	ret = snd_soc_dai_set_fmt(cpu_dai, SND_SOC_DAIFMT_I2S |
+			SND_SOC_DAIFMT_NB_NF | SND_SOC_DAIFMT_CBS_CFS);
+	if (ret < 0)	{
+		printk("%s cpu_dai: set_fmt error[%d]\n", __func__, ret);
+		return ret;
+	}
+
+	/* set the codec system clock for DAC and ADC */
+	ret = snd_soc_dai_set_sysclk(codec_dai, AK7755_SYSCLK, clk,
+			SND_SOC_CLOCK_OUT);
+	if (ret < 0) {
+		printk("%s codec_dai: sysclk error[%d]\n", __func__, ret);
+		return ret;
+	}
+
+	/* set the I2S system clock as input (unused) */
+	ret = snd_soc_dai_set_sysclk(cpu_dai, AK7755_SYSCLK, clk, SND_SOC_CLOCK_OUT);
+	if (ret < 0) {
+		printk("%s cpu_dai: sysclk error[%d]\n", __func__, ret);
+		return ret;
+	}
+
+	return 0;
+}
+
+```
+
  machine driver goni_wm8994.c의 goni_hifi_hw_params() 함수를 살펴보겠습니다.
  
 ```c
@@ -618,8 +728,6 @@ codec의 source clock인 mclk 주파수는 24MHz 입니다.
  cpu_dai 및 codec_dai format 설정 :   data format은 i2s, codec은 master, bclk 및 lrclk는 코덱에서 제공합니다.
  codec_dai의 FLL1을 설정합니다. clock source는 MCLK, clock source 주파수는 24MHz, target clock 주파수는 256 fs(fs는 샘플링 주파수) 입니다.
 
-
-dai(codec_dai, cpu_dai)의 clock settings에 대해 주의해야 합니다. 위험하고 복잡합니다. 그리고 잘못된 설정은 많은 문제를 야기 시킵니다. 
 
 ex)
  - system이 무음 : codec system clock, codec_dai bit clock 및 frame clock이 활성화 되어 있는지 확인 하십시오. 
