@@ -735,11 +735,11 @@ ex)
  - 간헐적인 소리 : Codec system clock이 bit clock, frame clock과 일치하는지 확인 하십시오. 이는 sysclk와 BCLK/LRCK가 동일한 clock source로 나누어지지 않기 때문입니다.
 
 ### 3.5 DAPM description  
- DAPM : Dynamic Audio Power Management 의 약어이며, embedded 및 모바일장치 용으로 설계되어 Audio system이 항상 낮은 전력 소비 상태에서 작동하도록 합니다.  
- 목적 : Audio system이 작동하는데 필요한 최소한의 구성요소를 활성화 합니다.  
- 원칙 : Audio path가 변경될 때(ex. upper layer에서 tinymix을 사용하여 audio path를 세팅합니다.) 또는 data flow 이벤트가 발생 될 때(ex. playback이 시작 및 정지), dapm은 Audio codec component를 트리거 합니다.  dapm은 정책에 따라 component의 전원을 독립적으로 enable/disable합니다.   
+ - DAPM : Dynamic Audio Power Management 의 약어이며, embedded 및 모바일장치 용으로 설계되어 Audio system이 항상 낮은 전력 소비 상태에서 작동하도록 합니다.  
+ - 목적 : Audio system이 작동하는데 필요한 최소한의 구성요소를 활성화 합니다.  
+ - 원칙 : Audio path가 변경될 때(ex. upper layer에서 tinymix을 사용하여 audio path를 세팅합니다.) 또는 data flow 이벤트가 발생 될 때(ex. playback이 시작 및 정지), dapm은 Audio codec component를 트리거 합니다.  dapm은 정책에 따라 component의 전원을 독립적으로 enable/disable합니다.   
 
-![](./images/ALSA-15.png)
+![](./image/ALSA-15.png)
 
  위의 예에서 codec의 audio path는 AIF1 > DAC1 > OUTMIXER > SPKOUT 입니다. AIF1은 input endpoint이고, SPKOUT은 output endpoint입니다. 이 path의 위치한 component에 전원이 공급되어야 합니다. 또한 다른 component에는 전원 공급이 차단되어야 합니다.
  그리고 audio compoent는 전원을 켜고 끌 때 일시적인 영향으로 인해 터지는 소리를 생성합니다. 이를 POP라고 합니다. POP는 전기적 특성이므로 완전히 제거할 수 없으며 하드웨어와 소프트웨어를 최적화하여 인간의 귀가 인식할 수 없을 정도로 약화시킬 수 있습니다. DAPM에서는 팝핑 소리를 억제하기 위해 엄격한 순서로 구성 요소의 전원을 켜고 끕니다. 일반적으로 전원 켜기 순서는 입력 끝점에서 출력 끝점으로, 전원 끄기 순서는 출력 끝점에서 입력 끝점입니다.
