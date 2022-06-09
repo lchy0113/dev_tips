@@ -734,10 +734,10 @@ ex)
  - 소리가 왜곡됨 : 오디오 데이터의 sampling rate 가 codec_dai frame clock 과 일치하는지 확인 하십시오.
  - 간헐적인 소리 : Codec system clock이 bit clock, frame clock과 일치하는지 확인 하십시오. 이는 sysclk와 BCLK/LRCK가 동일한 clock source로 나누어지지 않기 때문입니다.
 
-### 3.5 DAPM description
- DAPM : Dynamic Audio Power Management 의 약어이며, embedded 및 모바일장치 용으로 설계되어 Audio system이 항상 낮은 전력 소비 상태에서 작동하도록 합니다.
- 목적 : Audio system이 작동하는데 필요한 최소한의 구성요소를 활성화 합니다.
- 원칙 : Audio path가 변경될 때(ex. upper layer에서 tinymix을 사용하여 audio path를 세팅합니다.) 또는 data flow 이벤트가 발생 될 때(ex. playback이 시작 및 정지), dapm은 Audio codec component를 트리거 합니다.  dapm은 정책에 따라 component의 전원을 독립적으로 enable/disable합니다. 
+### 3.5 DAPM description  
+ DAPM : Dynamic Audio Power Management 의 약어이며, embedded 및 모바일장치 용으로 설계되어 Audio system이 항상 낮은 전력 소비 상태에서 작동하도록 합니다.  
+ 목적 : Audio system이 작동하는데 필요한 최소한의 구성요소를 활성화 합니다.  
+ 원칙 : Audio path가 변경될 때(ex. upper layer에서 tinymix을 사용하여 audio path를 세팅합니다.) 또는 data flow 이벤트가 발생 될 때(ex. playback이 시작 및 정지), dapm은 Audio codec component를 트리거 합니다.  dapm은 정책에 따라 component의 전원을 독립적으로 enable/disable합니다.   
 
 ![](./images/ALSA-15.png)
 
