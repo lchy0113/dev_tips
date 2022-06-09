@@ -59,31 +59,31 @@
 
 20 directories
 ```
- 1) arm, ppc, sparc 
+ 1) arm, ppc, sparc   
  	: 각 아키텍처에 specific 한 top-level card 모듈
  2) core  
- 	- core/oss : pcm 과 mixer oss 에뮬레이션 코드가 저장되어 있음.
-	- core/seq : ALSA sequencer를 위한 서브 디렉토리. sequencer core & primary sequencer 모듈. CONFIG_SND_SEQUENCER가 kernel config에 설정되어 있을때만 컴파일 됨.
-	- core/seq/oss : OSS sequencer 에뮬레이션 코드
- 3) include 
- 	: ALSA 드라이버의 공용 헤더파일들을 위한 디렉토리
- 4) drivers 
- 	: 서로 다른 아키텍쳐상의 서로 다른 드라이버들 중 공유 코드. ex) pcm driver, serial midi driver
- 5) i2c
- 	: alsa i2c 컴포넌트 포함.
-	: linux상의 표준 i2c가 존재하지만 ALSA는 sound 카드를 위한 전용 i2c를 사용.
- 6) oss
- 	: oss/lite는 linux 2.6 tree에 여기에 저장됨.
- 7) pci
- 	: pci 사운드 카드를 사용한 top-level card module과 pci 버스에 특화된 코드.
- 8) pcmcia
- 	: pcmcia, 특히 pccard 드라이버는 이 디렉토리에 위치함.
- 9) synth 
- 	: the synth 미드레벨 모듈 포함하고 있음.
- 10) soc
- 	: embedded system을 위한 driver
- 11) usb 
- 	: usb-audio driver를 포함.
+ 	- core/oss : pcm 과 mixer oss 에뮬레이션 코드가 저장되어 있음.  
+	- core/seq : ALSA sequencer를 위한 서브 디렉토리. sequencer core & primary sequencer 모듈. CONFIG_SND_SEQUENCER가 kernel config에 설정되어 있을때만 컴파일 됨.  
+	- core/seq/oss : OSS sequencer 에뮬레이션 코드  
+ 3) include   
+ 	: ALSA 드라이버의 공용 헤더파일들을 위한 디렉토리  
+ 4) drivers   
+ 	: 서로 다른 아키텍쳐상의 서로 다른 드라이버들 중 공유 코드. ex) pcm driver, serial midi driver  
+ 5) i2c  
+ 	: alsa i2c 컴포넌트 포함.  
+	: linux상의 표준 i2c가 존재하지만 ALSA는 sound 카드를 위한 전용 i2c를 사용.  
+ 6) oss  
+ 	: oss/lite는 linux 2.6 tree에 여기에 저장됨.  
+ 7) pci  
+ 	: pci 사운드 카드를 사용한 top-level card module과 pci 버스에 특화된 코드.  
+ 8) pcmcia  
+ 	: pcmcia, 특히 pccard 드라이버는 이 디렉토리에 위치함.  
+ 9) synth   
+ 	: the synth 미드레벨 모듈 포함하고 있음.  
+ 10) soc  
+ 	: embedded system을 위한 driver  
+ 11) usb   
+ 	: usb-audio driver를 포함.  
 
 <hr/>
 
