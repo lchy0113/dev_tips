@@ -443,3 +443,9 @@ frameworks/av/media/mediaserver/mediaserver.rc
 	 50,000Hz - 상업용 디지털 레코더에서 사용되는 샘플 속도
 	 96,000 또는 192,000Hz - DVD-Audio, 일부 LPCM DVD 오디오 트랙, BD-ROM(Blu-ray Disc) 오디오 트랙 및 HD-DVD(High Definition DVD) 오디오 트랙에서 사용되는 샘플 속도
 	 2.8224MHz - Direct Stream Digital의 1비트 시그마-델타 변조 프로세스에서 사용하는 샘플링 속도입니다.
+
+
+
+
+ - reference 
+   * https://blog.csdn.net/zyuanyun/article/details/60890534?spm=1001.2014.3001.5501
