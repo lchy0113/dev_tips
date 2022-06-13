@@ -919,3 +919,8 @@ snd_soc_dai는 cpu_dai 등록 시 생성되는 dai 인스턴스이고 snd_soc_pl
 
  ![](./images/ALSA-13.png)
 
+
+
+ - reference 
+   * https://blog.csdn.net/zyuanyun/article/details/59170418?spm=1001.2014.3001.5501
+   * https://blog.csdn.net/zyuanyun/article/details/59180272?spm=1001.2014.3001.5501
