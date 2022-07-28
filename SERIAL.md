@@ -138,11 +138,11 @@ struct tty_driver, struct uart_state(struct tty_port) 이 2 구조체는 uart_re
 
 
 ### uart_add_one_port 함수 #1
-매개 변수로 struct uart_driver와  struct uart_port를 받는데
-uart_driver는 uart_register_driver 함수를 등록 되어지고, 초기화 되어 잇어야 합니다.
-struct uart_port 구조체는 hw uart driver가 static 변수로 가지고 있을 것이고, 
-add port하기 전에 line (ip 번호 및 port 번호)을 지정하여야 하고 <첨부2-2> 참고
-기타 등등 몇가지를 초기화 하고 uart_add_one_port 함수를 호출합니다. <첨부 3-1> 참고
+매개 변수로 struct uart_driver와  struct uart_port를 받는데  
+uart_driver는 uart_register_driver 함수를 등록 되어지고, 초기화 되어 있어야 합니다.  
+struct uart_port 구조체는 hw uart driver가 static 변수로 가지고 있을 것이고,   
+add port하기 전에 line (ip 번호 및 port 번호)을 지정하여야 하고 <첨부2-2> 참고  
+기타 등등 몇가지를 초기화 하고 uart_add_one_port 함수를 호출합니다. <첨부 3-1> 참고  
 
 ### uart_add_one_port 함수 #2
 소스 레벨에서 분석해보면
