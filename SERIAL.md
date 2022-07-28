@@ -35,7 +35,7 @@ struct tty_driver를 생성하여 tty layer에 등록하도록 도와주는 함�
 또 다른 의미로는 hw uart driver가 가진 struct uart_driver 구조체를 
 초기화 하는 것으로도 설명 할 수 있습니다.
 왜냐하면 이 초기화된 struct uart_drvier 구조체를 이용하여
-uart_add_oe_port 함수를 호출하여 hw uart driver가 가지고 있는 
+uart_add_one_port 함수를 호출하여 hw uart driver가 가지고 있는 
 struct uart_port를 등록 할 수 있기 때문 입니다.
 (즉, uart_port를 등록하기 위한 key입니다. )
 
@@ -138,6 +138,13 @@ struct tty_driver, struct uart_state(struct tty_port) 이 2 구조체는 uart_re
 
 
 ### uart_add_one_port 함수 #1
+매개 변수로 struct uart_driver와  struct uart_port를 받는데
+uart_driver는 uart_register_driver 함수를 등록 되어지고, 초기화 되어 잇어야 합니다.
+struct uart_port 구조체는 hw uart driver가 static 변수로 가지고 있을 것이고, 
+add port하기 전에 line (ip 번호 및 port 번호)을 지정하여야 하고 <첨부2-2> 참고
+기타 등등 몇가지를 초기화 하고 uart_add_one_port 함수를 호출합니다. <첨부 3-1> 참고
+
+### uart_add_one_port 함수 #2
 소스 레벨에서 분석해보면
 ```c
 int uart_add_one_port(struct uart_driver 8drv, struct uart_port *uport) drivers/tty/serial/serial_core.c
@@ -358,6 +365,29 @@ struct uart_port {
 
 <첨부3-1>-start
 ```c
+static int pl011_register_port(struct uart_amba_port *uap)
+{
+	int ret;
+
+	/* Ensure interrupts from this UART are masked and cleared */
+	pl011_write(0, uap, REG_IMSC);
+	pl011_write(0xffff, uap, REG_ICR);
+
+	if (!amba_reg.state) {
+		ret = uart_register_driver(&amba_reg);
+		if (ret < 0) {
+			dev_err(uap->port.dev,
+				"Failed to register AMBA-PL011 driver\n");
+			return ret;
+		}
+	}
+
+	ret = uart_add_one_port(&amba_reg, &uap->port);
+	if (ret)
+		pl011_unregister_port(uap);
+
+	return ret;
+}
 
 ```
 <첨부3-1>-end
