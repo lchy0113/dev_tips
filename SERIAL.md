@@ -1,9 +1,66 @@
 # Serial 
 
+## Prime cell uart(pl011)
+tcc8985에는 serial module pl011을 포함하고 있습니다. 이 모듈은 pl011으로 AMBA와 호환되는 peripheral입니다. 
+아래와 같은 특징을 가지고 있습니다.
+- transmit fifo 32x8
+- receive fifo 32x12
+- programmable baud rate generator
+- support direct memory access
+
+uart block diagram
+![](./image/SERIAL-01.png)
+APB interface를 통해서 uart 모듈의 레지스터를 read/write할수 있습니다. 
+transmit/receive FIFO가 모듈내에 존재하고 있습니다. 
+- transmit fifo는 8bit word를 32개 저장할 수 있습니다. ap가 uart를 통해 전송하려는 데이터들은 실제로 전송 되기 전에 transmit fifo 에 저장됩니다.
+- receive fifo는 12bit word를 32개 저장할 수 있습니다. 수신된 데이터 8bit와 각종 status 4bit를 포함하여 12bit 이며, receiver 모듈에서 수신된 데이터는 ap에서 read 되기 전까지 receive fifo에 저장되어 있습니다.
+
+
+### 데이터 transmit 및 receive 과정
+- transmit 과정 
+데이터는 transmit fifo에 저장됩니다. uart가 동작 중이라면 해당 fifo에 위치한 값들을 전송하기 시작해서 transmit fifo가 비워질 때까지 전송합니다. 
+- receive 과정
+receive modue 이 수신된 데이터 중, start bit를 발견하게 되면 데이터 샘플링을 시작합니다. 
+유효한 stop bit를 받게 된다면 전송이 완료되었다고 판단합니다. 
+이때 한 word가 완성되면 receive fifo에 push하게 되며 전송시 발생한 error도 함께 전송합니다. 
+uart의 한 character frame은 아래와 같습니다.
+![](./image/SERIAL-02.png)
+
+
+### pl011 register 
+![](./image/SERIAL-03.png)
+
+- PBR & THR
+	: uart를 통해 주고 받는 데이터를 접근할 수 있는 레지스터 입니다. 해당 레지스터는 width가 12/8 두가지의 경우를 가지고 있습니다. 읽을 때는 receive fifo에 접근하기 때문에 12bit이고, 쓸 때는 transmit fifo에 접근하기 때문에 8bit인것입니다. 
+- RSR/ECR
+	: receive 할 때 발생한 에러들은 receive fifo뿐만 아니라 RSR/ECR 을 읽으면 확인 할 수 있습니다. 해당 레지스터에 값을 write하여 에러를 clear할 수도 있습니다. 
+- FR
+	: 각각의 fifo의 상태를 알수 있습니다. 즉, fifo가 비어있는지 또는 fifo가 다 찻는지 확인할 수 있습니다. 
+- ILPR
+	: InDR(unuse)
+- IBRD & FBRD
+	: uart는 baud rate에 따라서 데이터를 샘플링합니다. 이때 baud rate는 해당 uart모듈에 전달되는  uartclk를 이용해서 생성됩니다.  이때 IBRD & FBRD에 저장된 값을 사용하여 uartclk를 나누게 됩니다.
+- LCR_H
+	: line control에 관련된 세팅을 저장하고 있습니다. 
+- CR
+	: 실제로 uart동작을 활성화 & 비활성화 할 수 있는 비트가 있습니다. transmit/receive의 기능을 각각 활성화 비활성화 하는 비트들도 존재합니다. 
+- IFLS
+- IMSC
+	: 인터럽트 관련 레지스터 입니다.
+- RIS
+- MIS
+- ICR
+- DMACR
+
+
+link :https://developer.arm.com/documentation/ddi0183/f/introduction?lang=en
+note : AMBA(Advanced Microcontroller Bus Architecture)는 ARM사가 개발한 시스템 LSI용 온칩(On-Chip, 칩 내부) 버스 표준입니다. 
+
+
 ## serial_core, uart_driver, serial_console
 > BUG_ON(in_interrupt()); // 이 구문이 인터럽트 핸들러 안에서 수행하면 BUG!!
 
-uart ip device driver는 커널에서 drivers/tty/serial/ 에서 존재하게 되고, 
+uart ip device driver(hardware specific driver)는 커널에서 drivers/tty/serial/ 에서 존재하게 되고, 
 상위 framework는 serial_core.c입니다.
 drivers/tty/serial/ 는 serial_core kernel framework와 hw device driver가 존재하게 됩니다. 
 보통 serial_core.o + uart_ip_device_driver.o 조합으로 구성되어 있습니다.
@@ -65,6 +122,8 @@ int uart_register_driver(struct uart_driver *drv) drivers/tty/serial/serial_core
 		serial_core.c 내부에 있는 uart_ops를 tty_driver->ops에 연결 한다.
 		uart_ops를 <첨부2>를 참고한다. 
 		uart_ops는 대부분 struct uart_port의 ops 함수를 호출한다. 
+			|
+			+-> tx_empty(port) : 'port'에 transmitter fifo 와 shifter가 비어져 있는지 테스트하며, 비어진 경우, "TIOCSER_TEMT" 를 아닌경우, 0을 반환한다.
 		struct uart_port의 ops는 hw uart driver에서 선언되어 있으면 hw를 control하는 코드 이다. 
 
 		for (i = 0; i < drv->nr; i++) {
@@ -147,7 +206,7 @@ add port하기 전에 line (ip 번호 및 port 번호)을 지정하여야 하고
 ### uart_add_one_port 함수 #2
 소스 레벨에서 분석해보면
 ```c
-int uart_add_one_port(struct uart_driver 8drv, struct uart_port *uport) drivers/tty/serial/serial_core.c
+int uart_add_one_port(struct uart_driver *drv, struct uart_port *uport) drivers/tty/serial/serial_core.c
 ```
 
 <첨부1>-start
@@ -427,6 +486,7 @@ RS485 example for Atmel USART:
 
 ```
 
+> note : BUG_ON(in_interrupt()); // 이 구문이 인터럽트 핸들러 안에서 수행하면 BUG!!
 
 - linux device code
  * ha_driver : ssh://git@git.kdiwin.com:7999/teamhnrnd/ha_driver.git
