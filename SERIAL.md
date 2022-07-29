@@ -8,8 +8,9 @@ tcc8985에는 serial module pl011을 포함하고 있습니다. 이 모듈은 pl
 - programmable baud rate generator
 - support direct memory access
 
-uart block diagram
-![](./image/SERIAL-01.png)
+uart block diagram  
+![](./image/SERIAL-01.png)  
+
 APB interface를 통해서 uart 모듈의 레지스터를 read/write할수 있습니다. 
 transmit/receive FIFO가 모듈내에 존재하고 있습니다. 
 - transmit fifo는 8bit word를 32개 저장할 수 있습니다. ap가 uart를 통해 전송하려는 데이터들은 실제로 전송 되기 전에 transmit fifo 에 저장됩니다.
@@ -23,8 +24,8 @@ transmit/receive FIFO가 모듈내에 존재하고 있습니다.
 receive modue 이 수신된 데이터 중, start bit를 발견하게 되면 데이터 샘플링을 시작합니다. 
 유효한 stop bit를 받게 된다면 전송이 완료되었다고 판단합니다. 
 이때 한 word가 완성되면 receive fifo에 push하게 되며 전송시 발생한 error도 함께 전송합니다. 
-uart의 한 character frame은 아래와 같습니다.
-![](./image/SERIAL-02.png)
+uart의 한 character frame은 아래와 같습니다.  
+![](./image/SERIAL-02.png)  
 
 
 ### pl011 register 
