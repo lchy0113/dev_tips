@@ -65,6 +65,7 @@ uart_register_driver함수 struct uart_driver구조체를 매개 변수로 받�
 구조체 내용은 <첨부1>을 참고합니다.  
   
 uart_register_driver의 주석 내용을 확인하면,     
+
 <uart driver(hw)를 core driver(serial_core)에 등록한다.     
 이 함수 안에서 tty layer에 등록하고 core driver를 초기화 한다.    
 normal driver(tty layer)등록 이후, /proc/tty/driver/"named"를 가진다.    
@@ -73,8 +74,7 @@ struct uart_driver->port는 NULL이어야만 한다.
 uart_register_driver 함수 호출 이후에 uart_add_one_port를 호출 하여   
 각 port 구조체가 등록 될 것이다.>  
   
-정리하면, uart_register_driver함수는 serial_core에서 제공해 주는 함수로  
-struct tty_driver를 생성하여 tty layer에 등록하도록 도와주는 함수 입니다.  
+정리하면, uart_register_driver함수는 serial_core에서 제공해 주는 함수로 struct tty_driver를 생성하여 tty layer에 등록하도록 도와주는 함수 입니다.  
 
 ```bash
 +----------------------------------------------+
@@ -82,11 +82,8 @@ struct tty_driver를 생성하여 tty layer에 등록하도록 도와주는 함�
 +----------------------------------------------+
 ```
   
-또 다른 의미로는 hw uart driver가 가진 struct uart_driver 구조체를   
-초기화 하는 것으로도 설명 할 수 있습니다.  
-왜냐하면 이 초기화된 struct uart_drvier 구조체를 이용하여  
-uart_add_one_port 함수를 호출하여 hw uart driver가 가지고 있는   
-struct uart_port를 등록 할 수 있기 때문 입니다.  
+또 다른 의미로는 hw uart driver가 가진 struct uart_driver 구조체를 초기화 하는 것으로도 설명 할 수 있습니다.  
+왜냐하면 이 초기화된 struct uart_drvier 구조체를 이용하여 uart_add_one_port 함수를 호출하여 hw uart driver가 가지고 있는 struct uart_port를 등록 할 수 있기 때문 입니다.  
 (즉, uart_port를 등록하기 위한 key입니다. )  
   
 ### uart_register_driver 함수 #2
