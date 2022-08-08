@@ -31,52 +31,44 @@ uart의 한 character frame은 아래와 같습니다.
 ### pl011 register 
 ![](./image/SERIAL-03.png)
 
-- PBR & THR
-	: uart를 통해 주고 받는 데이터를 접근할 수 있는 레지스터 입니다. 해당 레지스터는 width가 12/8 두가지의 경우를 가지고 있습니다. 읽을 때는 receive fifo에 접근하기 때문에 12bit이고, 쓸 때는 transmit fifo에 접근하기 때문에 8bit인것입니다. 
-- RSR/ECR
-	: receive 할 때 발생한 에러들은 receive fifo뿐만 아니라 RSR/ECR 을 읽으면 확인 할 수 있습니다. 해당 레지스터에 값을 write하여 에러를 clear할 수도 있습니다. 
-- FR
-	: 각각의 fifo의 상태를 알수 있습니다. 즉, fifo가 비어있는지 또는 fifo가 다 찻는지 확인할 수 있습니다. 
-- ILPR
-	: InDR(unuse)
-- IBRD & FBRD
-	: uart는 baud rate에 따라서 데이터를 샘플링합니다. 이때 baud rate는 해당 uart모듈에 전달되는  uartclk를 이용해서 생성됩니다.  이때 IBRD & FBRD에 저장된 값을 사용하여 uartclk를 나누게 됩니다.
-- LCR_H
-	: line control에 관련된 세팅을 저장하고 있습니다. 
-- CR
-	: 실제로 uart동작을 활성화 & 비활성화 할 수 있는 비트가 있습니다. transmit/receive의 기능을 각각 활성화 비활성화 하는 비트들도 존재합니다. 
+- PBR & THR	: uart를 통해 주고 받는 데이터를 접근할 수 있는 레지스터 입니다. 해당 레지스터는 width가 12/8 두가지의 경우를 가지고 있습니다. 읽을 때는 receive fifo에 접근하기 때문에 12bit이고, 쓸 때는 transmit fifo에 접근하기 때문에 8bit인것입니다. 
+- RSR/ECR	: receive 할 때 발생한 에러들은 receive fifo뿐만 아니라 RSR/ECR 을 읽으면 확인 할 수 있습니다. 해당 레지스터에 값을 write하여 에러를 clear할 수도 있습니다. 
+- FR	: 각각의 fifo의 상태를 알수 있습니다. 즉, fifo가 비어있는지 또는 fifo가 다 찻는지 확인할 수 있습니다. 
+- ILPR	: InDR(unuse)
+- IBRD & FBRD	: uart는 baud rate에 따라서 데이터를 샘플링합니다. 이때 baud rate는 해당 uart모듈에 전달되는  uartclk를 이용해서 생성됩니다.  이때 IBRD & FBRD에 저장된 값을 사용하여 uartclk를 나누게 됩니다.
+- LCR_H	: line control에 관련된 세팅을 저장하고 있습니다. 
+- CR	: 실제로 uart동작을 활성화 & 비활성화 할 수 있는 비트가 있습니다. transmit/receive의 기능을 각각 활성화 비활성화 하는 비트들도 존재합니다. 
 - IFLS
-- IMSC
-	: 인터럽트 관련 레지스터 입니다.
+- IMSC	: 인터럽트 관련 레지스터 입니다.
 - RIS
 - MIS
 - ICR
 - DMACR
 
 
-link :https://developer.arm.com/documentation/ddi0183/f/introduction?lang=en
-note : AMBA(Advanced Microcontroller Bus Architecture)는 ARM사가 개발한 시스템 LSI용 온칩(On-Chip, 칩 내부) 버스 표준입니다. 
+link :https://developer.arm.com/documentation/ddi0183/f/introduction?lang=en  
+note : AMBA(Advanced Microcontroller Bus Architecture)는 ARM사가 개발한 시스템 LSI용 온칩(On-Chip, 칩 내부) 버스 표준입니다.   
 
 
 ## serial_core, uart_driver, serial_console
 > BUG_ON(in_interrupt()); // 이 구문이 인터럽트 핸들러 안에서 수행하면 BUG!!
 
-uart ip device driver(hardware specific driver)는 커널에서 drivers/tty/serial/ 에서 존재하게 되고, 
-상위 framework는 serial_core.c입니다.  
-drivers/tty/serial/ 는 serial_core kernel framework와 hw device driver가 존재하게 됩니다.   
+uart ip device driver(hardware specific driver)는 커널에서 drivers/tty/serial/ 에서 존재하게 되고,   
+상위 framework는 serial_core.c입니다.    
+drivers/tty/serial/ 는 serial_core kernel framework와 hw device driver가 존재하게 됩니다.     
 보통 serial_core.o + uart_ip_device_driver.o 조합으로 구성되어 있습니다.  
-
-serial_core는 자기에에게 등록 될 수 있는 함수 uart_register_driver와 uart_add_one_port를 제공합니다.
+  
+serial_core는 자기에에게 등록 될 수 있는 함수 uart_register_driver와 uart_add_one_port를 제공합니다.  
 
 ### uart_register_driver 함수 #1
 uart_register_driver함수 struct uart_driver구조체를 매개 변수로 받습니다.  
 구조체 내용은 <첨부1>을 참고합니다.  
   
-uart_register_driver의 주석 내용을 확인하면,   
-<uart driver(hw)를 core driver(serial_core)에 등록한다.   
-이 함수 안에서 tty layer에 등록하고 core driver를 초기화 한다.  
-normal driver(tty layer)등록 이후, /proc/tty/driver/"named"를 가진다.  
-(named는 uart driver(hw) name으로 정해 지는 것으로 보임)  
+uart_register_driver의 주석 내용을 확인하면,     
+<uart driver(hw)를 core driver(serial_core)에 등록한다.     
+이 함수 안에서 tty layer에 등록하고 core driver를 초기화 한다.    
+normal driver(tty layer)등록 이후, /proc/tty/driver/"named"를 가진다.    
+(named는 uart driver(hw) name으로 정해 지는 것으로 보임)    
 struct uart_driver->port는 NULL이어야만 한다.   
 uart_register_driver 함수 호출 이후에 uart_add_one_port를 호출 하여   
 각 port 구조체가 등록 될 것이다.>  
