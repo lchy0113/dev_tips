@@ -521,7 +521,22 @@ static void uart_start(struct tty_struct *tty) drivers/tty/serial/serial_core.c
 
 ```
 
+- issue
 
+**RS485 txen gpio support 기능**
+1. kernel layer 에서 제어. (txen gpio를 kernel layer에서 제어 한다. )
+  - **커널 RS485 API를 사용하는 방법.  **
+    * rs485 기능을 지원하는 오픈 소스 코드가 커널에 포함되어 있으므로 해당 코드 분석 필요. 
+    * 참고 : https://www.kernel.org/doc/Documentation/serial/serial-rs485.txt
+    * struct serial_rs485 를 사용. 
+    * *검토 결과, RTS 와 DTR  신호를 사용하여 TXEN 인터페이스를 제어하는데 사용하고 있음. 일부 SoC (Atmel AT91,,)에서만 사용가능한 코드로 보임.*
+  - **uart_port의 control methods(uart_ops)를 사용하는 방법. (uart ip device driver)**
+    * transmitter buffer에서 데이터 전송과 TXEN 인터페이스를 제어하는 타이밍을 세팅해주어야 함. 
+    * control methods 를 통한 TXEN 인터페이스 제어는 정상 동작 되지 않음. 
+    * 데이터 전송 후, uart register를 체크하여 txen 을 제어하는 방법을 검토 중.  
+    * TX/RX는 확인 되었지만 TXEN 인터페이스가 타이밍에 맞게 제어되지 않는 경우 발생되어 다른 구현 방법을 검토 중. 
+  - **n_gsm 모돌을 레퍼런스하여 새로운 드라이버 작성하여 구현하는 방법.**
+    * *검토 중.*
+2. user layer 에서 제어. (txen gpio를 user layer에서 제어한다.)
+  - **uart tx 전/후 txen gpio를 제어하는 인터페이스를 사용하도록 하는 방법**
 
-[2022-07-28 10:35:10.792] [   71.936435] uart_write(652)
-[2022-07-28 10:35:10.792] [   71.939318] uart_flush_chars(569)
