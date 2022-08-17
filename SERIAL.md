@@ -1,6 +1,7 @@
 # Serial 
 
 ## Prime cell uart(pl011)
+
 tcc8985에는 serial module pl011을 포함하고 있습니다. 이 모듈은 pl011으로 AMBA와 호환되는 peripheral입니다. 
 아래와 같은 특징을 가지고 있습니다.
 - transmit fifo 32x8
@@ -18,6 +19,7 @@ transmit/receive FIFO가 모듈내에 존재하고 있습니다.
 
 
 ### 데이터 transmit 및 receive 과정
+
 - transmit 과정   
 데이터는 transmit fifo에 저장됩니다. uart가 동작 중이라면 해당 fifo에 위치한 값들을 전송하기 시작해서 transmit fifo가 비워질 때까지 전송합니다.   
 - receive 과정  
@@ -29,6 +31,7 @@ uart의 한 character frame은 아래와 같습니다.
 
 
 ### pl011 register 
+
 ![](./image/SERIAL-03.png)
 
 - PBR & THR	: uart를 통해 주고 받는 데이터를 접근할 수 있는 레지스터 입니다. 해당 레지스터는 width가 12/8 두가지의 경우를 가지고 있습니다. 읽을 때는 receive fifo에 접근하기 때문에 12bit이고, 쓸 때는 transmit fifo에 접근하기 때문에 8bit인것입니다. 
@@ -51,6 +54,7 @@ note : AMBA(Advanced Microcontroller Bus Architecture)는 ARM사가 개발한 �
 
 
 ## serial_core, uart_driver, serial_console
+
 > BUG_ON(in_interrupt()); // 이 구문이 인터럽트 핸들러 안에서 수행하면 BUG!!
 
 uart ip device driver(hardware specific driver)는 커널에서 drivers/tty/serial/ 에서 존재하게 되고,   
@@ -61,6 +65,7 @@ drivers/tty/serial/ 는 serial_core kernel framework와 hw device driver가 존�
 serial_core는 자기에에게 등록 될 수 있는 함수 uart_register_driver와 uart_add_one_port를 제공합니다.  
 
 ### uart_register_driver 함수 #1
+
 uart_register_driver함수 struct uart_driver구조체를 매개 변수로 받습니다.  
 구조체 내용은 <첨부1>을 참고합니다.  
   
@@ -87,7 +92,9 @@ uart_register_driver 함수 호출 이후에 uart_add_one_port를 호출 하여
 (즉, uart_port를 등록하기 위한 key입니다. )  
   
 ### uart_register_driver 함수 #2
+
 소스레벨에서 분석해보면, 
+
 ```c
 int uart_register_driver(struct uart_driver *drv) drivers/tty/serial/serial_core.c
 	|
@@ -178,6 +185,7 @@ int uart_register_driver(struct uart_driver *drv) drivers/tty/serial/serial_core
 |                       +-------------------------+      +------------------+  |            
 +------------------------------------------------------------------------------+
 ```
+
 위 그림은 구조체 개념도 입니다. 
 struct tty_driver가 user space와 담당하는 모듈이고, 
 struct uart_driver가 hw driver를 호출하고 등록/제거 하며,  tty_driver와 유기적으로 동작합니다.
@@ -187,6 +195,7 @@ struct tty_driver, struct uart_state(struct tty_port) 이 2 구조체는 uart_re
 
 
 ### uart_add_one_port 함수 #1
+
 매개 변수로 struct uart_driver와  struct uart_port를 받는데  
 uart_driver는 uart_register_driver 함수를 등록 되어지고, 초기화 되어 있어야 합니다.  
 struct uart_port 구조체는 hw uart driver가 static 변수로 가지고 있을 것이고,   
@@ -194,6 +203,7 @@ add port하기 전에 line (ip 번호 및 port 번호)을 지정하여야 하고
 기타 등등 몇가지를 초기화 하고 uart_add_one_port 함수를 호출합니다. <첨부 3-1> 참고  
 
 ### uart_add_one_port 함수 #2
+
 소스 레벨에서 분석해보면
 ```c
 int uart_add_one_port(struct uart_driver *drv, struct uart_port *uport) drivers/tty/serial/serial_core.c
@@ -444,6 +454,7 @@ static int pl011_register_port(struct uart_amba_port *uap)
 ---
 
 ## block
+
 ```bash
 +------------------------------------------------+
 |                                                |
@@ -460,8 +471,10 @@ static int pl011_register_port(struct uart_amba_port *uap)
 ```
 
 
+---
 
 ## reference code
+
 drivers/tty/serial/atmel_serial.c
 
 ```dts
