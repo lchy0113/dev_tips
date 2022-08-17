@@ -455,6 +455,9 @@ static int pl011_register_port(struct uart_amba_port *uap)
 
 ## the function call flow of tty and uart
 
+
+![](./image/SERIAL-04.png)
+
  1. 어플리케이션 layer에서 data send 절차
 
 ```c
