@@ -453,7 +453,66 @@ static int pl011_register_port(struct uart_amba_port *uap)
 
 ---
 
-## block
+## the function call flow of tty and uart
+
+ 1. 어플리케이션 layer에서 data send 절차
+
+```c
+write(uartfd, p, size)
+	|
+	+-> static const struct file_operations tty_fops = {
+	|		.write		= tty_write,
+	|
+	+-> static ssize_t tty_write(struct file *, const char __user *, size_t, loff_t *);
+		/** 
+		  * line discipline 을 통하여 tty device 에 data를 write합니다.
+		  * line discipline : include/uapi/linux/tty.h
+		  * 새로운 line discipline이 필요한 경우, 정의가 필요합니다. 
+		  */
+		|
+		+->	static inline ssize_t do_tty_write(
+				ssize_t (*write)(struct tty_struct *, struct file *, const unsigned char *, size_t),
+				struct tty_struct *tty,
+				struct file *file,
+				const char __user *buf,
+				size_t count)
+			/**
+			  * tty_ldisc->tty_ldisc_ops->write 
+			  */
+			  |
+			  +-> tty_ldisc_ops.write = static int uart_write(struct tty_struct *tty, const unsigned char *buf, int count)
+			  	/**
+				  * write 함수는 line discipline module에 의해 정의 되었나? 
+				  * tty->ops->write(tty, tbuf->buf, tbuf->count)
+				  * tty_struct->tty_driver->tty_operations->write
+				  * user로부터 전달 받은 buf의 데이터를 circ buffer로 copy
+				  */
+				  |
+				  +-> void __uart_start(struct tty_struct *tty)
+				  	/** 
+					  * port->ops->start_tx(port);
+					  * uart_port->uart_ops->start_tx
+					  */
+					  |
+					  +-> struct uart_ops amba_pl011_pops = {
+						.start_tx  = pl011_start_tx
+```
+ - 위 포인트에서 user message(data)가 전송 됩니다. 
+ - message flow에서 message가 ldisc line discipine layer를 통과한 다음, tty layer 를 통하여 hardware driver layer로 전달되는 것을 확인 할 수 있습니다.
+ - message 전송 시, ldiscipine layer를 통과하여 tty layer 으로 전송된 다음 hardware driver layer로 전송되는 이유는?? 
+    * file_operation.do_tty_write(ld->ops->write, tty, file, buf, count);
+	  tty_ldisc->ops->(*write)(struct tty_struct *tty, struct file *file, const unsigned char *buf, size_t nr);
+    * tty_ldisc_ops.n_tty_write(struct tty_struct *tty, struct file *file, const unsigned char *buf, size_t nr);
+	  tty->ops->write(tty, b, nr); tty_operations->ops->(*write)(struct tty_struct *tty, const unsigned char *buf, int count)
+	* tty_operations.uart_write(struct tty_struct *tty, const unsigned char *buf, int count)
+	  memcpy(circ->buf + circ->head, buf, c);
+	* uart_ops.pl011_start_tx(struct uart_port *port)
+	  pl011_write(c, uap, REG_DR);
+
+
+---
+
+## rs485 block
 
 ```bash
 +------------------------------------------------+
@@ -542,4 +601,19 @@ static void uart_start(struct tty_struct *tty) drivers/tty/serial/serial_core.c
     * *검토 중.*
 2. user layer 에서 제어. (txen gpio를 user layer에서 제어한다.)
   - **uart tx 전/후 txen gpio를 제어하는 인터페이스를 사용하도록 하는 방법**
+
+
+---
+
+- note
+
+tty_io
+serial_core
+amba_pl011
+
+
+```c
+
+```
+
 
