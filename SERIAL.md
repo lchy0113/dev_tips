@@ -491,6 +491,9 @@ RS485 example for Atmel USART:
 
 ```
 
+## reference site
+https://man7.org/linux/man-pages/man3/tcflush.3.html
+
 --- 
 
 ## develop rs485 on soc board
