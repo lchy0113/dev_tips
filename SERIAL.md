@@ -62,7 +62,7 @@ uart ip device driver(hardware specific driver)는 커널에서 drivers/tty/seri
 drivers/tty/serial/ 는 serial_core kernel framework와 hw device driver가 존재하게 됩니다.     
 보통 serial_core.o + uart_ip_device_driver.o 조합으로 구성되어 있습니다.  
   
-serial_core는 자기에에게 등록 될 수 있는 함수 uart_register_driver와 uart_add_one_port를 제공합니다.  
+serial_core는 자기에에게 등록 될 수 있는 함수 *uart_register_driver*와 *uart_add_one_port*를 제공합니다.  
 
 ### uart_register_driver 함수 #1
 
