@@ -498,8 +498,8 @@ RS485 example for Atmel USART:
 > note : BUG_ON(in_interrupt()); // 이 구문이 인터럽트 핸들러 안에서 수행하면 BUG!!
 
 - linux device code
- * ha_driver : ssh://git@git.kdiwin.com:7999/teamhnrnd/ha_driver.git
- * kernel : ssh://git@git.kdiwin.com:7999/teamhnrnd/tcc892x-bsp.git
+  * ha_driver : ssh://git@git.kdiwin.com:7999/teamhnrnd/ha_driver.git
+  * kernel : ssh://git@git.kdiwin.com:7999/teamhnrnd/tcc892x-bsp.git
  			|
 			+-> LINUX_TCC8925_BB_BSP_130906_R1444_homenet/linux/kernel/drivers/tty/serial/tcc_serial.c
 			
