@@ -529,7 +529,7 @@ static void uart_start(struct tty_struct *tty) drivers/tty/serial/serial_core.c
     * rs485 기능을 지원하는 오픈 소스 코드가 커널에 포함되어 있으므로 해당 코드 분석 필요. 
     * 참고 : https://www.kernel.org/doc/Documentation/serial/serial-rs485.txt
     * struct serial_rs485 를 사용. 
-    * *검토 결과, RTS 와 DTR  신호를 사용하여 TXEN 인터페이스를 제어하는데 사용하고 있음. 일부 SoC (Atmel AT91,,)에서만 사용가능한 코드로 보임.*
+    * *_검토 결과, RTS 와 DTR  신호를 사용하여 TXEN 인터페이스를 제어하는데 사용하고 있음. 일부 SoC (Atmel AT91,,)에서만 사용가능한 코드로 보임._*
   - **uart_port의 control methods(uart_ops)를 사용하는 방법. (uart ip device driver)**
     * transmitter buffer에서 데이터 전송과 TXEN 인터페이스를 제어하는 타이밍을 세팅해주어야 함. 
     * control methods 를 통한 TXEN 인터페이스 제어는 정상 동작 되지 않음. 
