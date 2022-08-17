@@ -491,6 +491,10 @@ RS485 example for Atmel USART:
 
 ```
 
+--- 
+
+## develop rs485 on soc board
+
 > note : BUG_ON(in_interrupt()); // 이 구문이 인터럽트 핸들러 안에서 수행하면 BUG!!
 
 - linux device code
@@ -500,6 +504,7 @@ RS485 example for Atmel USART:
 			+-> LINUX_TCC8925_BB_BSP_130906_R1444_homenet/linux/kernel/drivers/tty/serial/tcc_serial.c
 			
 
+---
 
 - review code(tcc8985)
 
