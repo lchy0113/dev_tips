@@ -601,8 +601,75 @@ static const struct tty_operations uart_ops = {
 	.poll_put_char	= uart_poll_put_char,
 #endif
 };
+```
 
+   2.3 tty_ldisc_ops 함수 세팅 할당에 대해 설명
 
+```c
+int tty_register_ldisc(int disc, struct tty_ldisc_ops *new_ldisc)
+	/**
+	  * line discipline module 초기화 시 호출 됩니다. 
+	  */
+	|
+	+-> tty_ldiscs[disc] = new_ldisc;
+		/**
+		  * tty_ldisc에는 각 line discipline number가 포힘되어 있습니다.
+		  * default tty인 경우, n_tty.c의global variable tty_ldisc_N_TTY가 사용됩니다.
+		  *
+		  * 아래는 n_tty.c에 정의된 default N_tty 예제 입니다.
+		  * user 는 line regulation module을 작성하고, 데이터 캡슐화를 수행하고 method를 세팅할 수 있습니다. 
+		  */
+```
+
+drivers/tty/n_tty.c
+```c
+struct tty_ldisc_ops tty_ldisc_N_TTY = {
+	.magic           = TTY_LDISC_MAGIC,
+	.name            = "n_tty",
+	.open            = n_tty_open,
+	.close           = n_tty_close,
+	.flush_buffer    = n_tty_flush_buffer,
+	.chars_in_buffer = n_tty_chars_in_buffer,
+	.read            = n_tty_read,
+	.write           = n_tty_write,
+	.ioctl           = n_tty_ioctl,
+	.set_termios     = n_tty_set_termios,
+	.poll            = n_tty_poll,
+	.receive_buf     = n_tty_receive_buf,
+	.write_wakeup    = n_tty_write_wakeup,
+	.fasync		 = n_tty_fasync,
+	.receive_buf2	 = n_tty_receive_buf2,
+};
+```
+
+   2.4 uart_ops 함수 세팅 할당에 대해 설명
+
+drivers/tty/serial/amba-pl011.c
+```c
+static struct uart_ops amba_pl011_pops = {
+	.tx_empty	= pl011_tx_empty,
+	.set_mctrl	= pl011_set_mctrl,
+	.get_mctrl	= pl011_get_mctrl,
+	.stop_tx	= pl011_stop_tx,
+	.start_tx	= pl011_start_tx,
+	.stop_rx	= pl011_stop_rx,
+	.enable_ms	= pl011_enable_ms,
+	.break_ctl	= pl011_break_ctl,
+	.startup	= pl011_startup,
+	.shutdown	= pl011_shutdown,
+	.flush_buffer	= pl011_dma_flush_buffer,
+	.set_termios	= pl011_set_termios,
+	.type		= pl011_type,
+	.release_port	= pl011_release_port,
+	.request_port	= pl011_request_port,
+	.config_port	= pl011_config_port,
+	.verify_port	= pl011_verify_port,
+#ifdef CONFIG_CONSOLE_POLL
+	.poll_init     = pl011_hwinit,
+	.poll_get_char = pl011_get_poll_char,
+	.poll_put_char = pl011_put_poll_char,
+#endif
+};
 ```
 
 
