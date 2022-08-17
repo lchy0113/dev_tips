@@ -514,6 +514,98 @@ write(uartfd, p, size)
 	  pl011_write(c, uap, REG_DR);  
 
 
+ 2. 레이어별 uart와 tty 간의 호출 관계
+
+   2.1 file_operation 함수 세팅 할당에 대해 설명 
+
+     - *file_operations* 및 *tty_operations* 함수 세트의 초기화는 *uart_register_driver* 함수에서 완료됩니다.
+
+```c
+int uart_register_driver(struct uart_driver *drv)
+	/**
+	  * uart core layer에  driver 등록합니다. tty layer에 등록하고, core driver port의 상태를 초기화 합니다. 
+	  * /proc/tty/driver에 proc 파일시스템을 생성합니다.
+	  * drv->port는 NULL상태이어야 하며, uart_add_one_port 함수를 통하여 등록합니다.
+	  */
+	  |
+	  +-> tty_set_operations(normal, &uart_ops);
+	  |	  /**
+	  |	    * tty_operation 할당, serial_core.c의 structure 초기화 진행
+	  |		*/
+      +-> tty_register_driver(normal);
+		|
+		+-> tty_cdev_add(driver, dev, 0, driver->num);
+			|
+			+-> cdev_init(&driver->cdevs[index], &tty_fops); 
+```
+
+drivers/tty/tty_io.c
+```c
+static const struct file_operations tty_fops = {
+	.llseek		= no_llseek,
+	.read		= tty_read,
+	.write		= tty_write,
+	.poll		= tty_poll,
+	.unlocked_ioctl	= tty_ioctl,
+	.compat_ioctl	= tty_compat_ioctl,
+	.open		= tty_open,
+	.release	= tty_release,
+	.fasync		= tty_fasync,
+};
+
+```
+   2.2 tty_operation 함수 세팅 할당에 대해 설명
+   > 2.1 file_operation 함수 세팅과 동일
+ 
+```c
+int uart_register_driver(struct uart_driver *drv)
+	|
+	+-> tty_set_operations(normal, &uart_ops)
+	|	/**
+	|	  * tty_operation 할당 완료. (serial_core.c)
+	|	  */
+    +-> tty_register_driver(normal);
+```
+
+drivers/tty/serial/serial_core.c
+```c
+static const struct tty_operations uart_ops = {
+	.open		= uart_open,
+	.close		= uart_close,
+	.write		= uart_write,
+	.put_char	= uart_put_char,
+	.flush_chars	= uart_flush_chars,
+	.write_room	= uart_write_room,
+	.chars_in_buffer= uart_chars_in_buffer,
+	.flush_buffer	= uart_flush_buffer,
+	.ioctl		= uart_ioctl,
+	.throttle	= uart_throttle,
+	.unthrottle	= uart_unthrottle,
+	.send_xchar	= uart_send_xchar,
+	.set_termios	= uart_set_termios,
+	.set_ldisc	= uart_set_ldisc,
+	.stop		= uart_stop,
+	.start		= uart_start,
+	.hangup		= uart_hangup,
+	.break_ctl	= uart_break_ctl,
+	.wait_until_sent= uart_wait_until_sent,
+#ifdef CONFIG_PROC_FS
+	.proc_fops	= &uart_proc_fops,
+#endif
+	.tiocmget	= uart_tiocmget,
+	.tiocmset	= uart_tiocmset,
+	.get_icount	= uart_get_icount,
+#ifdef CONFIG_CONSOLE_POLL
+	.poll_init	= uart_poll_init,
+	.poll_get_char	= uart_poll_get_char,
+	.poll_put_char	= uart_poll_put_char,
+#endif
+};
+
+
+```
+
+
 ---
 
 ## rs485 block
