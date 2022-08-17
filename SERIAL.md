@@ -499,15 +499,16 @@ write(uartfd, p, size)
 ```
  - 위 포인트에서 user message(data)가 전송 됩니다. 
  - message flow에서 message가 ldisc line discipine layer를 통과한 다음, tty layer 를 통하여 hardware driver layer로 전달되는 것을 확인 할 수 있습니다.
- - message 전송 시, ldiscipine layer를 통과하여 tty layer 으로 전송된 다음 hardware driver layer로 전송되는 이유는?? 
-    * file_operation.do_tty_write(ld->ops->write, tty, file, buf, count);
-	  tty_ldisc->ops->(*write)(struct tty_struct *tty, struct file *file, const unsigned char *buf, size_t nr);
-    * tty_ldisc_ops.n_tty_write(struct tty_struct *tty, struct file *file, const unsigned char *buf, size_t nr);
-	  tty->ops->write(tty, b, nr); tty_operations->ops->(*write)(struct tty_struct *tty, const unsigned char *buf, int count)
-	* tty_operations.uart_write(struct tty_struct *tty, const unsigned char *buf, int count)
-	  memcpy(circ->buf + circ->head, buf, c);
-	* uart_ops.pl011_start_tx(struct uart_port *port)
-	  pl011_write(c, uap, REG_DR);
+ - message 전송 시, ldiscipine layer를 통과하여 tty layer 으로 전송된 다음 hardware driver layer로 전송되는 이유는??   
+
+    * file_operation.do_tty_write(ld->ops->write, tty, file, buf, count);  
+	  tty_ldisc->ops->(*write)(struct tty_struct *tty, struct file *file, const unsigned char *buf, size_t nr);  
+    * tty_ldisc_ops.n_tty_write(struct tty_struct *tty, struct file *file, const unsigned char *buf, size_t nr);  
+	  tty->ops->write(tty, b, nr); tty_operations->ops->(*write)(struct tty_struct *tty, const unsigned char *buf, int count)  
+	* tty_operations.uart_write(struct tty_struct *tty, const unsigned char *buf, int count)  
+	  memcpy(circ->buf + circ->head, buf, c);  
+	* uart_ops.pl011_start_tx(struct uart_port *port)  
+	  pl011_write(c, uap, REG_DR);  
 
 
 ---
