@@ -525,7 +525,7 @@ static void uart_start(struct tty_struct *tty) drivers/tty/serial/serial_core.c
 
 **RS485 txen gpio support 기능**
 1. kernel layer 에서 제어. (txen gpio를 kernel layer에서 제어 한다. )
-  - ~~**커널 RS485 API를 사용하는 방법.  **~~
+  - **~~커널 RS485 API를 사용하는 방법.~~**
     * rs485 기능을 지원하는 오픈 소스 코드가 커널에 포함되어 있으므로 해당 코드 분석 필요. 
     * 참고 : https://www.kernel.org/doc/Documentation/serial/serial-rs485.txt
     * struct serial_rs485 를 사용. 
