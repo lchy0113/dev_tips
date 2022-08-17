@@ -672,6 +672,32 @@ static struct uart_ops amba_pl011_pops = {
 };
 ```
 
+ 3. line regulation number 설정
+   
+   3.1 serial port default line procedure 과정  
+
+```c
+open("/dev/ttyAMA3", O_RDWR | O_NOCTTY | O_NONBLOCK); 
+	/**
+	  * app layer
+	  */
+	  |
+	  +-> tty_operations.tty_open
+	  	|
+		+-> tty_init_dev
+			|
+			+-> initialize_tty_struct
+				|
+				+-> tty_ldisc_init
+					|
+					+-> struct tty_ldisc *ld = tty_ldisc_get(N_TTY)
+						|
+						+-> struct tty_struct *tty->ldisc = ld;
+							/**
+							  * tty_struct 및 N_TTY가 binding 되며 serial port의 기본 라인 규칙
+							  */ 
+```
+ 
 
 ---
 
