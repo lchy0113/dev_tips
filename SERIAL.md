@@ -506,7 +506,7 @@ RS485 example for Atmel USART:
 
 ---
 
-- review code(tcc8985)
+- *review code(tcc8985)*
 
 ```c
 static int __init pl011_init(void)	drivers/tty/serial/amba-pl011.c
