@@ -75,19 +75,19 @@
    * --reject-with icmp-host-prohibited : return error message.
  - nat : packet의 목적지나 start point을 변경.
  - 필터링 관련 옵션
-   * ip 주소의 지정 규칙
-     : 출처('-s', '--source', '--src')와 목적지('-d', '--destination', '--dst') IP 주소를 지정하는데 여러가지 방법이 있다.
-	 : 첫번째 방법은 'www.linuxhq.com', 'localhost' 처럼 이름을 이용하는 것이다. 
-	 두번째 방법은 '127.0.0.1' 처럼 IP 주소를 이용하는 것이다. 
-	 세번째와 네번째 방법은 IP 주소의 그룹을 지정하는 것으로 '199.95.207.0/24' 또는 '199.95.207.0/255.255.255.0' 같은 형태이다. 이 둘은 모두 199.95.207.0 부터 199.95.207.255 사이의 모든 IP 주소를 지정한다. '/' 다음의 숫자는 IP 주소의 어떤 부분이 의미있는가를 나타낸다. '/32' 나 '/255.255.255.255' 가 기본값이다.(IP 주소의 모든부분이 일치해야 한다.) 모든 IP 주소를 지정하는데 '/0' 가 사용된다.  
-
- - icmp 확장 
-  이 확장은 '--protocol icmp'가 지정되고 그 적용이 지정되지 않으면 자동으로 적재된다. 이것은 단 하나의 새로운 옵션만 지원함.
-    * --icmp-type   : '!' 옵션이 선행될 수 있다. 이후에 ICMP 타입의 이름('host-unreachable') 이나 숫자형태 ('3'), 또는 숫자형태와 코드('/'로 분리 예. '3/3') 의 형 태가 사용된다. 사용할 수 있는 ICMP 형태의 이름의 리스트는 '-p icmp --help' 하면 나타난다. 
-	0 : echo-reply - ping
-	3 : destination-unreachable - Any TCP/UDP traffic
-	5 : redirect - routing if not running routing daemon
-	8 : echo-request - ping
-	11 : time-exceeded - traceroute
-	echo-request : ping프로그램으로 사용자가 목적지에 보내는 packet
-	echo-reply : echo-request에 대하여 목적지 시스템이 사용자에게 return 하는 packet
+   * ip 주소의 지정 규칙  
+     : 출처('-s', '--source', '--src')와 목적지('-d', '--destination', '--dst') IP 주소를 지정하는데 여러가지 방법이 있다.  
+	 : 첫번째 방법은 'www.linuxhq.com', 'localhost' 처럼 이름을 이용하는 것이다.   
+	 두번째 방법은 '127.0.0.1' 처럼 IP 주소를 이용하는 것이다.   
+	 세번째와 네번째 방법은 IP 주소의 그룹을 지정하는 것으로 '199.95.207.0/24' 또는 '199.95.207.0/255.255.255.0' 같은 형태이다. 이 둘은 모두 199.95.207.0 부터 199.95.207.255 사이의 모든 IP 주소를 지정한다. '/' 다음의 숫자는 IP 주소의 어떤 부분이 의미있는가를 나타낸다. '/32' 나 '/255.255.255.255' 가 기본값이다.(IP 주소의 모든부분이 일치해야 한다.) 모든 IP 주소를 지정하는데 '/0' 가 사용된다.    
+  
+ - icmp 확장   
+  이 확장은 '--protocol icmp'가 지정되고 그 적용이 지정되지 않으면 자동으로 적재된다. 이것은 단 하나의 새로운 옵션만 지원함.  
+    * --icmp-type   : '!' 옵션이 선행될 수 있다. 이후에 ICMP 타입의 이름('host-unreachable') 이나 숫자형태 ('3'), 또는 숫자형태와 코드('/'로 분리 예. '3/3') 의 형 태가 사용된다. 사용할 수 있는 ICMP 형태의 이름의 리스트는 '-p icmp --help' 하면 나타난다.   
+	0 : echo-reply - ping  
+	3 : destination-unreachable - Any TCP/UDP traffic  
+	5 : redirect - routing if not running routing daemon  
+	8 : echo-request - ping  
+	11 : time-exceeded - traceroute  
+	echo-request : ping프로그램으로 사용자가 목적지에 보내는 packet  
+	echo-reply : echo-request에 대하여 목적지 시스템이 사용자에게 return 하는 packet  
