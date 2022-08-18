@@ -91,3 +91,77 @@
 	11 : time-exceeded - traceroute  
 	echo-request : ping프로그램으로 사용자가 목적지에 보내는 packet  
 	echo-reply : echo-request에 대하여 목적지 시스템이 사용자에게 return 하는 packet  
+
+
+
+---
+
+
+## develop 
+
+
+### iptables 적용
+
+제품 운용환경에 맞는 iptables rule를 제품 시작시 초기화하여 패킷 필터링 기능을 적용합니다.
+
+![iptables rule load scheme tcc8985 based](image/IPTABLES-01.png)  
+
+
+---
+
+### iptables rules 생성
+
+> iptables rules 생성방법에 대해 설명합니다.
+
+command 를 입력하여 iptables rule을 초기화&추가합니다.
+
+```bash
+## iptalbes 초기화
+> iptables -F
+>  
+
+## set Chain policy
+> iptables -P INPUT DROP		#DROP시, 사용
+> iptables -P FORWARD DROP		#DROP시, 사용
+> iptables -P OUTPUT DROP		#DROP시, 사용
+
+> #iptables -P INPUT ACCEPT
+> #iptables -P FORWARD ACCEPT
+> #iptables -P OUTPUT ACCEPT
+
+# iptables allow icmp syntax
+> iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+
+## Enable or allow ICMP ping incoming client request
+> iptables -A INPUT -p icmp --icmp-type 8 -s 0/0 -d 0/0 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
+> iptables -A OUTPUT -p icmp --icmp-type 0 -s 0/0 -d 0/0 -m state --state ESTABLISHED,RELATED -j ACCEPT
+> iptables -A INPUT -p icmp --icmp-type 8 -m limit --limit 1/minute --limit-burst 2 -j LOG --log-prefix " PING-PONG-FLOOD "
+
+## Allow or enable outgoing ping request
+> iptables -A OUTPUT -p icmp --icmp-type 8 -s 0/0 -d 0/0 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
+> iptables -A INPUT -p icmp --icmp-type 0 -s 0/0 -d 0/0 -m state --state ESTABLISHED,RELATED -j ACCEPT
+ 
+## product rule
+> iptables -A INPUT -s 10.0.0.0/8 -j ACCEPT
+> iptables -A OUTPUT -d 10.0.0.0/8 -j ACCEPT
+> iptables -A INPUT -s 13.125.68.181 -j ACCEPT
+> iptables -A OUTPUT -d 13.125.68.181 -j ACCEPT
+
+## iptables rules 확인
+> iptables -nL --line-numbers
+
+
+## iptables rules 저장
+>  iptables-save > /data/local/tmp/(rule_name).rules
+
+
+## iptables rules 백업
+(host_pc) adb pull /data/local/tmp/(rule_name).rules
+
+## iptables rules 적용
+(host_pad adb push /vendor/etc/iptables.rules
+```
+
+---
+
+reference site : https://linux.die.net/man/8/iptables
