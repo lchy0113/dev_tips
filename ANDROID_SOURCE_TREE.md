@@ -317,7 +317,7 @@ endif
 PRODUCT_NAME := full_tcc898x
 PRODUCT_DEVICE := tcc898x
 PRODUCT_BRAND := Android
-PRODUCT_MANUFACTURER := kdiwin 
+PRODUCT_MANUFACTURER := company 
 
 # Define the name of target board                                                                                                                                                                                 
 #TARGET_BOARD_8980_STB := true
@@ -468,7 +468,7 @@ endif
 PRODUCT_NAME := full_tcc898x
 PRODUCT_DEVICE := tcc898x
 PRODUCT_BRAND := Android
-PRODUCT_MANUFACTURER := kdiwin 
+PRODUCT_MANUFACTURER := company 
 ```
 
 3. envsetup.sh와 lunch 메뉴에서 추가한 기기를 표시할 수 있도록 vendorsetup.sh를 작성한다.
@@ -620,9 +620,9 @@ ToolBox
 * ramdisk.img 마운트하기
  램디스크 이미지는 압축파일 이므로 아래와 같이 압축을 풀면된다. /root 의 내용과 같다.
 ```
-lchy0113@KDIWIN-NB:~/Develop/Telechips/NHN-1033/out/target/product/tcc898x/temp_dir$ gunzip -c ramdisk.img | cpio -idm
+lchy0113@company-NB:~/Develop/Telechips/NHN-1033/out/target/product/tcc898x/temp_dir$ gunzip -c ramdisk.img | cpio -idm
 6246 blocks
-lchy0113@KDIWIN-NB:~/Develop/Telechips/NHN-1033/out/target/product/tcc898x/temp_dir$ ls
+lchy0113@company-NB:~/Develop/Telechips/NHN-1033/out/target/product/tcc898x/temp_dir$ ls
 acct             init.factory.rc                init.tcc898x.tztee.tzos.rc     ramdisk.img
 bugreports       initlogo.rle                   init.tcc898x.usb.rc            res
 cache            init.rc                        init.tcc898x.wifi.broadcom.rc  sbin
