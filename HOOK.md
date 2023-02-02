@@ -119,7 +119,7 @@ MODULE_LICENSE("GPL");
 $ vi Makefile
 
 obj-m := hook.o
-KDIR := ../out/target/product/nhn1311/obj/KERNEL_OBJ/
+KDIR := ../out/target/product/product/obj/KERNEL_OBJ/
 PWD := $(shell pwd)
 
 default:

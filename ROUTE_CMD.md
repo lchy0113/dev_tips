@@ -44,11 +44,11 @@ Destination 	Gateway 		Genmask 		Flags 	Metric 	Ref 	Use 	Iface
 
 routing table : cat /proc/net/route
 ```bash
-nhn1311:/ # cat /proc/net/route
+console:/ # cat /proc/net/route
 Iface   Destination     Gateway         Flags   RefCnt  Use     Metric  Mask            MTU     Window  IRTT
 wlan1   000010AC        010010AC        0003    0       0       0       00FFFFFF        0       0       0
 wlan0   0000A8C0        00000000        0001    0       0       0       00FFFFFF        0       0       0
-nhn1311:/ #
+console:/ #
 ```
 
 
@@ -92,13 +92,13 @@ android device address :
 
 route table
 ```bash
-nhn1311:/ # ip route
+console:/ # ip route
 172.16.0.0/24 dev wlan1  proto kernel  scope link  src 172.16.0.1
 192.168.0.0/24 dev wlan0  proto kernel  scope link  src 192.168.0.20
-nhn1311:/ #
+console:/ #
 
 
-nhn1311:/ # ip route show table 0
+console:/ # ip route show table 0
 default dev dummy0  table dummy0  proto static  scope link
 default via 192.168.0.1 dev wlan0  table wlan0  proto static
 192.168.0.0/24 dev wlan0  table wlan0  proto static  scope link
@@ -134,24 +134,24 @@ ff00::/8 dev dummy0  table local  metric 256
 ff00::/8 dev wlan0  table local  metric 256
 ff00::/8 dev wlan1  table local  metric 256
 unreachable default dev lo  proto kernel  metric 4294967295  error -101
-nhn1311:/ #
+console:/ #
 
 ```
 
 - 타겟 장치에서 패킷 라우팅 경로를 추적. 
 wlan0 
 ```bash
-nhn1311:/ # tracepath -n 192.168.0.3
+console:/ # tracepath -n 192.168.0.3
 1?: [LOCALHOST]                                         pmtu 1500
 1:  192.168.0.3                                           9.233ms reached
 1:  192.168.0.3                                           6.532ms reached
 Resume: pmtu 1500 hops 1 back 64
-nhn1311:/ #
+console:/ #
 ```
 
 wlan1
 ```bash
-255|nhn1311:/ # tracepath -n 172.16.0.10
+255|console:/ # tracepath -n 172.16.0.10
 1?: [LOCALHOST]                                         pmtu 1500
 1:  192.168.0.1                                           4.357ms
 1:  192.168.0.1                                           5.396ms
@@ -184,7 +184,7 @@ Resume: pmtu 1500
 
 ```bash
 
-nhn1311:/ # ip rule
+console:/ # ip rule
 0:      from all lookup local
 10000:  from all fwmark 0xc0000/0xd0000 lookup legacy_system
 10500:  from all oif dummy0 lookup dummy0
@@ -200,12 +200,12 @@ nhn1311:/ # ip rule
 22000:  from all fwmark 0x0/0xffff lookup wlan0
 23000:  from all fwmark 0x0/0xffff lookup main
 32000:  from all unreachable
-nhn1311:/ #
+console:/ #
 
-nhn1311:/ # ip rule add from all lookup main pref 1
+console:/ # ip rule add from all lookup main pref 1
 
 
-nhn1311:/ # ip rule
+console:/ # ip rule
 0:      from all lookup local
 1:      from all lookup main
 10000:  from all fwmark 0xc0000/0xd0000 lookup legacy_system

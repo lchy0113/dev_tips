@@ -25,6 +25,6 @@ if [ ! -d $LOGDIR ]; then
 	mkdir -p $LOGDIR
 fi
 
-sudo minicom -c on  -a on -C $LOGDIR/richgold_$(date '+%Y-%m-%d__%T').log nhn1033
+sudo minicom -c on  -a on -C $LOGDIR/richgold_$(date '+%Y-%m-%d__%T').log file_name
 
 ```
