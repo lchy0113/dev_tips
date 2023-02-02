@@ -42,7 +42,7 @@
 ```
 /**
  * @brief Debugging of noise occurrence during audio output. \n Changed out sample_rate from 441 kHz to 48 kHz.
- * @author changyong lee (lchyq113@kdiwin.com)
- * @see PDNHN1033-44 (http://its.kdiwin.com:8080/browse/PDNHN1033-44)
+ * @author changyong lee (lchy0113@gmail.com)
+ * @see ..........
  */
 ```
