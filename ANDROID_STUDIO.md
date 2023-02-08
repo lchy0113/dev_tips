@@ -3,7 +3,7 @@
   
 # 안드로이드 스튜디오의 프로젝트 구조  
 -----
-![android studio projct structure](image/ANDROID_STUDIO-1.png)
+![android studio projct structure](image/ANDROID_STUDIO_1.png)
   
 위의 프로젝트 구성은 크게 아래와 같이 나눌 수 있다.  
 ![android studio project structure-2](image/ANDROID_STUDIO_2.png)
