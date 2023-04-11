@@ -78,6 +78,7 @@ drivers/tty/serial/ 는 serial_core kernel framework와 hw device driver가 존�
 	* 상위 layer는 userspace 와 직접 연결 되는 ops구조를 가지며 userspace는 등록된 캐릭터 디바이스 노드를 통해 접근 하게 된다.  
 	(layer by layer jump 가 가능) 
 
+ -----
   
 serial_core는 자기에게 등록 될 수 있는 함수 *uart_register_driver*와 *uart_add_one_port*를 제공합니다.  
   
