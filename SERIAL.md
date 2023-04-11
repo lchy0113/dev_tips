@@ -65,13 +65,22 @@ transmit/receive의 기능을 각각 활성화 비활성화 하는 비트들도 
 
 > BUG_ON(in_interrupt()); // 이 구문이 인터럽트 핸들러 안에서 수행하면 BUG!!
 
-uart ip device driver(hardware specific driver)는 커널에서 drivers/tty/serial/ 에서 존재하게 되고,   
+uart ip device driver(hardware specific driver)는 커널에서 drivers/tty/serial/ 에서 존재하게 되고,     
 상위 framework는 serial_core.c입니다.    
 drivers/tty/serial/ 는 serial_core kernel framework와 hw device driver가 존재하게 됩니다.     
 보통 serial_core.o + uart_ip_device_driver.o 조합으로 구성되어 있습니다.  
   
-serial_core는 자기에에게 등록 될 수 있는 함수 *uart_register_driver*와 *uart_add_one_port*를 제공합니다.  
+ - tty driver framework 분석 
+	
+	![](./image/SERIAL-05.png)  
+	전체 framework의 일반적인 모습은 위의 그림과 같이 대략 4개의 layer로 나눌 수 있다.  
+	* 첫번째 계층은 하드웨어와 직접 접촉하는 *serial port driver layer* 이다.  
+	* 상위 layer는 userspace 와 직접 연결 되는 ops구조를 가지며 userspace는 등록된 캐릭터 디바이스 노드를 통해 접근 하게 된다.  
+	(layer by layer jump 가 가능) 
 
+  
+serial_core는 자기에게 등록 될 수 있는 함수 *uart_register_driver*와 *uart_add_one_port*를 제공합니다.  
+  
 ### uart_register_driver 함수 #1
 
 uart_register_driver함수 struct uart_driver구조체를 매개 변수로 받습니다.  
