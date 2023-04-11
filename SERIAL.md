@@ -204,14 +204,14 @@ int uart_register_driver(struct uart_driver *drv) drivers/tty/serial/serial_core
 +------------------------------------------------------------------------------+
 ```
 
-위 그림은 구조체 개념도 입니다. 
-struct tty_driver가 user space와 담당하는 모듈이고, 
-struct uart_driver가 hw driver를 호출하고 등록/제거 하며,  tty_driver와 유기적으로 동작합니다.
-
-struct uart_driver, struct console, struct uart_port 이 3 구조체는 hw uart driver에서 static변수로 가지고 등록되는 형식이고, 
-struct tty_driver, struct uart_state(struct tty_port) 이 2 구조체는 uart_register_driver함수를 호출하면 동적으로 생성됩니다.
-
-
+위 그림은 구조체 개념도 입니다.   
+*struct tty_driver*가 user space와 담당하는 모듈이고,   
+*struct uart_driver*가 hw driver를 호출하고 등록/제거 하며,  tty_driver와 유기적으로 동작합니다.  
+  
+*struct uart_driver, struct console, struct uart_port* 이 3 구조체는 hw uart driver에서 static변수로 가지고 등록되는 형식이고,   
+*struct tty_driver, struct uart_state(struct tty_port)* 이 2 구조체는 uart_register_driver함수를 호출하면 동적으로 생성됩니다.
+  
+  
 ### uart_add_one_port 함수 #1
 
 매개 변수로 struct uart_driver와  struct uart_port를 받는데  
