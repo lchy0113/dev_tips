@@ -21,12 +21,13 @@ transmit/receive FIFO가 모듈내에 존재하고 있습니다.
 ### 데이터 transmit 및 receive 과정
 
 - **transmit 과정**   
-데이터는 transmit fifo에 저장됩니다. uart가 동작 중이라면 해당 fifo에 위치한 값들을 전송하기 시작해서 transmit fifo가 비워질 때까지 전송합니다.   
+ 데이터는 transmit fifo에 저장됩니다.   
+ uart가 동작 중이라면 해당 fifo에 위치한 값들을 전송하기 시작해서 transmit fifo가 비워질 때까지 전송합니다.   
 - **receive 과정**  
-receive modue 이 수신된 데이터 중, start bit를 발견하게 되면 데이터 샘플링을 시작합니다.   
-유효한 stop bit를 받게 된다면 전송이 완료되었다고 판단합니다.   
-이때 한 word가 완성되면 receive fifo에 push하게 되며 전송시 발생한 error도 함께 전송합니다.   
-uart의 한 character frame은 아래와 같습니다.    
+ receive modue 이 수신된 데이터 중, start bit를 발견하게 되면 데이터 샘플링을 시작합니다.   
+ 유효한 stop bit를 받게 된다면 전송이 완료되었다고 판단합니다.   
+ 이때 한 word가 완성되면 receive fifo에 push하게 되며 전송시 발생한 error도 함께 전송합니다.   
+ uart의 한 character frame은 아래와 같습니다.    
 ![](./image/SERIAL-02.png)  
 
 
