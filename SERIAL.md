@@ -476,22 +476,22 @@ static int pl011_register_port(struct uart_amba_port *uap)
 
 ![](./image/SERIAL-04.png)
 
- 1. 어플리케이션 layer에서 data send 절차
+### 1. 어플리케이션 layer에서 data send 절차
 
 ```c
 write(uartfd, p, size)
+|
++-> static const struct file_operations tty_fops = {
+|		.write		= tty_write,
+|
++-> static ssize_t tty_write(struct file *, const char __user *, size_t, loff_t *);
+	|/** 
+	|  * line discipline 을 통하여 tty device 에 data를 write합니다.
+	|  * line discipline : include/uapi/linux/tty.h
+	|  * 새로운 line discipline이 필요한 경우, 정의가 필요합니다. 
+	|  */
 	|
-	+-> static const struct file_operations tty_fops = {
-	|		.write		= tty_write,
-	|
-	+-> static ssize_t tty_write(struct file *, const char __user *, size_t, loff_t *);
-		/** 
-		  * line discipline 을 통하여 tty device 에 data를 write합니다.
-		  * line discipline : include/uapi/linux/tty.h
-		  * 새로운 line discipline이 필요한 경우, 정의가 필요합니다. 
-		  */
-		|
-		+->	static inline ssize_t do_tty_write(
+	+->	static inline ssize_t do_tty_write(
 				ssize_t (*write)(struct tty_struct *, struct file *, const unsigned char *, size_t),
 				struct tty_struct *tty,
 				struct file *file,
@@ -532,9 +532,9 @@ write(uartfd, p, size)
 	  pl011_write(c, uap, REG_DR);  
 
 
- 2. 레이어별 uart와 tty 간의 호출 관계
-
-   2.1 file_operation 함수 세팅 할당에 대해 설명 
+### 2. 레이어별 uart와 tty 간의 호출 관계
+  
+#### 2.1 file_operation 함수 세팅 할당에 대해 설명 
 
      - *file_operations* 및 *tty_operations* 함수 세트의 초기화는 *uart_register_driver* 함수에서 완료됩니다.
 
@@ -572,7 +572,7 @@ static const struct file_operations tty_fops = {
 };
 
 ```
-   2.2 tty_operation 함수 세팅 할당에 대해 설명
+#### 2.2 tty_operation 함수 세팅 할당에 대해 설명
    > 2.1 file_operation 함수 세팅과 동일
  
 ```c
@@ -621,7 +621,7 @@ static const struct tty_operations uart_ops = {
 };
 ```
 
-   2.3 tty_ldisc_ops 함수 세팅 할당에 대해 설명
+#### 2.3 tty_ldisc_ops 함수 세팅 할당에 대해 설명
 
 ```c
 int tty_register_ldisc(int disc, struct tty_ldisc_ops *new_ldisc)
@@ -660,7 +660,7 @@ struct tty_ldisc_ops tty_ldisc_N_TTY = {
 };
 ```
 
-   2.4 uart_ops 함수 세팅 할당에 대해 설명
+#### 2.4 uart_ops 함수 세팅 할당에 대해 설명
 
 drivers/tty/serial/amba-pl011.c
 ```c
@@ -690,9 +690,9 @@ static struct uart_ops amba_pl011_pops = {
 };
 ```
 
- 3. line regulation number 설정
+### 3. line regulation number 설정
    
-   3.1 serial port default line procedure 과정  
+#### 3.1 serial port default line procedure 과정  
 
 ```c
 open("/dev/ttyAMA3", O_RDWR | O_NOCTTY | O_NONBLOCK); 
@@ -765,6 +765,12 @@ https://man7.org/linux/man-pages/man3/tcflush.3.html
 ## develop rs485 on soc board
 
 > note : BUG_ON(in_interrupt()); // 이 구문이 인터럽트 핸들러 안에서 수행하면 BUG!!
+
+### to do
+ AMBA PL011은 rs485 에 support가 되지 않습니다.   
+ 2개의 timer를 사용하여 하나는 rs485 delays에 사용되고,   
+ 두번째 timer는 tx fifo polling에 사용됩니다.  
+ PL011 은 tx fifo empty interrupt가 없으므로, 두번째 timer에 의해 제어됩니다.  
 
 ---
 
