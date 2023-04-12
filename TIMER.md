@@ -225,3 +225,40 @@ void cleanup_module(void)
 }
 
 ```
+
+
+
+## High Resolution Timer 
+
+**jiffies timer와 hrtimer**
+
+일반적으로 linux에서 timer는 system clock tick(jiffies)인 HZ을 이용한다.   
+ > todo : system clock tick 을 계산하는 방법 ?   
+
+더 빠른 주기의 timer를 사용해야할 경우, (jiffies timer로는 HZ보다 빠른 주기를 가질 수 없다.)  
+linux timer 관련 함수를 보면 nanosleep이란 것 이있다.  
+System clock tick(jiffies) = HZ보다 빠를 수 없다고 하는데 nano 단위로 sleep이 가능한 이유는, jiffies clock이 아닌 
+ktimer를 사용하기 때문이다.  
+
+ * linux에서 보장하는 timer resolution은 10ms 이다.  
+ -> jiffies clock이 아닌 ktimer의 경우 그 정확도를 보장하지 않습니다.  
+  
+ * nanosec 가 보장되지 안는데, 10ms는 어떻게 보장되는가??  
+ -> linux에서 10ms 의 정확도를 보장하기 위해 특별한 시간 보상 알고리즘을 이용하고 있다.  
+  
+
+
+
+## jiffies 변수의 의미  
+
+jiffies를 알려면 HZ에 대해 알아야 한다.
+HZ는 1초당 timer interrupt를 처리하는 횟수를 의미한다. 
+만약 HZ가 500이면 jiffies가 500 번 업데이트 된다.
+만약 HZ가 300이라 가정하고 현재 jiffies가 1000이면, jiffies 값이 1300이 되면 1초가 지났음을 알 수 있다.
+
+현재 jiffies가 1000 이면 초당 다음 값으로 업데이트 된다.
+```
+1초 후 : 1300
+2초 후 : 1600 
+3초 후 : 1900
+```
