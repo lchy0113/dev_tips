@@ -109,7 +109,7 @@ void cleanup_module(void)
 
 고분해능 timer(또는 hrtimer)는 앞에서 설명한 timer 프레임워크와는 독립된 고정밀 timer 관리 프레임워크를 제공한다.  
 이는 두 프레임워크를 병합하기가 복잡하기 때문이다.  
-**mer는 jiffies 단위로 작동하는 반면, hrtimer는 나노초 단위로 작동한다.**
+**timer는 jiffies 단위로 작동하는 반면, hrtimer는 나노초 단위로 작동한다.**
 
 hrtimer 프레임워크는 일반적인 timer API와 다르게 구현된다.   
 버켓 및 timer Cascading 대신 hrtimer는 timer로 구성된 시간순 데이터 구조를 관리한다.   
