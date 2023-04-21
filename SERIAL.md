@@ -80,7 +80,7 @@ drivers/tty/serial/ 는 serial_core kernel framework와 hw device driver가 존�
 
  -----
   
- - serial_core는 자기에게 등록 될 수 있는 함수 *uart_register_driver*와 *uart_add_one_port*를 제공합니다.  
+ - **serial_core는 자기에게 등록 될 수 있는 함수 *uart_register_driver*와 *uart_add_one_port*를 제공합니다.  **
   
 ### uart_register_driver 함수 #1
 
