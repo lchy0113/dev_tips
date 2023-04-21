@@ -47,6 +47,12 @@ ttyAMA               /dev/ttyAMA   204 64-77 serial
 
  현재 등록된 모든 tty device는 */sys/class/tty* 이하 경로에 있습니다.
 
+
+### tty Line Settings
+ user가 tty line setting을 변경하거나 현재 line setting을 검색하려는 경우, 다양한 termios userspace library function을 호출하거나 직접 ioctl call을 호출하여 확인 할 수있습니다. 
+ tty core는 이 2가지 interface를 다양한 tty driver function callback 및 ioctl 을 통해 제공합니다.
+
+
 ## Prime cell uart(pl011)
 
 tcc8985에는 serial module pl011을 포함하고 있습니다. 이 모듈은 pl011으로 AMBA와 호환되는 peripheral입니다. 
