@@ -42,19 +42,19 @@ transmit/receive FIFO가 모듈내에 존재하고 있습니다.
 해당 레지스터에 값을 write하여 에러를 clear할 수도 있습니다. 
 - *FR*			: 각각의 fifo의 상태를 알수 있습니다.  
 즉, fifo가 비어있는지 또는 fifo가 다 찻는지 확인할 수 있습니다.   
-- ILPR			: InDR(unuse)  
-- IBRD & FBRD	: uart는 baud rate에 따라서 데이터를 샘플링합니다.  
+- *ILPR*			: InDR(unuse)  
+- *IBRD & FBRD*	: uart는 baud rate에 따라서 데이터를 샘플링합니다.  
 이때 baud rate는 해당 uart모듈에 전달되는  uartclk를 이용해서 생성됩니다.  
 이때 IBRD & FBRD에 저장된 값을 사용하여 uartclk를 나누게 됩니다.  
-- LCR_H			: line control에 관련된 세팅을 저장하고 있습니다.   
-- CR			: 실제로 uart동작을 활성화 & 비활성화 할 수 있는 비트가 있습니다.   
+- *LCR_H*			: line control에 관련된 세팅을 저장하고 있습니다.   
+- *CR*			: 실제로 uart동작을 활성화 & 비활성화 할 수 있는 비트가 있습니다.   
 transmit/receive의 기능을 각각 활성화 비활성화 하는 비트들도 존재합니다.   
-- IFLS			:  
-- IMSC			: 인터럽트 관련 레지스터 입니다.  
-- RIS			:  
-- MIS			:  
-- ICR			:  
-- DMACR			:  
+- *IFLS*			:  
+- *IMSC*			: 인터럽트 관련 레지스터 입니다.  
+- *RIS*			:  
+- *MIS*			:  
+- *ICR*			:  
+- *DMACR*			:  
 
 
 	> link :https://developer.arm.com/documentation/ddi0183/f/introduction?lang=en  
