@@ -3,7 +3,49 @@
 
 ## TTY
 
+ linux tty driver core sms 표준 character driver level로서 terminal style 디바이스 사용이 가능한 인터페이스를 제공합니다.
+
+ core 는 tty device 전체의 data flow와 data format 을 제어하는 역활을 담당합니다.
+ 이를 통해 tty driver는 일괄된 방식으로 user space와 상호작용을 제어 하는 방법에 대해 신경을 쓰지 않고, hardware에서 data를 처리하는데 집중할 수 있습니다. 
+ data flow control 을 위해서 line disciplines 모듈이 있으며 tty line discipline driver에 의해 수행됩니다. 
+
+ 아래 그림은 tty core가 user에게 data를 받아 tty device로 전송되는 과정을 보여줍니다.
+ user에게 data를 얻은 다음 data를 tty line discipline 드라이버로 전달한 다음 tty 드라이버로 전달합니다.
+ tty 드라이버는 데이터를 하드웨어로 보낼 수 있는 형식으로 변환합니다. 
+ tty 하드웨어에서 수신되는 데이터는 tty 드라이버를 통해 다시 tty line discipline 드라이버로, 그리고 user가 검색할 수 있는 tty core로 흐릅니다.
+
+ 때때로 tty 드라이버는 tty core와 직접 통신하고 tty core는 데이터를 tty 드라이버로 직접 전송합니다. (일반적으로 tty line discipline은 둘 사이에 전송되는 데이터를 수정할 기회가 있으므로 tty line discipline 드라이버를 통합니다.)
+
 ![](./image/SERIAL-06.png)
+
+ tty driver는 tty line discipline을 볼수 없습니다. tty driver는 line discipline driver와 직접 통신 할 수 없으며, line discipline 존재 여부 조차 모릅니다.
+ driver의 역할은 하드웨어가 이해할 수 있는 방식으로 data를 fotmat에 맞추어 전송하고 data를 수신하는 것 입니다.
+
+ tty line discipline의 역할은 user 또는 하드웨어로 부터 받은 data를 특정 방식으로 format하는 것 입니다.
+ 이 형식의 대표적인 예는 ppp 또는 bluetooth와 같은 protocol 변환을 형식을 취합니다.
+
+ tty driver에는 console, serial port 및 pty의 3 가지 type이 있습니다.
+ console 및 pty driver 와 같이 드라이버를 작성하면 line discipline dirver를 통하지 않고 tty core 를 사용하여 user 및 system과 serial port driver 로 동작합니다.
+
+ kernel 에 load된 tty driver 종류와 존재하는 tty device를 확인하려면 /proc/tty/drivers파일을 확인하십시오.
+ 이 파일은 현재 존재하는 다양한 tty driver list로 구성되어 있으며, driver name, driver node name, driver major number, driver가 사용하는 minor 번호 및 tty driver type이 표시 됩니다.
+```bash
+ # cat /proc/tty/drivers
+/dev/tty             /dev/tty        5       0 system:/dev/tty
+/dev/console         /dev/console    5       1 system:console
+/dev/ptmx            /dev/ptmx       5       2 system
+/dev/vc/0            /dev/vc/0       4       0 system:vtmaster
+rfcomm               /dev/rfcomm   216 0-255 serial
+ttyprintk            /dev/ttyprintk   5       3 console
+pty_slave            /dev/pts      136 0-1048575 pty:slave
+pty_master           /dev/ptm      128 0-1048575 pty:master
+unknown              /dev/tty        4 1-63 console
+ttyAMA               /dev/ttyAMA   204 64-77 serial
+```
+
+ */proc/tty/driver/* directory는 tty drivers에 대한 각각의 파일 및 정보가 포함되어 있습니다. 
+
+ 현재 등록된 모든 tty device는 */sys/class/tty* 이하 경로에 있습니다.
 
 ## Prime cell uart(pl011)
 
