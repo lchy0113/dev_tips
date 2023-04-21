@@ -1,5 +1,10 @@
 # Serial 
 
+
+## TTY
+
+![](./image/SERIAL-06.png)
+
 ## Prime cell uart(pl011)
 
 tcc8985에는 serial module pl011을 포함하고 있습니다. 이 모듈은 pl011으로 AMBA와 호환되는 peripheral입니다. 
