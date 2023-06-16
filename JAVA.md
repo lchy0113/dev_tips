@@ -71,6 +71,25 @@ Java version
    * 애플 M1 및 이후 프로세서 탑재 제품군에 대한 정식 지원 (Mac 유저들 환호)
    * 난수 생성 API 추가
 
+
+Set Default Java Version on Ubuntu 22.04|20.04|18.04
+-----
+
+```bash
+sudo update-alternatives --config java
+
+
+There are 2 choices for the alternative java (providing /usr/bin/java).
+
+  Selection    Path                                         Priority   Status
+  ------------------------------------------------------------
+  * 0            /usr/lib/jvm/java-11-openjdk-amd64/bin/java   1111      auto mode
+  * 1            /usr/lib/jvm/java-11-openjdk-amd64/bin/java   1111      manual mode
+  * 2            /usr/lib/jvm/java-17-oracle/bin/java          1091      manual mode
+  *
+  * Press <enter> to keep the current choice[*], or type selection number: 2
+```
+
 reference
 -----
 
