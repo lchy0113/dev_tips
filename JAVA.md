@@ -72,6 +72,58 @@ Java version
    * 난수 생성 API 추가
 
 
+install OpenJDK 17 on ubuntu
+-----
+
+ - using package
+```bash
+sudo apt update
+
+sudo apt install openjdk-17-jdk
+```
+
+ - using donwload code
+```bash
+### Linux 64-bit ###
+wget https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_linux-x64_bin.tar.gz
+
+### Linux ARM64 ###
+wget https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_linux-aarch64_bin.tar.gz
+
+
+### Linux 64-bit ###
+tar xvf openjdk-17.0.2_linux-x64_bin.tar.gz
+
+### Linux ARM64 ###
+tar xvf openjdk-17.0.2_linux-aarch64_bin.tar.gz
+
+
+### Then move the extracted file to the /opt/ directory as shown. ###
+
+sudo mv jdk-17.0.2/ /opt/jdk-17/
+
+
+### Set the environment variables. ###
+
+echo 'export JAVA_HOME=/opt/jdk-17' | sudo tee /etc/profile.d/java17.sh
+echo 'export PATH=$JAVA_HOME/bin:$PATH'|sudo tee -a /etc/profile.d/java17.sh
+source /etc/profile.d/java17.sh
+
+
+### Verify the Java installation as below. ###
+
+$ echo $JAVA_HOME
+/opt/jdk-17
+
+
+### Check the installed version of Java. ### 
+
+$ java --version
+openjdk 17.0.2 2022-01-18
+OpenJDK Runtime Environment (build 17.0.2+8-86)
+OpenJDK 64-Bit Server VM (build 17.0.2+8-86, mixed mode, sharing)
+```
+
 Set Default Java Version on Ubuntu 22.04|20.04|18.04
 -----
 
