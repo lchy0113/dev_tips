@@ -105,9 +105,9 @@ void cleanup_module(void)
 
 ```
 
-# 고분해능 timer(high-resolution timers)
+# hrtimer(high-resolution timers)
 
-고분해능 timer(또는 hrtimer)는 앞에서 설명한 timer 프레임워크와는 독립된 고정밀 timer 관리 프레임워크를 제공한다.  
+hrtimer(또는 hrtimer)는 앞에서 설명한 timer 프레임워크와는 독립된 고정밀 timer 관리 프레임워크를 제공한다.  
 이는 두 프레임워크를 병합하기가 복잡하기 때문이다.  
 **timer는 jiffies 단위로 작동하는 반면, hrtimer는 나노초 단위로 작동한다.**
 
@@ -120,7 +120,7 @@ hrtimer 프레임워크는 일반적인 timer API와 다르게 구현된다.
 hrtimer 프레임워크는 커널 내에서 API로 사용할 수 있으며, nanosleep, itimers 및 POSIX(Portable Operating System Interface timer 인터페이스를 통해 사용자 공간 애플리케이션에서도 사용 가능된다.  
 (이 프레임워크는 커널 버전 2.6.21  에 포함되었다.)  
 
-# 고분해능 timer API
+# hrtimer API
 
 hrtimer API에는 기존 API와 유사한 점도 있지만 추가적인 시간 제어를 위해 몇 가지 근본적인 차이점도 있다.  
 첫 번째 차이점은 시간이 jiffies가 아닌 ktime이라는 특수 데이터 유형으로 표시된다는 것이다.  
