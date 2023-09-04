@@ -20,7 +20,7 @@ git clone https://git.qemu.org/git/qemu.git
  - run qemu
 
 ```bash
-./configure --enable-sdl --enable-opengl --enable-virglrenderer --enable-system --enable-modules --audio-drv-list=pa --target-list=x86_64-softmmu --enable-kvm --enable-gtk --enable-slirp
+./configure --enable-sdl --enable-opengl --enable-virglrenderer --enable-system --enable-modules --audio-drv-list=pa --target-list=x86_64-softmmu --enable-kvm --enable-gtk --enable-slirp --enable-debug
 ```
 
 
