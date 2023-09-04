@@ -20,7 +20,7 @@ git clone https://git.qemu.org/git/qemu.git
  - run qemu
 
 ```bash
-./configure --enable-sdl --enable-opengl --enable-virglrenderer --enable-system --enable-modules --audio-drv-list=pa --target-list=x86_64-softmmu --enable-kvm --enable-gtk
+./configure --enable-sdl --enable-opengl --enable-virglrenderer --enable-system --enable-modules --audio-drv-list=pa --target-list=x86_64-softmmu --enable-kvm --enable-gtk --enable-slirp
 ```
 
 
@@ -75,8 +75,7 @@ qemu-system-x86_64 -boot d \
     -device virtio-tablet \
     -machine type=q35 \
     -serial mon:stdio \
-    
- nic -net user,hostfwd=tcp::4444-:5555
+    -net nic -net user,hostfwd=tcp::4444-:5555
 
 ```
 
@@ -99,31 +98,9 @@ qemu-system-x86_64 -boot d \
 	-device virtio-tablet \
 	-machine type=q35  \
 	-serial mon:stdio  \
-	-net nic
+	-net nic -net user,hostfwd=tcp::4444-:5555
 ```
 
- - test 
-
-```bash
-qemu-system-x86_64 -boot d \
-	-enable-kvm \
-	-smp 2 \
-	-cdrom "/home/lchy0113/Downloads/android-x86/android-x86_64-9.0-r2.iso" \
-	-name linuz \
-	-device virtio-vga-gl,xres=1280,yres=720 \
-	-cpu host \ 
-	-device AC97 \
-	-m 2048 \
-	-display sdl,gl=on \
-	-drive file=/home/lchy0113/Private/qemu_related/android-x86/Android.img,if=virtio \
-	-object rng-random,id=rng0,filename=/dev/urandom \
-	-device virtio-rng-pci,rng=rng0 \
-	-device virtio-keyboard \
-	-boot menu=off \
-	-device virtio-tablet \
-	-machine type=q35  \
-	-serial mon:stdio  \
-```
 
 
  - boot directly to image 
@@ -146,5 +123,5 @@ qemu-system-x86_64 -boot c \
     -device virtio-tablet \
     -machine type=q35 \
     -serial mon:stdio \
-	-net nic 
+	-net nic -net user,hostfwd=tcp::4444-:5555
 ```
