@@ -57,6 +57,7 @@ qemu-img create -f qcow2 Android.img 10G
 ```bash
 cd qemu/build/x86_64-softmmu/
 
+// sample
 qemu-system-x86_64 -boot d \
     -enable-kvm \
     -smp 2 \
