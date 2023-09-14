@@ -116,7 +116,7 @@ qemu-system-x86_64 -boot c \
     -device AC97 \
     -m 2048 \
     -display sdl,gl=on \
-	-drive file=/home/lchy0113/Private/qemu_related/android-x86/Android.img,if=virtio \
+	-drive file=/home/lchy0113/Develop/android-x86/Android.img,if=virtio \
     -object rng-random,id=rng0,filename=/dev/urandom \
     -device virtio-rng-pci,rng=rng0 \
     -device virtio-keyboard \
