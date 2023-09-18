@@ -8,7 +8,7 @@ Ethernet Fix
 
 # 원인
 
-~[](./image/ETHERNET_FIX-01.jpg)
+~[](./image/ETHERNET_FIX-01.png)
  
 
 ```
