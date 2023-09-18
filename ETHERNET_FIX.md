@@ -6,6 +6,9 @@ Ethernet Fix
 >  - Realtek driver(r8169 계열)사용시,
 
 
+# 원인
+
+~[](./image/ETHERNET_FIX-01.jpg)
  
 
 ```
