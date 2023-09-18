@@ -8,6 +8,7 @@ Ethernet Fix
 
 # 원인
 
+아래와 같이 에러 발생
 ![](./image/ETHERNET_FIX-01.png)
  
 
