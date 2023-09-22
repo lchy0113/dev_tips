@@ -161,6 +161,56 @@ command 를 입력하여 iptables rule을 초기화&추가합니다.
 ## iptables rules 적용
 (host_pad adb push /vendor/etc/iptables.rules
 ```
+---
+
+### iptables rules Review
+
+```bash
+Chain INPUT (policy DROP)
+num  target     prot opt source               destination
+1    ACCEPT     all  --  0.0.0.0/0            0.0.0.0/0            ctstate RELATED,ESTABLISHED
+ /**
+  * 입력 체인의 기본 정책 : DROP
+  * ACCEPT 조건 : source packet이 0.0.0.0/0 네트워크이고, 상태가 RELATED 또는 ESTABLISHED인 패킷
+  * 즉, 모든 IP주소에서 기존 연결과 관련된 패킷을 허용한다는 규칙.
+  * ctstate(Connection Tracking State)는 iptables는 패킷을 처리할때 conntrack 모듈을 사용하여 패킷의 연결 상태를 추적
+  * 아래 상태가 있음. 
+  * NEW : 새로운 연결을 생성하려는 상태.
+  * ESTABLISHED : 이미 연결이 설정된 상태.
+  * RELATED : 기존 연결과 관련된 상태.
+  * INVALID : 연결 상태가 유효하지 않은 상태.
+  */
+2    ACCEPT     icmp --  0.0.0.0/0            0.0.0.0/0            icmptype 8 state NEW,RELATED,ESTABLISHED
+ /**
+  * 패킷 상태(NEW, RELATED, ESTABLISHED)에 관계없이 모든 source, 및 destination 의 icmp request (type 8) 패킷을 허용한다.
+  * 즉, 이 규칙으로 모든 장치가 네트워크의 다른 장치에 ping request을 보내고 응답받을 수 있습니다. 
+  */
+3    LOG        icmp --  0.0.0.0/0            0.0.0.0/0            icmptype 8 limit: avg 1/min burst 2 LOG flags 0 level 4 prefix " PING-PONG-FLOOD "
+ /**
+   * source, destination 을 대사응로 하는 모든 icmp request packet 을 기록합니다. 
+   */
+4    ACCEPT     all  --  10.0.0.0/8           0.0.0.0/0
+ /**
+   * 10.0.0.0/8 네트워크에서 전송된 패킷을 허용합니다.
+   */
+5    ACCEPT     all  --  13.125.68.181        0.0.0.0/0
+ /**
+   * 13.125.68.181 네트워크에서 전송된 패킷을 허용합니다.
+   */
+6    ACCEPT     icmp --  0.0.0.0/0            0.0.0.0/0            icmptype 0 state RELATED,ESTABLISHED
+
+Chain FORWARD (policy DROP)
+num  target     prot opt source               destination
+
+Chain OUTPUT (policy DROP)
+num  target     prot opt source               destination
+1    ACCEPT     icmp --  0.0.0.0/0            0.0.0.0/0            icmptype 0 state RELATED,ESTABLISHED
+2    ACCEPT     all  --  0.0.0.0/0            10.0.0.0/8
+3    ACCEPT     all  --  0.0.0.0/0            13.125.68.181
+4    ACCEPT     icmp --  0.0.0.0/0            0.0.0.0/0            icmptype 8 state NEW,RELATED,ESTABLISHED
+
+```
+
 
 ---
 
