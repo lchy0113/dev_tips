@@ -45,31 +45,56 @@ JAVA
 
  Java에는 다양한 버전이 존재한다. 그중 가장 많이 사용하는 버전은 JAVA 8,11,17이다. 
  LTS(Long Term Support) 버전이기 때문에, 
+ Java에서 버전 정보를 나타내는데 있어서 크게 2가지로 분류된다.
+ 1.7.0 이런식으로 나타내는 경우와 JAVA7 이라고 나타내는 경우가 있다.
+ 간단하게 생각해서 둘다 같은 버전이다. 
 
- - JAVA8
-   * 오라클이 자바 인수 후 출시한 첫 번째 LTS 버전
-   * 32bit를 지원하는 마지막 공식 Java 버전
-   * Oracle JDK(Oracle사에서 지원하는 버전으로 유료) , Open JDK(오픈소스 기반의 무료)로 나뉨
-   * 새로운 날짜와 시간 API(LocalDateTime 등)
-   * 람다식(Lambda), Stream API
-   * PermGen 영역 삭제
-   * Static Link JNI Library
+ *JAVA의 버전 표기법*
 
- - JAVA11
-   * Oracle JDK와 Open JDK 통합
-   * Oracle JDK가 구독형 유료 모델로 전환
-   * 람다 지역 변수 사용법 변경
-   * Third Party JDK로의 이전 필요
-   * HTTP 클라이언트 표준화 기능
-   *  
+ 6 = 1.6
+ 7 = 1.7
+ 8 = 1.8
 
- - JAVA17
-   * 가장 최신 LTS 버전
-   * 봉인 클래스(Sealed Class) 정식 추가
-   * 패턴 매칭 프리뷰 단계
-   * Incubator (Foreign Function & Memory API)
-   * 애플 M1 및 이후 프로세서 탑재 제품군에 대한 정식 지원 (Mac 유저들 환호)
-   * 난수 생성 API 추가
+ 모두 동일하다. 
+ 공식적인 이름은 JAVA SE 8이다.  
+ 1.8.0 은 개발자들을 위한 버전명 이다. 
+ 그러다 JAVA SE 9버전에 이르러서는 1.x 방식의 네이밍 기법을 버리고 한자릿수 버전 표기법으로 변경된다.
+
+
+  - JAVA8
+
+![](./image/JAVA-03.png)
+
+    * 오라클이 자바 인수 후 출시한 첫 번째 LTS 버전
+    * 32bit를 지원하는 마지막 공식 Java 버전
+    * Oracle JDK(Oracle사에서 지원하는 버전으로 유료) , Open JDK(오픈소스 기반의 무료)로 나뉨
+    * 새로운 날짜와 시간 API(LocalDateTime 등)
+    * 람다식(Lambda), Stream API
+    * PermGen 영역 삭제
+    * Static Link JNI Library
+    * Java8은 Java1.8과 같은 것. Java1.8은 Java 8의 버전 번호 이다. 
+
+  - JAVA11
+
+![](./image/JAVA-04.png)
+
+    * Oracle JDK와 Open JDK 통합
+    * Oracle JDK가 구독형 유료 모델로 전환
+    * 람다 지역 변수 사용법 변경
+    * Third Party JDK로의 이전 필요
+    * HTTP 클라이언트 표준화 기능
+    *  
+ 
+  - JAVA17
+
+![](./image/JAVA-05.png)
+
+    * 가장 최신 LTS 버전
+    * 봉인 클래스(Sealed Class) 정식 추가
+    * 패턴 매칭 프리뷰 단계
+    * Incubator (Foreign Function & Memory API)
+    * 애플 M1 및 이후 프로세서 탑재 제품군에 대한 정식 지원 (Mac 유저들 환호)
+    * 난수 생성 API 추가
 
 
 # install OpenJDK 17 on ubuntu
