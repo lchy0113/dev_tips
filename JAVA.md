@@ -40,7 +40,7 @@ JAVA
 
  JAVA 애플리케이션을 실행하려면 JRE가 필요하고, JARA 애플리케이션을 개발하려면 JDK가 필요하다.
 
-Java version
+# Java version
 -----
 
  Java에는 다양한 버전이 존재한다. 그중 가장 많이 사용하는 버전은 JAVA 8,11,17이다. 
@@ -72,7 +72,7 @@ Java version
    * 난수 생성 API 추가
 
 
-install OpenJDK 17 on ubuntu
+# install OpenJDK 17 on ubuntu
 -----
 
  - using package
@@ -124,7 +124,7 @@ OpenJDK Runtime Environment (build 17.0.2+8-86)
 OpenJDK 64-Bit Server VM (build 17.0.2+8-86, mixed mode, sharing)
 ```
 
-Set Default Java Version on Ubuntu 22.04|20.04|18.04
+# Set Default Java Version on Ubuntu 22.04|20.04|18.04
 -----
 
 ```bash
