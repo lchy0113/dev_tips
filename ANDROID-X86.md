@@ -4,27 +4,27 @@ Android-x86
 
 # prepare
 
- - install the following build dependencies 
+## install the following build dependencies 
 
 ```bash
 sudo apt install -y build-essential libepoxy-dev libdrm-dev libgbm-dev libx11-dev libvirglrenderer-dev libpulse-dev libsdl2-dev libgtk-3-dev libsdl1.2-dev ninja-build
 ```
 
- - download latest qemu sources using follow command
+## download latest qemu sources using follow command
 
 ```bash
 git clone https://git.qemu.org/git/qemu.git
 ```
 
 
- - run qemu
+## run qemu
 
 ```bash
 ./configure --enable-sdl --enable-opengl --enable-virglrenderer --enable-system --enable-modules --audio-drv-list=pa --target-list=x86_64-softmmu --enable-kvm --enable-gtk --enable-slirp --enable-debug
 ```
 
 
- - make
+# make
 
 ```bash
 make
@@ -38,21 +38,22 @@ sudo touch /lib/udev/rules.d/99-kvm.rules
 ```
 
 
- - install qemu-utils
+# install qemu-utils
 
 ```bash
 sudo apt install qemu-utils
 ```
 
- - cd to the directory where you want create the virtual hard disk
+## cd to the directory where you want create the virtual hard disk
 
 ```bash
 qemu-img create -f qcow2 Android.img 10G
 ```
 
- - Download android-x86 image 
+## Download android-x86 image 
+	url : https://www.android-x86.org/download
 
- - cd to directory were u git cloned qemu
+## cd to directory were u git cloned qemu
 
 ```bash
 cd qemu/build/x86_64-softmmu/
@@ -102,9 +103,9 @@ qemu-system-x86_64 -boot d \
 	-net nic -net user,hostfwd=tcp::4444-:5555
 ```
 
+# boot
 
-
- - boot directly to image 
+## boot directly to image 
 
 ```bash
 qemu-system-x86_64 -boot c \
