@@ -147,6 +147,9 @@ hrtimer API에는 기존 API와 유사한 점도 있지만 추가적인 시간 �
   - HRTIMER_NORESTART : 타이머가 자동으로 시작되지 않는다. (즉, 타이머가 1회만 실행하고 멈춤)
   - HRTIMER_RESTART : 타이머가 재시작 된다.
 
+ hrtimer_forward_now 함수
+  - hrtimer_t 구조체를 사용하여 현재 시간으로부터 지정된 시간 동안 타이머를 앞으로 이동.
+
 ```c
 void hrtimer_init(struct hrtimer *time, clockid_t which_clock, enum hrtimer_mode mode);
 
