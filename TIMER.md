@@ -138,6 +138,15 @@ hrtimer API에는 기존 API와 유사한 점도 있지만 추가적인 시간 �
 초기화된 timer는 hrtimer_start를 사용하여 시작 할 수 있다. 
 이 호출은 만기 시간(ktime_t) 및 시간 모드 값(절대 값 또는 상대 값)을 포함한다.  
 
+ support two clock :
+  - CLOCK_MONOTONIC : *jiffies* tick과 유사하며, 부팅 된 시점을 0으로 시작하여 증가한다.
+  - CLOCK_REALTIME : real-world time을 따른다.
+  
+
+ timer handler return 값
+  - HRTIMER_NORESTART : 타이머가 자동으로 시작되지 않는다. (즉, 타이머가 1회만 실행하고 멈춤)
+  - HRTIMER_RESTART : 타이머가 재시작 된다.
+
 ```c
 void hrtimer_init(struct hrtimer *time, clockid_t which_clock, enum hrtimer_mode mode);
 
