@@ -127,3 +127,45 @@ qemu-system-x86_64 -boot c \
     -serial mon:stdio \
 	-net nic -net user,hostfwd=tcp::4444-:5555
 ```
+ - -qemu-system-x86_64 : the qemu computer emulator for PC 64-bit
+ - -enable-kvm : the virtual machine. With this, your virtualization runs faster.
+ - -smp 2 : determine to use 2 CPU cores intestad of 1.
+ - -m 2048 : determine to use 2 GigaByte of RAM.
+ - -net nic & -net user : -net 옵션을 이용해서 네트워크 카드를 설정한다. 네트워크 설정을 위해서는 2개의 -net 옵션을 이용해야 한다. 기본값은 -net nic -net user
+
+</br>
+</br>
+
+-----
+
+# network 구성
+
+> study 하고 싶음. (https://www.qemu.org/docs/master/system/devices/net.html#)
+
+## host 네트워크 상태 확인
+
+ eno2 인터페이스를 사용.
+```bash
+eno2: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.0.12  netmask 255.255.255.0  broadcast 192.168.0.255
+        inet6 fe80::f84c:3dce:cacc:a8c7  prefixlen 64  scopeid 0x20<link>
+        ether 04:d4:c4:e0:c7:77  txqueuelen 1000  (Ethernet)
+        RX packets 197553  bytes 100214827 (100.2 MB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 560539  bytes 733269271 (733.2 MB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+        device interrupt 128  base 0x9000
+```
+
+ routing 정보 확인
+
+ > 192.168.0.0/24 로 들어오고 나가는 패킷이 라우팅 되어 있는것을 확인
+```bash
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+0.0.0.0         192.168.0.1     0.0.0.0         UG    100    0        0 eno2
+169.254.0.0     0.0.0.0         255.255.0.0     U     1000   0        0 eno2
+172.17.0.0      0.0.0.0         255.255.0.0     U     0      0        0 docker0
+172.22.0.0      0.0.0.0         255.255.0.0     U     0      0        0 br-d2983195817d
+192.168.0.0     0.0.0.0         255.255.255.0   U     100    0        0 eno2
+```
