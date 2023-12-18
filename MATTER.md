@@ -43,6 +43,7 @@ Matter
 		  = 수동으로 사용자가 등록
 
 	    + https://github.com/SmartThingsCommunity/SmartThingsPublic 페이지에 접속하여 fork
+	    + IDE 사이트에서 연동. 
 
 
   * 결론 : 지그비를 사용하는 기기들을 묶어서 스마트싱스로 제어할 수 있게 하는 제품.
