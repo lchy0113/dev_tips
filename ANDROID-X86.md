@@ -103,6 +103,12 @@ qemu-system-x86_64 -boot d \
 	-net nic -net user,hostfwd=tcp::4444-:5555
 ```
 
+## install android-x86 sdk 11
+```bash
+~/Private/qemu_related/qemu/build/x86_64-softmmu$ ./qemu-system-x86_64 -boot d -enable-kvm -smp 4 -cdrom "/home/lchy0113/Develop/android-x86/android_x86_64-11.iso" -name lunuz -device virtio-vga-gl,xres=1280,yres=720  -cpu host -m 4096 -display sdl,gl=on -drive file=/home/lchy0113/Develop/android-x86/Android-11.img,if=virtio -object rng-random,id=rng0,filename=/dev/urandom -device virtio-rng-pci,rng=rng0 -device virtio-keyboard  -boot menu=off  -device virtio-tablet  -machine type=q35  -serial mon:stdio  -net nic -net user,hostfwd=tcp::4444-:5555
+
+```
+
 # boot
 
 ## boot directly to image 
@@ -133,6 +139,12 @@ qemu-system-x86_64 -boot c \
  - -m 2048 : determine to use 2 GigaByte of RAM.
  - -net nic & -net user : -net 옵션을 이용해서 네트워크 카드를 설정한다. 네트워크 설정을 위해서는 2개의 -net 옵션을 이용해야 한다. 기본값은 -net nic -net user
 
+
+## boot android-x86 sdk 11
+
+```bash
+./qemu-system-x86_64 -boot c -enable-kvm -smp 4 -name richgold -device virtio-vga-gl,xres=1280,yres=720 -cpu host -m 4096 -display sdl,gl=on -drive file=/home/lchy0113/Develop/android-x86/Android-11.img,if=virtio -object rng-random,id=rng0,filename=/dev/urandom  -device virtio-rng-pci,rng=rng0 -device virtio-keyboard -boot menu=off -device virtio-tablet -machine type=q35 -serial mon:stdio -net nic -net user,hostfwd=tcp::4444-:5555
+```
 </br>
 </br>
 
