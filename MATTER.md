@@ -11,6 +11,7 @@ Matter
 > Connected Home Over IP 는 Google, Amazon, Apple, Zigbee Alliance 등이 함께 개발한 IoT 기기 간의 상호 운용성을 향상시키기 위한 개방형 표준.  
 > 이 표준은 Wi-Fi, Thread, Bluetooth LE 등 다양한 프로토콜을 지원하며, 사용자는 다양한 제조사의 IoT기기를 하나의 허브에서 관리 가능.
   
+  richgold
 [ConnectedHomeIP]: https://github.com/project-chip/connectedhomeip  
   
 <br/>
@@ -31,8 +32,8 @@ Matter
     - Zigbee 방식이 블루투스처럼 그냥 신호만 잡으면 바로 연결되는 것은 아니고, PnP처럼 스마트싱스가 정식 지원하는 센서가 아니면 Device Handler라고 하는 DTH(Device Type Handler)를 설치해야함. 
 
   * 스마트싱스 IDE사이트 세팅
-    - IDE사이트 : https://account.smartthings.com
-		![](./image/MATTER-01.png)
+    - IDE사이트 : https://account.smartthings.com  
+		![](./image/MATTER-01.png)  
 		+ Locations : 계정에 할당된 스마트싱스 플랫폼에 대한 장소.
 		+ Hubs : 스마트싱스허브 장치에 대한 정보 제공.
 		+ Devices : 스마트싱스 플랫폼에 연결된 모든 장치(센서, 가전 등) 정보 제공.
@@ -52,11 +53,4 @@ Matter
 <br/>
 -----
 
-[to do]
-
-개발일정
- - matter open-source 검토. : 3 w
- - matter open-source 포팅 (상용 EVB). : 4w
- - matter bridge 기능 동작 : 
- - matter open-source 타겟 보드 포팅 (POC) : (for BT)
- - 모바일에서 matter 기기 제어.(스마트폰 agent app <-> matter hub <-> matter device)
+## to do
