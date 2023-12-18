@@ -36,14 +36,14 @@ Matter
 		+ Hubs : 스마트싱스허브 장치에 대한 정보 제공.
 		+ Devices : 스마트싱스 플랫폼에 연결된 모든 장치(센서, 가전 등) 정보 제공.
 		+ Installed Apps : 쓰마트싱스 플랫폼 내에서 사용할수 있는 각종 앱 관리.
-
-    - Github 연동
-        + DTH를 등록하기 위해서는 크게 2가지의 방법이 있음. 
-		  = github 연동.
-		  = 수동으로 사용자가 등록
-
-	    + https://github.com/SmartThingsCommunity/SmartThingsPublic 페이지에 접속하여 fork
-	    + IDE 사이트에서 연동. 
+  
+    - Github 연동  
+        + DTH를 등록하기 위해서는 크게 2가지의 방법이 있음.   
+		  = github 연동.  
+		  = 수동으로 사용자가 등록  
+  
+	    + https://github.com/SmartThingsCommunity/SmartThingsPublic 페이지에 접속하여 fork  
+	    + IDE 사이트에서 연동.   
 
 
   * 결론 : 지그비를 사용하는 기기들을 묶어서 스마트싱스로 제어할 수 있게 하는 제품.
