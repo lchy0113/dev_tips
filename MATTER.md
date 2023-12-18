@@ -7,14 +7,12 @@ Matter
 -----
 
 # Open-source Matter SDK
-
-[ConnectedHomeIP]: https://github.com/project-chip/connectedhomeip
-
-
+  
 > Connected Home Over IP 는 Google, Amazon, Apple, Zigbee Alliance 등이 함께 개발한 IoT 기기 간의 상호 운용성을 향상시키기 위한 개방형 표준.  
 > 이 표준은 Wi-Fi, Thread, Bluetooth LE 등 다양한 프로토콜을 지원하며, 사용자는 다양한 제조사의 IoT기기를 하나의 허브에서 관리 가능.
-
-
+  
+[ConnectedHomeIP]: https://github.com/project-chip/connectedhomeip  
+  
 <br/>
 -----
 
