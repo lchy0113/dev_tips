@@ -51,6 +51,18 @@ Matter
 
    ref : https://help.ewelink.cc/hc/en-us/articles/23868490214169-Matter-Hub-vs-Matter-Bridge-What-s-the-Difference-
 
+
+ - *homeBridge*
+   HomeBridge는 Ring 및 Nest 와 같은 브랜드의 HomeKit 세서리를 지원하기 위해 HomeKig을 모조하는 무료 오픈 소스 소프트웨어이다. PC, Mac과 같이 항상 켜져 있는 장치에서 서버 소프트웨어와 추가하려는 액세서리의 종류에 대한 플러그인을 설치해야 한다.
+    site : https://homebridge.io/
+	study : https://github.com/Orachigami/homebridge-android
+
+	* Matter 와 HomeBridge관 관계
+	  Matter를 지원하는 장치는 스마트 홈에 연결하기 위해 HomeBridge를 통할 필요가 없다. 
+      현재 Matter 표준은 제한된 장치 유형(조명, 도어장금장치, 센서, 스피커 등)만 지원하고 있기때문에, 
+	  HomeBridge를 통해 제한적인 장치를 Matter 플랫폼에 지원 할 수 있도록 할수 있다. 
+
+
 <br/>
 -----
 
@@ -94,6 +106,7 @@ Matter
 
     [hub]   <---------------------->    [bridge]
 	(e.g Apple homepod)                 (wallpad with matterbridge)
+	                                    (used HomeBridge?)
 	                                        |
                                             +-> (rs485)
                                             |      |
