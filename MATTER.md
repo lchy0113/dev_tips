@@ -49,6 +49,8 @@ Matter
    Matter 설정에는 하나의 Hub만 필요하지만 translation에는 여러개의 Bridge가 있을 수 있다. 
    요약하면 *Hub는 중앙컨트롤러이고, Bridge는 다른 표준에 대한 translation 역할을 한다.*
 
+   ref : https://help.ewelink.cc/hc/en-us/articles/23868490214169-Matter-Hub-vs-Matter-Bridge-What-s-the-Difference-
+
 <br/>
 -----
 
@@ -82,3 +84,19 @@ Matter
 -----
 
 ## to do
+
+
+### develop
+
+```
+    [ homebridge ]
+
+
+    [hub]   <---------------------->    [bridge]
+	(e.g Apple homepod)                 (wallpad with matterbridge)
+	                                        |
+                                            +-> (rs485)
+                                            |      |
+                                            |      +-> ks4506 protocol
+                                            +-> ....
+```
