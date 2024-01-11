@@ -66,6 +66,43 @@ Matter
 <br/>
 -----
 
+# Matter(formerly Project CHIP) 
+
+ : https://github.com/project-chip/connectedhomeip
+
+## Matter stack 
+
+  아래 architecture 는 layer 간 역할과 기능을 적절하게 분리하여 서비스를 제공한다.
+
+  1. *Application*  
+    장치의 High-order business logic. 예) 조명 기능을 갖춘 애플리케이션에는 조명 켜기/끄기와 같은 기능을 처리함.  
+  
+  2. *Data model*  
+    Application layer에서 사용되는 data 및 기능. Application layer의 기능에 필요한 데이터 모델을 관리.  
+  
+  3. *Interaction model*  
+    Interaction model layer에서는 client와 server 장치간에 수행할 수 있는 상호 동작 기능을 정의한다.   
+	예를 들어, 서버 장치에서 속성을 read/write하는 것에 대한 동작을 수행한다.  이러한 상호 동작 기능에 필요한 데이터는 Data model layer에서 정의된 요소에서 동작한다.  
+  
+  4. *Action framing*  
+    Interaction mode을 사용하여 동작이 구성되면 네트워크 전송을 위해 인코딩하기 위해 규적된 압축 바이너리 형식으로 직렬화 한다.  
+  
+  5. *Security*  
+    Action framing 에서 인코딩된 frame을 전달받아 security layer에서 데이터 payload를 암호화 하고, singging하여 패킷의 발신자와 수신자 모두가 데이터를 보호하고 인증하도록 한다.  
+  
+  6. *Message Framing & Routing*  
+    암호화 및 singging된 페이로드의 헤더 필드를 정의한다.  메시지의 속성과 라우팅 정보를 지정한다.  
+  
+  7. *IP Framing & Transport Management*  
+    최종 payload 가 구성된 후, 데이터를 전송한다.   
+  
+  
+
+
+
+<br/>
+-----
+
 # Reference
 ## smartthings hub
   * 와이파이로 통신되는 제품들은 앱에서 바로 등록하기 때문에 허브가 필요 없음. 이 허브는 지그비 전파를 이용하여 작동되는 기기, 예를들어 전등스위치, 전동커텐레일 등 앱에 바로 등록 불가능한 기기를 스마트싱스앱에 등록시키는 역할.
