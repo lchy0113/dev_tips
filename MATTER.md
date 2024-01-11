@@ -21,8 +21,8 @@ Matter
 
 ## 용어 정리
 
- - *Matter Hub* 
-   Matter Hub는 컨트롤러가 연결되고 통한하는 중앙 장치. 
+ - *Matter Hub*   
+   Matter Hub는 컨트롤러가 연결되고 통합하는 중앙 장치. 
    허브는 네트워크의 다양한 장치를 관리하는데 도움 된다. 
    이를 통한 한 위치의 단일 액세스 포인트에 연결된 장치를 제어할 수 있다. 
    하나의 단일 플랫폼에서 다양한 Matter 스마트 홈 장치를 추가,제어 및 관리하려면 Matter Hub가 필요하다.
@@ -32,7 +32,7 @@ Matter
 
    ![](./image/MATTER-02.png)
 
- - *Matter Bridge* 
+ - *Matter Bridge*    
    Matter Bridge 는 Matter 가 아닌 제품을 Matter 생태계로 가져올 수 있는 장치이다.
    장치 사이의 중개자 역할이며, 예를들어 오래된 Zigbee 플러그가 있는 경우, Matter Bridge를 통해
    Matter 네트워크에 연결할 수 있다. Bridge는 호환성을 허용하는 두 프로토콜 간을 변환하는 역할을 한다.
@@ -43,7 +43,7 @@ Matter
 
    ![](./image/MATTER-03.png)
 
- - Matter Hub 와 Matter Bridge 간 차이점
+ - Matter Hub 와 Matter Bridge 간 차이점  
    Hub는 Matter 네트워크의 주요 액세스 포인트 이고, Bridge 는 다른 프로토콜에 연결된다. 
    Hub는 원격 제어 및 자동화를 가능하게 하고, Bridge는 translation 과 compatibility에 중점을 둔다.
    Matter 설정에는 하나의 Hub만 필요하지만 translation에는 여러개의 Bridge가 있을 수 있다. 
@@ -52,7 +52,7 @@ Matter
    ref : https://help.ewelink.cc/hc/en-us/articles/23868490214169-Matter-Hub-vs-Matter-Bridge-What-s-the-Difference-
 
 
- - *homeBridge*
+ - *homeBridge*  
    HomeBridge는 Ring 및 Nest 와 같은 브랜드의 HomeKit 세서리를 지원하기 위해 HomeKig을 모조하는 무료 오픈 소스 소프트웨어이다. PC, Mac과 같이 항상 켜져 있는 장치에서 서버 소프트웨어와 추가하려는 액세서리의 종류에 대한 플러그인을 설치해야 한다.
     site : https://homebridge.io/
 	study : https://github.com/Orachigami/homebridge-android
