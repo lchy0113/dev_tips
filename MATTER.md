@@ -161,6 +161,11 @@ Matter
 
   * 결론 : 지그비를 사용하는 기기들을 묶어서 스마트싱스로 제어할 수 있게 하는 제품.
 
+
+### **ioter** : Testing Matter Thread Compliant IoT Devices
+
+ - ref : https://github.com/Samsung/ioter
+
 <br/>
 
 -----
@@ -169,6 +174,11 @@ Matter
 
 
 ### develop
+
+#### overview for Matter Hub
+
+
+![](image/MATTER-04.png)
 
 #### homebridge
 ```
