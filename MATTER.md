@@ -64,9 +64,16 @@ Matter
       현재 Matter 표준은 제한된 장치 유형(조명, 도어장금장치, 센서, 스피커 등)만 지원하고 있기때문에, 
 	  HomeBridge를 통해 제한적인 장치를 Matter 플랫폼에 지원 할 수 있도록 할수 있다. 
 
+
+<br/>
+<br/>
+<br/>
+
 ## Matter 장치를 사용하려면 필요한 것.
 
  - **Matter Commissioner**
+   on-bording 프로세스 과정에서 Matter Device를 Matter Controller에 연결하는데 사용된다. 
+   예를들어, SmartThings App이 설치된 모바일 장치가 이러한 연결을 수행하는 역할을 한다.
 
  - **Matter Controller**
 
