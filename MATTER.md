@@ -74,6 +74,8 @@ Matter
 
 ## Matter 장치를 사용하려면 필요한 것.
 
+![](./image/MATTER-05.png)
+
  - **Matter Commissioner**   
    on-bording 프로세스 과정에서 Matter Device를 Matter Controller에 연결하는데 사용된다.   
    예를들어, SmartThings App이 설치된 모바일 장치가 이러한 연결을 수행하는 역할을 한다.  
@@ -178,7 +180,7 @@ Matter
 #### overview for Matter Hub
 
 
-![](image/MATTER-04.png)
+![](./image/MATTER-04.png)
 
 #### homebridge
 ```
