@@ -63,7 +63,10 @@ Matter
 	  Matter를 지원하는 장치는 스마트 홈에 연결하기 위해 HomeBridge를 통할 필요가 없다. 
       현재 Matter 표준은 제한된 장치 유형(조명, 도어장금장치, 센서, 스피커 등)만 지원하고 있기때문에, 
 	  HomeBridge를 통해 제한적인 장치를 Matter 플랫폼에 지원 할 수 있도록 할수 있다. 
-
+  
+ - *Third party border router*  
+   thrid-party border router 를 사용하면 기존 thread 인터페이스를 제공하지 않는 Hub에서 thread 인터페이스로 연결되는 Matter 장치를 연결할수 있다.  
+   thread Boarder 라우터는 thread network를 local IP network, WiFi or Ethernet 에 연결하기 위해 Matter protocol을 사용하여 thread 장치와 Controller간의 연결을 위한 Access porint 역할을 한다.
 
 <br/>
 <br/>
@@ -72,12 +75,15 @@ Matter
 ## Matter 장치를 사용하려면 필요한 것.
 
  - **Matter Commissioner**   
-   on-bording 프로세스 과정에서 Matter Device를 Matter Controller에 연결하는데 사용된다. 
-   예를들어, SmartThings App이 설치된 모바일 장치가 이러한 연결을 수행하는 역할을 한다.
-
- - **Matter Controller**
-
- - **Matter Device**
+   on-bording 프로세스 과정에서 Matter Device를 Matter Controller에 연결하는데 사용된다.   
+   예를들어, SmartThings App이 설치된 모바일 장치가 이러한 연결을 수행하는 역할을 한다.  
+  
+ - **Matter Controller**  
+   Matter Device 가 on-bording 된 후, 이를 제어하는 Hub 역할을 한다.  
+   Thread 기반 장치를 연결하려면 Thread Boarder Router 가 포함된 Matter Controller가 필요하다.  
+   
+ - **Matter Device**  
+   제어할 스마트 홈 장치이다.  장치에 Matter Badge가 있는 경우 서비스를 제공한다.  
 
 
 <br/>
