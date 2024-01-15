@@ -168,6 +168,30 @@ Matter
 
  - ref : https://github.com/Samsung/ioter
 
+
+  
+-----
+## NXP : MPU / Linux Hosted Matter Development Platform
+
+![](./image/MATTER-06.png)
+
+ - Processor : i.MX8MMINI
+ - Wireless Connectivity
+   * K32W041AM-A : zigbee, thread, bluetooth le
+   * 88W8987 : wifi, bluetooth
+ - Feature :
+   * Target Matter Device Types : 
+     + Gateways
+	 + Hubs and Bridges
+	 + Matter Controllers
+	 + Thread Boarder Routers
+	 + Media devices
+	 + Smart Door Locks
+	 + HVAC Controls
+
+
+ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluation-and-development-boards/mpu-linux-hosted-matter-development-platform:MPU-LINUX-MATTER-DEV-PLATFORM
+
 <br/>
 
 -----

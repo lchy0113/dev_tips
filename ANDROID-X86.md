@@ -109,6 +109,16 @@ qemu-system-x86_64 -boot d \
 
 ```
 
+## install chromeos  (developing)
+```bash 
+~/Private/qemu_related/qemu/build/x86_64-softmmu$ ./qemu-system-x86_64 -boot d -enable-kvm -smp 4 -cdrom "/home/lchy0113/Develop/chromeos/chromeosflex.iso" -name lunuz -device virtio-vga-gl,xres=1280,yres=720  -cpu host -m 4096 -display sdl,gl=on -drive file=/home/lchy0113/Develop/chromeos/chromeosflex.img,if=virtio -object rng-random,id=rng0,filename=/dev/urandom -device virtio-rng-pci,rng=rng0 -device virtio-keyboard  -boot menu=off  -device virtio-tablet  -machine type=q35  -serial mon:stdio  -net nic -net user
+```
+```bash
+./qemu-system-x86_64 -drive format=raw,file=/home/lchy0113/Downloads/chromeos_15393.58.0_reven_recovery_stable-channel_mp-v2.bin -m 4G -enable-kvm -smp 4 -vga virtio -usb -device nec-usb-xhci,id=xhci -global nec-usb-xhci.msi=off -device usb-ehci,id=ehci 
+
+```
+
+
 # boot
 
 ## boot directly to image 
