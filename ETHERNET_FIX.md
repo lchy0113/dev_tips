@@ -124,3 +124,12 @@ $ sudo lshw -c network
        configuration: autonegotiation=on broadcast=yes driver=r8152 driverversion=v1.12.13 duplex=full firmware=rtl8153b-2 v1 10/23/19 ip=192.168.0.20 link=yes multicast=yes port=MII speed=1Gbit/s
 
 ```
+
+## dkms status
+
+```bash
+$ sudo dkms status
+bcmwl/6.30.223.271+bdcom, 5.15.0-92-generic, x86_64: installed
+bcmwl/6.30.223.271+bdcom, 6.2.0-39-generic, x86_64: installed
+bcmwl/6.30.223.271+bdcom, 6.5.0-15-generic, x86_64: installed
+```
