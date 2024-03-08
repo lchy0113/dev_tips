@@ -55,7 +55,7 @@ Matter
   
   
  - *homeBridge*  
-   HomeBridge는 Ring 및 Nest 와 같은 브랜드의 HomeKit 세서리를 지원하기 위해 HomeKig을 모조하는 무료 오픈 소스 소프트웨어이다. PC, Mac과 같이 항상 켜져 있는 장치에서 서버 소프트웨어와 추가하려는 액세서리의 종류에 대한 플러그인을 설치해야 한다.  
+   HomeBridge는 Ring 및 Nest 와 같은 브랜드의 HomeKit 세서리를 지원하기 위해 HomeKit을 모조하는 무료 오픈 소스 소프트웨어이다. PC, Mac과 같이 항상 켜져 있는 장치에서 서버 소프트웨어와 추가하려는 액세서리의 종류에 대한 플러그인을 설치해야 한다.  
     site : https://homebridge.io/  
 	study : https://github.com/Orachigami/homebridge-android  
   
@@ -94,6 +94,8 @@ Matter
 
 # Matter(formerly Project CHIP) 
 
+>  이전에는 Project CHIP라고 불렸으며, 매터(Matter)로 변경됨.   
+  
  : https://github.com/project-chip/connectedhomeip
 
 ## Matter stack 
