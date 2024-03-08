@@ -98,7 +98,7 @@ Matter
 
 ![wifi/thread/ble로 구성된 Matter 스마트홈 네트워크 내의 commissioner, commissionee, nodes 간의 관계에 대한 개요](./image/MATTER-07.png)
   
-### Matter 장치 연결
+### 1. Matter 장치 연결
 
  Matter 애플리케이션 계층 프로토콜의 소프트웨어 인프라를 통해 사용자는 QR코드를 스캔하는 간단한 동작을 통해 새로운 Matter 기기를 연결할 수 있다.   
  Matter 기기의 QR코드에 내장된 몇 가지 주요정보를 통해 가능  
@@ -116,7 +116,7 @@ Matter
  > 스캔하면 스마트폰의 ble기능이 활성화되어 matter기기를 매핑하고 식별할 수 있다.   
  > 그 후, QR코드에 포함된 정보를 기반으로 커미셔닝 시작.
 
-### commissioner와 Matter 디바이스간의 연결 시운전 및 보안 유지
+### 2. commissioner와 Matter 디바이스간의 연결 시운전 및 보안 유지
 
  commissioner과 Matter 기기간의 통신은 암호 인증 세션 프로토콜(PASE)을 통해 보호됨.  
  비밀번호는 QR코드에 내장된 비밀번호 기반 키 도출 함수(PBKDF)를 통해 생성.  
