@@ -87,7 +87,53 @@ Matter
  - **Matter Device**  
    제어할 스마트 홈 장치이다.  장치에 Matter Badge가 있는 경우 서비스를 제공한다.  
 
+<br/>
+<br/>
+<br/>
+  
+## Matter 가 작동하는 방식
 
+ Matter 는 wifi, ethernet, thread와 같이 잘 알려진 ip 네트워크 위에 구축되는 애플리케이션 계층 프로토콜.  
+ 또한 저전력 bluetooth(ble)는 네트워크 형성 디바이스 식별 및 로직 구성과 관련된 프로세스인 무선 네트워크 커미셔닝에 사용됨.  
+
+![wifi/thread/ble로 구성된 Matter 스마트홈 네트워크 내의 commissioner, commissionee, nodes 간의 관계에 대한 개요](./image/MATTER-07.png)
+  
+### Matter 장치 연결
+
+ Matter 애플리케이션 계층 프로토콜의 소프트웨어 인프라를 통해 사용자는 QR코드를 스캔하는 간단한 동작을 통해 새로운 Matter 기기를 연결할 수 있다.   
+ Matter 기기의 QR코드에 내장된 몇 가지 주요정보를 통해 가능  
+
+ - version
+ - vendor id
+ - product id
+ - custom flow
+ - discovery capabilities
+ - discriminator
+ - passcode
+ - padding
+ - tlv data
+
+ > 스캔하면 스마트폰의 ble기능이 활성화되어 matter기기를 매핑하고 식별할 수 있다.   
+ > 그 후, QR코드에 포함된 정보를 기반으로 커미셔닝 시작.
+
+### commissioner와 Matter 디바이스간의 연결 시운전 및 보안 유지
+
+ commissioner과 Matter 기기간의 통신은 암호 인증 세션 프로토콜(PASE)을 통해 보호됨.  
+ 비밀번호는 QR코드에 내장된 비밀번호 기반 키 도출 함수(PBKDF)를 통해 생성.  
+ 설정된 비밀번호 키는 Matter 네트워크에서 두 기기 간에 교환되는 메시지의 암호화, 인증, 개인정보 보호에 차례로 사용됨.  
+
+![commissioner와 새로 연결된 Matter 기기간의 커미셔닝 워크플로](./image/MATTER-08.png)
+
+ 이 시나리오에서 commissioner 역할을 하는 스마트폰은 수신 장치에 합법성과 신원을 확인하기 위해 장치 증명 자격증명(DAC)을 제공하도록 요청함.  
+ 허가를 받으면 commissioner는 나중에 인증 및 통신 목적으로 사용되는 노드 운영 자격증명(NOC) 을 기기에 생성하고 설치함. 
+
+ BLE는 기본 통신 모드로 사용되지 않으며, 무선 네트워크에도 자격 증명을 제공해야 한다.  (현재 wifi, thread가 지원)  
+ 이를 용이하게 하기 위해 commissioner는 기본적으로 네트워크의 모든 디바이스에 특정 작업을 수행 할 수 있는 권한을 부여하는 목록인 액세스 제어 목록에 관리자로 추가된다.  
+ 커미셔닝이 완료되면 새 장치가 네트워크(thread, wifi)에 추가되고 ble 세션이 닫힌다.   
+ 이전에 연결되었던 모든 matter 기기느 ㄴ이제 새기기와 안전하게 통신할 수 있는 상태가 된다.  
+
+<br/>
+<br/>
 <br/>
 
 -----
