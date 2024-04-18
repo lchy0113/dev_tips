@@ -7,7 +7,7 @@ Matter
 
 -----
 
-# Open-source Matter SDK
+# 🔶 Open-source Matter SDK
   
 > Connected Home Over IP 는 Google, Amazon, Apple, Zigbee Alliance 등이 함께 개발한 IoT 기기 간의 상호 운용성을 향상시키기 위한 개방형 표준.  
 > 이 표준은 Wi-Fi, Thread, Bluetooth LE 등 다양한 프로토콜을 지원하며, 사용자는 다양한 제조사의 IoT기기를 하나의 허브에서 관리 가능.
@@ -18,10 +18,10 @@ Matter
 
 -----
 
-# Matter Study
+# 🔶 Matter Study
 > Matter 의 원칙은 Local Control
 
-## 용어 정리
+## 🔷 용어 정리
 
  - *Matter Hub*   
    Matter Hub는 컨트롤러가 연결되고 통합하는 중앙 장치.   
@@ -72,7 +72,7 @@ Matter
 <br/>
 <br/>
 
-## Matter 장치를 사용하려면 필요한 것.
+## 🔷 Matter 장치를 사용하려면 필요한 것.
 
 ![](./image/MATTER-05.png)
 
@@ -91,7 +91,7 @@ Matter
 <br/>
 <br/>
   
-## Matter 가 작동하는 방식
+## 🔷 Matter 가 작동하는 방식
 
  Matter 는 wifi, ethernet, thread와 같이 잘 알려진 ip 네트워크 위에 구축되는 애플리케이션 계층 프로토콜.  
  또한 저전력 bluetooth(ble)는 네트워크 형성 디바이스 식별 및 로직 구성과 관련된 프로세스인 무선 네트워크 커미셔닝에 사용됨.  
@@ -138,13 +138,13 @@ Matter
 
 -----
 
-# Matter(formerly Project CHIP) 
+# 🔶 Matter(formerly Project CHIP) 
 
 >  이전에는 Project CHIP라고 불렸으며, 매터(Matter)로 변경됨.   
   
  : https://github.com/project-chip/connectedhomeip
 
-## Matter stack 
+## 🔷 Matter stack 
 
   아래 architecture 는 layer 간 역할과 기능을 적절하게 분리하여 서비스를 제공한다.
 
@@ -176,7 +176,7 @@ Matter
 
 -----
 
-# Matter Specific 
+# 🔶 Matter Specific 
 
 
 <br/>
@@ -186,9 +186,9 @@ Matter
 
 -----
 
-# Reference
+# 🔶 Reference
 
-## smartthings hub
+## 🔷 smartthings hub
 
   * 와이파이로 통신되는 제품들은 앱에서 바로 등록하기 때문에 허브가 필요 없음. 이 허브는 지그비 전파를 이용하여 작동되는 기기, 예를들어 전등스위치, 전동커텐레일 등 앱에 바로 등록 불가능한 기기를 스마트싱스앱에 등록시키는 역할.
 
@@ -222,7 +222,7 @@ Matter
 
   
 -----
-## NXP : MPU / Linux Hosted Matter Development Platform
+## 🔷 NXP : MPU / Linux Hosted Matter Development Platform
 
 ![](./image/MATTER-06.png)
 
@@ -250,7 +250,7 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
 
 -----
 
-## to do
+## 🔷 to do
 
 
 ### develop
@@ -276,3 +276,20 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
 ```
 
 
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+-----
+
+
+
+# 🔶 Note 
+
+## 🔷 It is currently in use by another Gradle instance
+```bash
+// remove the lock file in the gralde chache by executing something like this. 
+find ~/.gradle -type f -name "*.lock" -delete
+```
