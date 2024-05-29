@@ -11,6 +11,8 @@ Matter
 
 [Open-source Matter SDK](#open-source-matter-sdk)
 
+    [Matter Study](#matter-study)
+
 -----
 
 ## Open-source Matter SDK
@@ -97,7 +99,7 @@ Matter
 <br/>
 <br/>
   
-#### Matter 가 작동하는 방식
+### Matter 가 작동하는 방식
 
  Matter 는 wifi, ethernet, thread와 같이 잘 알려진 ip 네트워크 위에 구축되는 애플리케이션 계층 프로토콜.  
  또한 저전력 bluetooth(ble)는 네트워크 형성 디바이스 식별 및 로직 구성과 관련된 프로세스인 무선 네트워크 커미셔닝에 사용됨.  
@@ -228,6 +230,7 @@ Matter
 
   
 -----
+
 ### NXP : MPU / Linux Hosted Matter Development Platform
 
 ![](./image/MATTER-06.png)
