@@ -142,7 +142,6 @@ Matter
 	 * 이벤트(Events) : Cluster에서 발생하는 이벤트를 나타냄.  
 	                    이벤트는 일반적으로 상태 변경 또는 기타 중요한 사항을 알리는데 사용.  
 
-
 <br/>
 <br/>
 <br/>
@@ -470,6 +469,40 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
   또한 event generation 및 attribute change reporting 을 담당한다.  
   기능이 간단한 Cluster Logic은 Ember Callback function에 작성될 수 있지만, 복잡한 Cluster Logic은 Runtime에 설치된 Interface Layer 에 의해 처리 된다.  
 
+
+
+<br/>
+<br/>
+<br/>
+
+#### SDK Organization 
+
+ - docs  
+   * docs/guides/BUILDING.md - follow this first  
+   * docs/guides/chip_tool_guide.md  
+ - examples  
+   * *examples/chip-tool* - main controller example  
+   * examples/all-alusters-app - QA app  
+   * examples/<others> - Specific Device examples  
+ - scripts
+   * bootstrap.sh & activate.sh - environment setup  
+   * build/build_examples.py - build example code  
+   * tools/zap/run_zaptool.sh - start zap tool  
+   * tools/zap_regen_all.py - .zap -> .matter
+ - src
+   * *controller* - client side code including python implementation  
+   * app - base server side code  
+   * app/clusters - cluster implementations. (.cpp)  
+   * app/zap-templates/zcl/data-model/chip/ - cluster definitions (.xml)  
+   * app/tests/suites/cetification - yaml cert test automation scripts  
+   * lib/support - Embedded versions of common utilities  
+   * platform - platform delegate APIs / implementations  
+   * include/platform - platform delegate APIs / implementations  
+   * python_testing - python cert test automation scripts   
+ - zzz_generated/app-common/app-common/zap-generated/*
+   * 생성된 cluster logic / namespaces  
+ - data_model
+   * 파일이 생성되어 spec에 대한 적합성을 확인하는데 사용. (직접 수정 하면 안됨)   
 
 <br/>
 <br/>
