@@ -437,6 +437,44 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
  example directory 는 example device composition .zip 파일을 사용하는 app의 set가 포함되어있다. 
 
  - lighting app 빌드 
+   
+   build system은 Ninja / GN 을 사용.  
+   build 를 위한 script가 제공(scripts/build/build_examples.py).  
+
+```bash
+
+# build with the script 
+# scripts/build/build_examples.py targets 
+# scripts/build/build_examples.py --target <your target> build
+
+#  builds to 
+# out/<target_name>/
+
+```
+  
+ - lighting app 과 chip tool 빌드  
+  
+   * Lighting app(device side)
+ 
+```bash
+./scripts/build/build_example.py --target linux-x64-light-no-ble build
+
+# output
+./out/linux-x64-light-no-ble/chip-lighting-app
+```
+
+
+ - chip-tool(controller side)
+
+```bash
+./scripts/build/build_example.py --target linux-x64-chip-tool build
+
+# output
+./out/linux-x64-chip-tool/chip-tool
+
+```
+
+ 
 
 <hr>
 <br/>
