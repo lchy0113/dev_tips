@@ -128,6 +128,21 @@ Matter
    thrid-party border router 를 사용하면 기존 thread 인터페이스를 제공하지 않는 Hub에서 thread 인터페이스로 연결되는 Matter 장치를 연결할수 있다.  
    thread Boarder 라우터는 thread network를 local IP network, WiFi or Ethernet 에 연결하기 위해 Matter protocol을 사용하여 thread 장치와 Controller간의 연결을 위한 Access porint 역할을 한다.
 
+ - *Matter Cluster*
+   Matter Cluster는 Matter 애플리케이션의 데이터 모델에서 사용되는 기본 요소.  
+   Cluster는 Matter 장치 내에서 단일 기능을 나타냄.  
+     e.g. 장치를 켜고 끄는 기능과 같은 기능을 포함한다.   
+	 각 Cluster에는 attribute, command, event 가 포함되어 있으며, 이는 필수적이거나 선택적 일수 있다.  
+
+   Matter Cluster의 주요 구성 요소.   
+     * 속성(Attributes) : Cluster내에서 읽거나 쓸수 있는 변수를 나태남.  
+                          이는 장치의 상태, 설정, 또는 다른 정보를 표현하는데 사용.  
+     * 명령(Commands) : Cluster에서 특정 동작을 호출하는 기능을 제공.  
+	                    명령은 연관된 매개변수를 가질 수 있다.  
+	 * 이벤트(Events) : Cluster에서 발생하는 이벤트를 나타냄.  
+	                    이벤트는 일반적으로 상태 변경 또는 기타 중요한 사항을 알리는데 사용.  
+
+
 <br/>
 <br/>
 <br/>
@@ -465,6 +480,16 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
 
 
 ## Note 
+
+
+### ZAP (ZCL Advanced Platform) 
+
+ ZAP (ZCL Advanced Platform)은 Matter Cluster 를 기반으로 한 notde.js 템플릿 엔진.   
+ ZAP 은 Matter 앱 및 SDK 에 다음과 같은 기능을 제공.  
+  
+  - Matter 엔드포인트 구성:  
+     * Matter 장치와 상호 작용하는데 필요한 Cluster, Attribute, Etc entity 를 구성.  
+
 
 ### It is currently in use by another Gradle instance
 
