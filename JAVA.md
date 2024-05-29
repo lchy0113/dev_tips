@@ -1,12 +1,12 @@
 JAVA
 =====
-
-[JRE and JDK](#jre-and-jdk)
-[Java version](#java-version)
-[Install OpenJDK 17 on ubuntu](#install-openjdk-17-on-ubuntu)
-[Set Default Java Version on Ubuntu](#set-default-java-version-on-ubuntu-22-04-20-04-18-04)
-[reference](#reference)
-
+  
+[JRE and JDK](#jre-and-jdk)  
+[Java version](#java-version)  
+[Install OpenJDK 17 on ubuntu](#install-openjdk-17-on-ubuntu)  
+[Set Default Java Version on Ubuntu](#set-default-java-version-on-ubuntu-22-04-20-04-18-04)  
+[reference](#reference)  
+  
 
 
 ## JRE and JDK
