@@ -339,14 +339,14 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
  tasks json 을 추가 하여 개발 하도록 함. 
 
  - **Current base tasks are listed here**
-   * Main build : build the default configuation(i.e., Linux OpenSSL)
-   * Run Unit and Functional Tests : Test the default cofiguration
-   * Build & Test(all) : Build & Test various configurations (Linux variants, Android, EFR32)	 
-   * Update compliation database : Update the databse used by intelliSense
-   * Bootstrap : On a clean tree, pull in the third party dependencies required
+   * *Main build* : build the default configuation(i.e., Linux OpenSSL)
+   * *Run Unit and Functional Tests* : Test the default cofiguration
+   * *Build & Test(all)* : Build & Test various configurations (Linux variants, Android, EFR32)	 
+   * *Update compliation database* : Update the databse used by intelliSense
+   * *Bootstrap* : On a clean tree, pull in the third party dependencies required
                  3rd 에서 사용하는 library빌드 
-   * Clean Output : Remove build artifacts
-   * Clean Tree : Full git clean of the tree
+   * *Clean Output* : Remove build artifacts
+   * *Clean Tree* : Full git clean of the tree
 
 ### overview for Matter Hub
 
