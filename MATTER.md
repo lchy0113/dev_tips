@@ -348,6 +348,10 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
    * *Clean Output* : Remove build artifacts  
    * *Clean Tree* : Full git clean of the tree  
   
+
+ - **Launcher Tasks**  
+   * launch json file이 위치한 곳에서 해당 job에 대한 build & run 항목을 찾을 수 있음.  
+
 <br/>
 <br/>
 
