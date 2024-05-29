@@ -6,6 +6,7 @@ Matter
 [Matter](#matter)  
 [Open-source Matter SDK](#open-source-matter-sdk)  
 [Matter Network](#matter-network)  
+[Matter Certification](#matter-certification)  
 [Matter Specific](#matter-specific)  
 [Reference](#reference)  
 [Develop](#develop)  
@@ -60,7 +61,16 @@ Matter
 > Connected Home Over IP 는 Google, Amazon, Apple, Zigbee Alliance 등이 함께 개발한 IoT 기기 간의 상호 운용성을 향상시키기 위한 개방형 표준.  
 > 이 표준은 Wi-Fi, Thread, Bluetooth LE 등 다양한 프로토콜을 지원하며, 사용자는 다양한 제조사의 IoT기기를 하나의 허브에서 관리 가능.
   
- - [ConnectedHomeIP](https://github.com/project-chip/connectedhomeip) 
+
+ ### project-chip repositories
+
+ > project-chip repositories 에 대해 정리.   
+ > 15 repositories로 구성되어 있음(2024/05/29)  
+
+ - [connectedhomeip](https://github.com/project-chip/connectedhomeip)  
+ - [connectedhomeip-doc](https://github.com/project-chip/connectedhomeip-doc)  
+     project-chip/connectedhomeip의 doxygen format doc  
+ - [certification-tool](https://github.com/project-chip/certification-tool)  
   
 <br/>
 <br/>
@@ -187,6 +197,17 @@ Matter
 <br/>
 <hr>
 
+## Matter Certification 
+
+### CSA Certification Tool
+
+ ref : https://github.com/project-chip/certification-tool
+
+<br/>
+<br/>
+<br/>
+<hr>
+
 ## Matter Specific 
 
 
@@ -225,10 +246,20 @@ Matter
 
   * 결론 : 지그비를 사용하는 기기들을 묶어서 스마트싱스로 제어할 수 있게 하는 제품.
 
+<br/>
+<br/>
 
 #### **ioter** : Testing Matter Thread Compliant IoT Devices
 
  - ref : https://github.com/Samsung/ioter
+
+
+<br/>
+<br/>
+
+#### Creating a Matter Virtual Device
+
+ - ref : https://developer.samsung.com/smartthings/blog/en/2023/12/14/creating-a-matter-virtual-device
 
 
 <br/>
@@ -257,6 +288,24 @@ Matter
 
 ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluation-and-development-boards/mpu-linux-hosted-matter-development-platform:MPU-LINUX-MATTER-DEV-PLATFORM
 
+
+<br/>
+<br/>
+<br/>
+
+### Commax : Controller 
+
+ Commanx controller는  Commissioner 기능을 포함한 Controller.  
+ > Commissioner : Matter Device를 Matter Controller에 연결을 수행.  
+ > Android Platform 에 어플레킹션으로 구성.  
+
+ - Product Details : Certificate ID(CSA23066SWC60117-M3), Certified Date(12/19/2023), Vendor ID(0x1471), TIS/TRP Tested(No)
+   
+ - A.I voice recognition (Google) 
+ - link : https://www.commax.com/en/products/product/productView?seq=3106&nowPage=&prdcate=1
+
+
+
 <br/>
 <br/>
 <br/>
@@ -272,10 +321,26 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
 
 ## Develop
 
+### setup develop environment 
+> vs code를 통한 docker / remote container workflow 
+ - setup steps
+ 1. install docker, vscode
+ 2. clone main Matter repository 
+ 3. install the dev Container extension for visual studio code
+
+ - bootstrapping source tree(one time)
+ 1. under the "Ternimal" menu, select "Run Task..."
+
+ - Building the Source Tree
+ 1. Under the "Terminal" menu select "Run Build Task..."
+	 
+
 ### overview for Matter Hub
 
-
 ![](./image/MATTER-04.png)
+
+<br/>
+<br/>
 
 ### homebridge
 ```
@@ -296,8 +361,32 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
 
 <br/>
 <br/>
+
+### Virtual Device
+
+ -Code lab : https://developer.samsung.com/codelab/smartthings/matter-virtual-device.html 
+
+
+<br/>
+<br/>
 <br/>
 <hr>
+
+## Analyse
+
+### Analyse:connectedhomeip
+
+> open source 중 검토해야 할 tech 를 확인.
+
+ - Wi-Fi Nodes : chip-tool
+ - Controllers : chip-tool, IP Pairing, Automated CASE tests
+
+
+<br/>
+<br/>
+<br/>
+<hr>
+
 
 
 
