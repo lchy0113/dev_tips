@@ -10,6 +10,8 @@ Matter
 [Matter Specific](#matter-specific)  
 [Reference](#reference)  
 [Develop](#develop)  
+[SDK example)(#sdk-example)  
+[Analyse](#analyse)  
 [Note](#note)  
 
 <hr>
@@ -406,6 +408,41 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
 <br/>
 <br/>
 
+
+## SDK example
+
+ > SDK 는 SDK 및 Matter 분석에 필요한 다양한 Device 및 Controllers Sample 코드를 제공.  
+
+### Example Devices
+
+ example devices (App) 은 examples directory 에 위치.  
+ example에서는 특정 장치 Type을 구현하는 경우가 많이 있으며, 일부는 다양한 플랫폼에 대해 구현했다.  
+   
+ all-clusters-app 은 사용가능한 모든 Cluster를 구현했으며, 특정 장치 유형을 따르지 않는다.  
+ this app is not a good starting place for product development.   
+  
+### Example Controllers
+ 
+ Device 와 interact하는데 사용가능한 2 개의 example controller 가 있음.  
+
+ - chip-tools
+   interactive shell 을 가지고 있는 C++ command line controller 이다.  
+  
+ - chip-repl 
+   python controller 용 shell 이며,  
+   chip-repl 은 test 에 사용되는 python controller framework의 일부  
+  
+### Building first demo app(lighting)
+
+ example directory 는 example device composition .zip 파일을 사용하는 app의 set가 포함되어있다. 
+
+ - lighting app 빌드 
+
+<hr>
+<br/>
+<br/>
+<br/>
+
 ## Analyse
 
 ### Analyse:connectedhomeip
@@ -513,6 +550,12 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
 
 ## Note 
 
+### GN (Generate-Ninja)
+  
+ GN 은 메타 빌드 시스템.  
+ Ninja 빌드 파일을 생성하여 Ninja 를사용하여 프로젝트를 빌드할 수 있도록 한다.  
+ GN은 원래 Chromium 소스 트리의 일부였으며, 현재는 독립적인 저장소로 분리됨.  
+  
 
 ### ZAP (ZCL Advanced Platform) 
   
