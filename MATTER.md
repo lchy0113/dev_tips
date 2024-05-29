@@ -720,6 +720,20 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
   - Matter 엔드포인트 구성:  
      * Matter 장치와 상호 작용하는데 필요한 Cluster, Attribute, Etc entity 를 구성.  
   
+
+## ZAP tool  
+
+ ZAP tool 은 device의 endpoint composition을 설명하는 .zap 파일을 생성하는 데 사용되는 GUI tool.  
+  
+ device endpoint의 Cluster, Device types, Cluster features, attributes, commands, event 가 포함됨.  
+ .zap 파일은 Cluster definitions files과 함께 ZAP Compiler에서 ember layer를 생성하는데 사용됨.  
+  
+ 이는 build process의 일부로 자동으로 동작.   
+
+ .matter 파일은 .zap파일을 검토 할 수있도록 변환된 버전.  
+
+![](https://project-chip.github.io/connectedhomeip-doc/_images/zap_compiler.png)
+
 ### DNS-SD : Host PC에서 Device 검색. (mDNS Scanning)  
 
  DNS-SD(DNS Service Discovery) 기술은 local network에서 서비스를 찾기 위한 기술.  
