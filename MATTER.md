@@ -734,6 +734,16 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
 
 ![](https://project-chip.github.io/connectedhomeip-doc/_images/zap_compiler.png)
 
+ ./scripts/tools/zap/run_zaptool.sh <filename> 을 사용하여 실행.
+
+```bash
+ ./scripts/tools/zap/run_zaptool.sh examples/all-clusters-app/all-clusters-common/all-clusters-app.zap
+```
+
+ TO-DO : Cluster setup, Attribute Reporting 등 확인 해야함. ![](https://project-chip.github.io/connectedhomeip-doc/getting_started/zap.html)
+
+  
+
 ### DNS-SD : Host PC에서 Device 검색. (mDNS Scanning)  
 
  DNS-SD(DNS Service Discovery) 기술은 local network에서 서비스를 찾기 위한 기술.  
