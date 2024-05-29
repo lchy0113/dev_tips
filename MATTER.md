@@ -522,9 +522,17 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
   - Matter 엔드포인트 구성:  
      * Matter 장치와 상호 작용하는데 필요한 Cluster, Attribute, Etc entity 를 구성.  
   
-### Host PC에서 Device 검색. (mDNS Scanning)  
+### DNS-SD : Host PC에서 Device 검색. (mDNS Scanning)  
+
+ DNS-SD(DNS Service Discovery) 기술은 local network에서 서비스를 찾기 위한 기술.  
+ 주로 IoT 및 다양한 네트워크 기기에서 사용.  
+ 이 기술은 DNS(Domain Name System)을 활용하여 서비스를 검색하고 발견하는 방법을 제공.  
   
- - 
+ Device discovery 은 DNS-SD 기술을 통해 이뤄진다.  
+ DNS-SD 기술은 Wi-Fi는 mDNS 를 통해 처리되고, thread 는 Boarder router의 SRP 서버를 사용.  
+ Host PC에서 mDNS 애플리케이션을 사용하여, Device 를 검색할수 있다.  
+ Linux 용 mDNS Program은 Avahi. 
+
 
   
 ### It is currently in use by another Gradle instance
