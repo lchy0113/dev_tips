@@ -12,10 +12,10 @@ Matter
 [Develop](#develop)  
 [Note](#note)  
 
-<br/>
-<br/>
-<br/>
 <hr>
+<br/>
+<br/>
+<br/>
 
 ## Matter 
 
@@ -51,10 +51,10 @@ Matter
   
   
 
-<br/>
-<br/>
-<br/>
 <hr>
+<br/>
+<br/>
+<br/>
 
 ## Open-source Matter SDK
   
@@ -72,10 +72,10 @@ Matter
      project-chip/connectedhomeip의 doxygen format doc  
  - [certification-tool](https://github.com/project-chip/certification-tool)  
   
-<br/>
-<br/>
-<br/>
 <hr>
+<br/>
+<br/>
+<br/>
 
 ## Matter Network
 
@@ -206,10 +206,10 @@ Matter
  커미셔닝이 완료되면 새 장치가 네트워크(thread, wifi)에 추가되고 ble 세션이 닫힌다.   
  이전에 연결되었던 모든 matter 기기는 이제 새기기와 안전하게 통신할 수 있는 상태가 된다.  
 
-<br/>
-<br/>
-<br/>
 <hr>
+<br/>
+<br/>
+<br/>
 
 ## Matter Certification 
 
@@ -217,18 +217,18 @@ Matter
 
  ref : https://github.com/project-chip/certification-tool
 
-<br/>
-<br/>
-<br/>
 <hr>
+<br/>
+<br/>
+<br/>
 
 ## Matter Specific 
 
 
-<br/>
-<br/>
-<br/>
 <hr>
+<br/>
+<br/>
+<br/>
 
 -----
 
@@ -320,18 +320,18 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
 
 
 
-<br/>
-<br/>
-<br/>
 <hr>
+<br/>
+<br/>
+<br/>
 
 
 ## to do
 
-<br/>
-<br/>
-<br/>
 <hr>
+<br/>
+<br/>
+<br/>
 
 ## Develop
 
@@ -363,7 +363,6 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
    * *Clean Output* : Remove build artifacts  
    * *Clean Tree* : Full git clean of the tree  
   
-
  - **Launcher Tasks**  
    * launch json file이 위치한 곳에서 해당 job에 대한 build & run 항목을 찾을 수 있음.  
 
@@ -402,10 +401,10 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
  -Code lab : https://developer.samsung.com/codelab/smartthings/matter-virtual-device.html 
 
 
-<br/>
-<br/>
-<br/>
 <hr>
+<br/>
+<br/>
+<br/>
 
 ## Analyse
 
@@ -504,10 +503,10 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
  - data_model
    * 파일이 생성되어 spec에 대한 적합성을 확인하는데 사용. (직접 수정 하면 안됨)   
 
-<br/>
-<br/>
-<br/>
 <hr>
+<br/>
+<br/>
+<br/>
 
 
 
@@ -516,14 +515,18 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
 
 
 ### ZAP (ZCL Advanced Platform) 
-
+  
  ZAP (ZCL Advanced Platform)은 Matter Cluster 를 기반으로 한 notde.js 템플릿 엔진.   
  ZAP 은 Matter 앱 및 SDK 에 다음과 같은 기능을 제공.  
   
   - Matter 엔드포인트 구성:  
      * Matter 장치와 상호 작용하는데 필요한 Cluster, Attribute, Etc entity 를 구성.  
+  
+### Host PC에서 Device 검색. (mDNS Scanning)  
+  
+ - 
 
-
+  
 ### It is currently in use by another Gradle instance
 
 ```bash
