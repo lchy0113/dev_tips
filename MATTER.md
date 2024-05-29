@@ -554,7 +554,7 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
   
  GN 은 메타 빌드 시스템.  
  Ninja 빌드 파일을 생성하여 Ninja 를사용하여 프로젝트를 빌드할 수 있도록 한다.  
- GN은 원래 Chromium 소스 트리의 일부였으며, 현재는 독립적인 저장소로 분리됨.  
+ GN은 원래 Chromium 소스 트리의 일부였으며, 현재는 독립적인 [GN](https://gn.googlesource.com/gn/) 저장소로 분리됨.  
   
 
 ### ZAP (ZCL Advanced Platform) 
