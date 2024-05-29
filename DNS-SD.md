@@ -5,6 +5,11 @@
 
 <hr>
 <br/>
+
+[Avahi](#avahi)
+
+<hr>
+<br/>
 <br/>
 <br/>
 
@@ -18,7 +23,7 @@
   자동으로 호스트와 IP를 리졸브(resolve) 할 수 있다.  
   뿐만 아니라 같은 도메인에 있는 다른 장치 정보까지 스캔 할 수있다.  
 
-### Avahi 란 ?
+### Avahi
 
  Avahi 는 흔히 zeroconf라고 불리는 Zero-Configuration Networking 기술을 기반으로 개발된  
  네임 서비스 디스커버리 툴.  
