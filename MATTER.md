@@ -10,7 +10,7 @@ Matter
 [Matter Specific](#matter-specific)  
 [Reference](#reference)  
 [Develop](#develop)  
-[SDK example)(#sdk-example)  
+[SDK example](#sdk-example)  
 [Analyse](#analyse)  
 [Note](#note)  
 
