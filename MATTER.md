@@ -453,6 +453,9 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
 ```
   
  - lighting app 과 chip tool 빌드  
+
+   * *. scripts/bootstrap.sh* - run this first, or if build fail
+   * *. scripts/activate.sh* - faster, bootstrap 생성된 경우, 터미널에서 실행
   
    * Lighting app(device side)
  
