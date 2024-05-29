@@ -327,26 +327,29 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
  1. install docker, vscode
  2. clone main Matter repository 
  3. install the dev Container extension for visual studio code
-
+  
  - **bootstrapping source tree(one time)**
  1. under the "Terminal" menu, select "Run Task..."
-
+  
  - **Building the Source Tree**
  1. Under the "Terminal" menu select "Run Build Task..."
-
+  
  - **Tasks**
  1. tasks json file 위치에서 "Run task..." 을 실행. 
  tasks json 을 추가 하여 개발 하도록 함. 
 
- - **Current base tasks are listed here**
-   * *Main build* : build the default configuation(i.e., Linux OpenSSL)
-   * *Run Unit and Functional Tests* : Test the default cofiguration
-   * *Build & Test(all)* : Build & Test various configurations (Linux variants, Android, EFR32)	 
-   * *Update compliation database* : Update the databse used by intelliSense
-   * *Bootstrap* : On a clean tree, pull in the third party dependencies required
-                 3rd 에서 사용하는 library빌드 
-   * *Clean Output* : Remove build artifacts
-   * *Clean Tree* : Full git clean of the tree
+ - **Current base tasks are listed here**  
+   * *Main build* : build the default configuation(i.e., Linux OpenSSL)  
+   * *Run Unit and Functional Tests* : Test the default cofiguration  
+   * *Build & Test(all)* : Build & Test various configurations (Linux variants, Android, EFR32)	   
+   * *Update compliation database* : Update the databse used by intelliSense  
+   * *Bootstrap* : On a clean tree, pull in the third party dependencies required  
+                 3rd 에서 사용하는 library빌드   
+   * *Clean Output* : Remove build artifacts  
+   * *Clean Tree* : Full git clean of the tree  
+  
+<br/>
+<br/>
 
 ### overview for Matter Hub
 
