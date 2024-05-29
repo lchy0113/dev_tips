@@ -9,8 +9,8 @@ Matter
 <hr>
 
 
-[Open-source Matter SDK](#open-source-matter-sdk)
-    [Matter Study](#matter-study)
+[Open-source Matter SDK](#open-source-matter-sdk)  
+    [Matter Study](#matter-study)  
 
 -----
 
