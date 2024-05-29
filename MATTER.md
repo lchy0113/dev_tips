@@ -329,10 +329,11 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
    3. dev Container extension for visual studio code 설치  
   
  - **bootstrapping source tree(one time)**
-   1. under the "Terminal" menu, select "Run Task..."  
+   1. "Terminal" 메뉴에서, select "Run Task..."  
+   2. "Bootstrap" 선택  
   
  - **Building the Source Tree**
-   1. Under the "Terminal" menu select "Run Build Task..."  
+   1. "Terminal" 메뉴에서, "Run Build Task..."  
   
  - **Tasks**
    1. tasks json file 위치에서 "Run task..." 을 실행.   
