@@ -324,20 +324,20 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
 ### setup develop environment 
 > vs code를 통한 docker / remote container workflow 
  - **setup steps**
-   1. install docker, vscode
-   2. clone main Matter repository 
-   3. install the dev Container extension for visual studio code
+   1. docker, vscode 설치.  
+   2. git clone main Matter repository   
+   3. dev Container extension for visual studio code 설치  
   
  - **bootstrapping source tree(one time)**
-   1. under the "Terminal" menu, select "Run Task..."
+   1. under the "Terminal" menu, select "Run Task..."  
   
  - **Building the Source Tree**
-   1. Under the "Terminal" menu select "Run Build Task..."
+   1. Under the "Terminal" menu select "Run Build Task..."  
   
  - **Tasks**
-   1. tasks json file 위치에서 "Run task..." 을 실행. 
+   1. tasks json file 위치에서 "Run task..." 을 실행.   
  tasks json 을 추가 하여 개발 하도록 함. 
-
+  
  - **Current base tasks are listed here**  
    * *Main build* : build the default configuation(i.e., Linux OpenSSL)  
    * *Run Unit and Functional Tests* : Test the default cofiguration  
