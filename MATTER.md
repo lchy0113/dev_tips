@@ -467,7 +467,7 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
 ```
 
 
- - chip-tool(controller side)
+   * chip-tool(controller side)
 
 ```bash
 ./scripts/build/build_example.py --target linux-x64-chip-tool build
@@ -475,6 +475,110 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
 # output
 ./out/linux-x64-chip-tool/chip-tool
 
+```
+
+### Interacting with Matter Examples
+  
+ 1. device를 commission 상태 시작.  
+    ./out/linux-x64-light-no-ble/chip-lighting-app  
+ 2. default로 default discriminator(3840) / passcode(20202021) 로 시작됨.   
+    정보를 /temp/chip_kvs에 저장(--help command 참고)   
+	실행 시, setup information을 출력함  
+```bash
+./out/linux-x64-linux-no-ble/chip-lighting-app
+[1716967542.624757][545111:545111] CHIP:IN: TransportMgr initialized
+[1716967542.624761][545111:545111] CHIP:ZCL: Emitting StartUp event
+[1716967542.624776][545111:545111] CHIP:EVL: LogEvent event number: 0x0000000000000001 priority: 2, endpoint id:  0x0 cluster id: 0x0000_0028 event id: 0x0 Epoch timestamp: 0x0000018FC33D8F60
+[1716967542.624781][545111:545111] CHIP:SVR: Server initialization complete
+[1716967542.624787][545111:545111] CHIP:SVR: Server Listening...
+[1716967542.624790][545111:545111] CHIP:DL: Device Configuration:
+[1716967542.624797][545111:545111] CHIP:DL:   Serial Number: TEST_SN
+[1716967542.624804][545111:545111] CHIP:DL:   Vendor Id: 65521 (0xFFF1)
+[1716967542.624810][545111:545111] CHIP:DL:   Product Id: 32769 (0x8001)
+[1716967542.624813][545111:545111] CHIP:DL:   Product Name: TEST_PRODUCT
+[1716967542.624819][545111:545111] CHIP:DL:   Hardware Version: 0
+[1716967542.624822][545111:545111] CHIP:DL:   Setup Pin Code (0 for UNKNOWN/ERROR): 20202021
+[1716967542.624826][545111:545111] CHIP:DL:   Setup Discriminator (0xFFFF for UNKNOWN/ERROR): 3840 (0xF00)
+[1716967542.624831][545111:545111] CHIP:DL:   Manufacturing Date: (not set)
+[1716967542.624834][545111:545111] CHIP:DL:   Device Type: 257 (0x101)
+[1716967542.624841][545111:545111] CHIP:SVR: SetupQRCode: [MT:-24J0AFN00KA0648G00]
+[1716967542.624846][545111:545111] CHIP:SVR: Copy/paste the below URL in a browser to see the QR Code:
+[1716967542.624849][545111:545111] CHIP:SVR: https://project-chip.github.io/connectedhomeip/qrcode.html?data=MT%3A-24J0AFN00KA0648G00
+[1716967542.624854][545111:545111] CHIP:SVR: Manual pairing code: [34970112332]
+[1716967542.629356][545111:545111] CHIP:DIS: Updating services using commissioning mode 1
+```
+ 3. 새로운 터미널을 통해 chip-tool 을 실행.   
+    아래 정보를 입력하여 device 에 commission 한다.  
+```bash
+./out/linux-x64-chip-tool/chip-tool pairing code 34970112332  MT:-24J0AFN00KA0648G00
+```
+  
+ 4. Basic device interactions - command 전송 
+```bash
+./out/linux-x64-chip-tool/chip-tool onoff off  34970112332   1 
+(...)
+[1716969478.975661][671474:671477] CHIP:DMG: InvokeResponseMessage =
+[1716969478.975666][671474:671477] CHIP:DMG: {
+[1716969478.975672][671474:671477] CHIP:DMG:    suppressResponse = false,
+[1716969478.975692][671474:671477] CHIP:DMG:    InvokeResponseIBs =
+[1716969478.975700][671474:671477] CHIP:DMG:    [
+[1716969478.975705][671474:671477] CHIP:DMG:            InvokeResponseIB =
+[1716969478.975713][671474:671477] CHIP:DMG:            {
+[1716969478.975718][671474:671477] CHIP:DMG:                    CommandStatusIB =
+[1716969478.975725][671474:671477] CHIP:DMG:                    {
+[1716969478.975730][671474:671477] CHIP:DMG:                            CommandPathIB =
+[1716969478.975737][671474:671477] CHIP:DMG:                            {
+[1716969478.975743][671474:671477] CHIP:DMG:                                    EndpointId = 0x1,
+[1716969478.975750][671474:671477] CHIP:DMG:                                    ClusterId = 0x6,
+[1716969478.975755][671474:671477] CHIP:DMG:                                    CommandId = 0x0,
+[1716969478.975761][671474:671477] CHIP:DMG:                            },
+[1716969478.975769][671474:671477] CHIP:DMG:
+[1716969478.975775][671474:671477] CHIP:DMG:                            StatusIB =
+[1716969478.975782][671474:671477] CHIP:DMG:                            {
+[1716969478.975788][671474:671477] CHIP:DMG:                                    status = 0x00 (SUCCESS),
+[1716969478.975793][671474:671477] CHIP:DMG:                            },
+[1716969478.975800][671474:671477] CHIP:DMG:
+[1716969478.975805][671474:671477] CHIP:DMG:                    },
+[1716969478.975813][671474:671477] CHIP:DMG:
+[1716969478.975818][671474:671477] CHIP:DMG:            },
+[1716969478.975825][671474:671477] CHIP:DMG:
+[1716969478.975830][671474:671477] CHIP:DMG:    ],
+[1716969478.975838][671474:671477] CHIP:DMG:
+[1716969478.975843][671474:671477] CHIP:DMG:    InteractionModelRevision = 11
+[1716969478.975847][671474:671477] CHIP:DMG: },
+
+```
+
+ 5. Basic device interactions - attribute 얻기
+```bash
+./out/linux-x64-chip-tool/chip-tool onoff read on-off 34970112332 1
+(...)
+[1716969376.970379][662009:662011] CHIP:DMG: ReportDataMessage =
+[1716969376.970387][662009:662011] CHIP:DMG: {
+[1716969376.970392][662009:662011] CHIP:DMG:    AttributeReportIBs =
+[1716969376.970400][662009:662011] CHIP:DMG:    [
+[1716969376.970405][662009:662011] CHIP:DMG:            AttributeReportIB =
+[1716969376.970412][662009:662011] CHIP:DMG:            {
+[1716969376.970417][662009:662011] CHIP:DMG:                    AttributeDataIB =
+[1716969376.970423][662009:662011] CHIP:DMG:                    {
+[1716969376.970430][662009:662011] CHIP:DMG:                            DataVersion = 0x803589e5,
+[1716969376.970436][662009:662011] CHIP:DMG:                            AttributePathIB =
+[1716969376.970444][662009:662011] CHIP:DMG:                            {
+[1716969376.970451][662009:662011] CHIP:DMG:                                    Endpoint = 0x1,
+[1716969376.970459][662009:662011] CHIP:DMG:                                    Cluster = 0x6,
+[1716969376.970466][662009:662011] CHIP:DMG:                                    Attribute = 0x0000_0000,
+[1716969376.970473][662009:662011] CHIP:DMG:                            }
+[1716969376.970481][662009:662011] CHIP:DMG:
+[1716969376.970489][662009:662011] CHIP:DMG:                            Data = true,  <<<<<<<<<<<<<<<< data
+[1716969376.970495][662009:662011] CHIP:DMG:                    },
+[1716969376.970504][662009:662011] CHIP:DMG:
+[1716969376.970509][662009:662011] CHIP:DMG:            },
+[1716969376.970518][662009:662011] CHIP:DMG:
+[1716969376.970523][662009:662011] CHIP:DMG:    ],
+[1716969376.970532][662009:662011] CHIP:DMG:
+[1716969376.970538][662009:662011] CHIP:DMG:    SuppressResponse = true,
+[1716969376.970545][662009:662011] CHIP:DMG:    InteractionModelRevision = 11
+[1716969376.970550][662009:662011] CHIP:DMG: }
 ```
 
  
