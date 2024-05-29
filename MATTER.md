@@ -400,6 +400,59 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
 
  - Wi-Fi Nodes : chip-tool
  - Controllers : chip-tool, IP Pairing, Automated CASE tests
+  
+
+<br/>
+<br/>
+
+### Analyse:SDK Basic
+
+#### Basic SDK Architecture
+
+```bash
++--------------------------+
+|                          |
+| Cluster Implementations  |
+|                          |
++--------------------------+
+| Ember (generated)        |
++--------------------------+
+|                          |
+| Core                     |
+|                          |
+|                          |
++--------------------------+
+| Platform API             |
++--------------------------+
+| Platform Implementations |
++--------------------------+
+```
+
+ - **Platform Layer**
+ Platform layer는 network stack 과 base OS 간 연결을 구현.  
+ Messages는 유선을 통해 Platform Layer 로 전달되고,  
+ 그곳에서 Matter stack 의 처리를 위해 Platform API로 라우팅 된다.  
+
+ - **Platform API**
+ Platform API는 core 와 상호작용하는 common layer를 정의.  
+
+ - **Core**
+ Core 는 모든 기본 통신 프로토콜을 포함하여, spec 의 큰 부분을 포함.  
+ 핵심 코드는 Cluster 요청 및 관련 endpoint 정보를 나타내는 유효한 Message를 ember layer에 전달하는 것.  
+
+ - **Ember**
+ Ebmer layer는 하나의 디바이스의 SPIECIFIC을 구성을 구현하는 담당하는 Generated된 layer.  
+ 각 message 를 확인하고, device가 선택한 endpoint cluster에서 selected 된 attribute 또는 command를 구현했는지 확인한 다음, implementation과 access control에 따라 message를 block하거나 route 한다.   
+
+ 유효한 request은 처리를 위해 Cluster implementations으로 전달되고 잘못된 request은 error와 함께 다시 전송된다.  
+
+ Ember layer는 디바이스를 나의 디바이스로 만드는 부분이며, 대부분은 ZAP을 사용하여 정적으로 생성된다.  
+
+ - **Cluster implementations**
+  Cluster implementations은 Cluster 의 back logic이다.  
+  Cluster implementations은 ember layer로 부터 message를 수신하여, Cluster에 Data Model Operations(read/write/command invokes)을 요청한다.  
+  또한 event generation 및 attribute change reporting 을 담당한다.  
+  기능이 간단한 Cluster Logic은 Ember Callback function에 작성될 수 있지만, 복잡한 Cluster Logic은 Runtime에 설치된 Interface Layer 에 의해 처리 된다.  
 
 
 <br/>
