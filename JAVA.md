@@ -1,6 +1,16 @@
 JAVA
 =====
 
+[JRE and JDK](#jre-and-jdk)
+[Java version](#java-version)
+[Install OpenJDK 17 on ubuntu](#install-openjdk-17-on-ubuntu)
+[Set Default Java Version on Ubuntu](#set-default-java-version-on-ubuntu-22-04-20-04-18-04)
+[reference](#reference)
+
+
+
+## JRE and JDK
+
  JRE와 JDK는 모두 JAVA를 실행하는데 필요한 소프트웨어이다. 
  JRE와 JDK는 서로 다른 기능을 제공한다.
 
@@ -40,8 +50,7 @@ JAVA
 
  JAVA 애플리케이션을 실행하려면 JRE가 필요하고, JARA 애플리케이션을 개발하려면 JDK가 필요하다.
 
-# Java version
------
+## Java version
   
  Java에는 다양한 버전이 존재한다. 그중 가장 많이 사용하는 버전은 JAVA 8,11,17이다.   
  LTS(Long Term Support) 버전이기 때문에,   
@@ -97,8 +106,7 @@ JAVA
     * 난수 생성 API 추가
 
 
-# install OpenJDK 17 on ubuntu
------
+## install OpenJDK 17 on ubuntu
 
  - using package
 ```bash
@@ -149,8 +157,7 @@ OpenJDK Runtime Environment (build 17.0.2+8-86)
 OpenJDK 64-Bit Server VM (build 17.0.2+8-86, mixed mode, sharing)
 ```
 
-# Set Default Java Version on Ubuntu 22.04|20.04|18.04
------
+## Set Default Java Version on Ubuntu 22.04|20.04|18.04
 
 ```bash
 sudo update-alternatives --config java
@@ -167,8 +174,7 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
   * Press <enter> to keep the current choice[*], or type selection number: 2
 ```
 
-reference
------
+## reference
 
 - https://www.oracle.com/java/java-se-subscription/
 
