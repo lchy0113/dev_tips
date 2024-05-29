@@ -344,7 +344,7 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
    * *Build & Test(all)* : Build & Test various configurations (Linux variants, Android, EFR32)	   
    * *Update compliation database* : Update the databse used by intelliSense  
    * *Bootstrap* : On a clean tree, pull in the third party dependencies required  
-                 3rd 에서 사용하는 library빌드   
+                   3rd 에서 사용하는 library빌드   
    * *Clean Output* : Remove build artifacts  
    * *Clean Tree* : Full git clean of the tree  
   
