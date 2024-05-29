@@ -515,6 +515,10 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
   
  4. Basic device interactions - command 전송 
 ```bash
+# onoff : Cluster name
+# on or off : Command name
+# 34970112332 : node ID (commissioning 에 사용되는)
+# 1 : endpoint
 ./out/linux-x64-chip-tool/chip-tool onoff off  34970112332   1 
 (...)
 [1716969478.975661][671474:671477] CHIP:DMG: InvokeResponseMessage =
@@ -551,6 +555,12 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
 
  5. Basic device interactions - attribute 얻기
 ```bash
+# onoff : Cluster name
+# read : action 에 대한 설명
+# on or off : Attribute name
+# 34970112332 : node ID (commissioning 에 사용되는)
+# 1 : endpoint
+
 ./out/linux-x64-chip-tool/chip-tool onoff read on-off 34970112332 1
 (...)
 [1716969376.970379][662009:662011] CHIP:DMG: ReportDataMessage =
