@@ -6,10 +6,10 @@ Matter
 [Matter](#matter)  
 [Open-source Matter SDK](#open-source-matter-sdk)  
 [Matter Network](#matter-network)  
-[Matter Specific](#matter-specific)
-[Reference](#reference)
-[Develop](#develop)
-[Note](#notd)
+[Matter Specific](#matter-specific)  
+[Reference](#reference)  
+[Develop](#develop)  
+[Note](#note)  
 
 <br/>
 <br/>
