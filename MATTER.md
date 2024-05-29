@@ -11,7 +11,7 @@ Matter
 
 [Open-source Matter SDK](#open-source-matter-sdk)  
     [Matter Study](#matter-study)  
-	[Matter(formerly Project CHIP)](#matter-formerly-project-chip)
+	[Matter(formerly Project CHIP)](#matter-formerly-project-chip-)
 
 <br/>
 <br/>
