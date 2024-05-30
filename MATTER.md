@@ -484,6 +484,22 @@ $ ./gradlew build
  - building Android CHIPTest from scripts   
 
    
+<br/>
+<br/>
+
+### Android CHIPTool
+
+ Device commissioning 과 controlling Android application  
+ 아래 기능을 제공함.  
+  
+ - Scan QR code 및 payload 정보 출력.  
+ - NFC Tag 정보 읽기.   
+ - Commission CHIP device.  
+ - CHIP echo server 에게 echo request 전송.  
+ - CHIP device 에게 on/off cluster requests 전송.  
+
+
+
 
 <hr>
 <br/>
