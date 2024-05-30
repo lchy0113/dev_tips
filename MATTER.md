@@ -403,6 +403,70 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
  -Code lab : https://developer.samsung.com/codelab/smartthings/matter-virtual-device.html 
 
 
+<br/>
+<br/>
+
+### Building Android
+
+ - CHIPTool : Matter accessory devices 에 대한 commissioning, controlling 기능 어플리케이션.  
+              다음 기능을 제공   
+   * Matter QR code 스캔 및 payload 정보 출력.  
+   * Matter onboarding information이 포함된 NFC 태그 정보 읽기  
+   * Matter 장치 commission  
+   * Matter echo server 에 echo request 전송.  
+   * Matter device에 Cluster on/off request 전송.  
+
+```bash
+ - Building Android
+   - Source files
+   - Requirements for building
+     - Linux
+	 - MacOS
+	 - ABIs and Target CPU
+	 - Gradle & JDK Version
+   - Preparing for build
+   - Building Android CHIPTool from scripts
+   - Building Android CHIPTool from Android Studio
+   - Building Android CHIPTest from scripts
+```
+
+ - Source files
+  Android App에 대한  source files은 examples/android/ directory에 위치함.  
+  
+ - Requirements for building
+  Android SDK 26   
+  NDK 23.2.8568313  
+  $ANDROID_HOME 환경 변수.   
+  $ANDROID_NDK_HMOE 환경 변수.  
+  kotlinc 가 $PATH에 추가되어야 함.  
+
+```bash
+export ANDROID_HOME=~/Android/Sdk
+export ANDROID_NDK_HOME=~/Android/Sdk/ndk/23.2.8568313
+export TARGET_CPU=arm64
+export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))
+```
+ - building Android CHIPTool from scripts   
+
+```bash
+sudo apt install openjdk-11-jdk
+```
+
+```bash
+./scripts/build/build_examples.py --target android-arm64-chip-tool build
+
+# app-debug.apk will be generated at
+# out/android-arm64-chip-tool/outputs/apk/debug/app-debug.apk
+```
+   
+
+ - building Android CHIPTool from Android Studio   
+  
+
+ - building Android CHIPTest from scripts   
+
+   
+
 <hr>
 <br/>
 <br/>
@@ -740,7 +804,7 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
  ./scripts/tools/zap/run_zaptool.sh examples/all-clusters-app/all-clusters-common/all-clusters-app.zap
 ```
 
- TO-DO : Cluster setup, Attribute Reporting 등 확인 해야함. ![](https://project-chip.github.io/connectedhomeip-doc/getting_started/zap.html)
+ TO-DO : Cluster setup, Attribute Reporting 등 확인 해야함. [ZAP Link](https://project-chip.github.io/connectedhomeip-doc/getting_started/zap.html)
 
   
 
