@@ -461,6 +461,24 @@ sudo apt install openjdk-11-jdk
    
 
  - building Android CHIPTool from Android Studio   
+  아래 명령어 입력을 통해 Android Studio 에서 Matter code 를 직접 빌드 할수 있게 함. 
+
+```bash
+# 1. Matter top directory 에서 입력.
+$ TARGET_CPU=arm64 ./scripts/examples/android_app_ide.sh
+
+# 2. matterSdkSourceBuild variable 을 true로 변경. 
+# 3. matterBuildSrcDir 을 빌드 output directory.
+# example/android/CHIPTool/gradle.properties
+
+# 4. AndroidStudio에서 Project open 후, File -> Sync Project with Gradle Files. 선택.
+# 5. Make Project 을 선택하여 빌드 또는 아래 명령어를 실행하여 빌드.
+$ cd examples/android/CHIPTool
+$ ./gradlew build
+
+# 6. 아래 경로에 출력됨.
+# examples/android/CHIPTool/app/build/outputs/apk/debug/app-debug.apk
+```
   
 
  - building Android CHIPTest from scripts   
