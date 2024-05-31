@@ -60,6 +60,12 @@ mount -t debugfs none /sys/kernel/debug
 echo 'file <driverfilename.c> +p' > /sys/kernel/debug/dynamic_debug/control
 ```
 
+ - 만약 소스파일 'svcsock.c' 의 1603 라인 출력 디버깅 켜기를 원하다면 아래와 같이 입력.  
+```bash
+echo 'file svcsock.c line 1603 +p' > /sys/kernel/debug/dynamic_debug/control
+
+```
+
 
  - e.g
 ```bash
