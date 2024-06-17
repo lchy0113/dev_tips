@@ -69,7 +69,7 @@ echo 'file svcsock.c line 1603 +p' > /sys/kernel/debug/dynamic_debug/control
 
  - e.g
 ```bash
-echo 'file vcnl4000.c -p' > /sys/kernel/debug/dynamic_debug/control
+echo 'file vcnl4000.c +p' > /sys/kernel/debug/dynamic_debug/control
 
  # cat /sys/kernel/debug/dynamic_debug/control | grep vcnl
 drivers/iio/light/vcnl4000.c:328 [vcnl4000]vcnl4000_probe =p "%s Ambient light/proximity sensor, Rev: %02x\012"
