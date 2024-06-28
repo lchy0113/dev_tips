@@ -4,26 +4,31 @@ Matter
 > IP 기반 Home IOT 통신 표준
 
 [Matter](#matter)  
-[Open-source Matter SDK](#open-source-matter-sdk)  
-[Matter Network](#matter-network)  
-[Matter Certification](#matter-certification)  
-[Matter Specific](#matter-specific)  
-[Reference](#reference)  
-[Develop](#develop)  
-[SDK example](#sdk-example)  
-[Analyse](#analyse)  
-[Note](#note)  
+ - [Open-source Matter SDK](#open-source-matter-sdk)  
+ - [Matter Network](#matter-network)  
+ - [Matter Certification](#matter-certification)  
+ - [Matter Specific](#matter-specific)  
+ 
+ - [Reference](#reference)  
+ - [Develop](#develop)  
+ - [SDK example](#sdk-example)  
+ - [Analyse](#analyse)  
+ - [Note](#note)  
 
+<br/>
+<br/>
+<br/>
 <hr>
-<br/>
-<br/>
-<br/>
 
 ## Matter 
 
 >  이전에는 Project CHIP라고 불렸으며, 매터(Matter)로 변경됨.   
   
  : https://github.com/project-chip/connectedhomeip
+
+<br/>
+<br/>
+<hr>
 
 ### Matter stack 
 
@@ -53,18 +58,21 @@ Matter
   
   
 
+<br/>
+<br/>
+<br/>
 <hr>
-<br/>
-<br/>
-<br/>
 
 ## Open-source Matter SDK
   
 > Connected Home Over IP 는 Google, Amazon, Apple, Zigbee Alliance 등이 함께 개발한 IoT 기기 간의 상호 운용성을 향상시키기 위한 개방형 표준.  
 > 이 표준은 Wi-Fi, Thread, Bluetooth LE 등 다양한 프로토콜을 지원하며, 사용자는 다양한 제조사의 IoT기기를 하나의 허브에서 관리 가능.
-  
+   
+<br/>
+<br/>
+<hr>
 
- ### project-chip repositories
+### project-chip repositories
 
  > project-chip repositories 에 대해 정리.   
  > 15 repositories로 구성되어 있음(2024/05/29)  
@@ -74,14 +82,18 @@ Matter
      project-chip/connectedhomeip의 doxygen format doc  
  - [certification-tool](https://github.com/project-chip/certification-tool)  
   
+<br/>
+<br/>
+<br/>
 <hr>
-<br/>
-<br/>
-<br/>
 
 ## Matter Network
 
 > Matter 의 원칙은 Local Control
+
+<br/>
+<br/>
+<hr>
 
 ### 용어 정리
 
@@ -146,7 +158,7 @@ Matter
 
 <br/>
 <br/>
-<br/>
+<hr>
 
 ### Matter 장치를 사용하려면 필요한 것.
 
@@ -165,7 +177,7 @@ Matter
 
 <br/>
 <br/>
-<br/>
+<hr>
   
 ### Matter 가 작동하는 방식
 
@@ -174,6 +186,9 @@ Matter
 
 ![wifi/thread/ble로 구성된 Matter 스마트홈 네트워크 내의 commissioner, commissionee, nodes 간의 관계에 대한 개요](./image/MATTER-07.png)
   
+<br/>
+<hr>
+
 #### 1. Matter 장치 연결
 
  Matter 애플리케이션 계층 프로토콜의 소프트웨어 인프라를 통해 사용자는 QR코드를 스캔하는 간단한 동작을 통해 새로운 Matter 기기를 연결할 수 있다.   
@@ -192,6 +207,9 @@ Matter
  > 스캔하면 스마트폰의 ble기능이 활성화되어 matter기기를 매핑하고 식별할 수 있다.   
  > 그 후, QR코드에 포함된 정보를 기반으로 커미셔닝 시작.
 
+<br/>
+<hr>
+
 #### 2. commissioner와 Matter 디바이스간의 연결 시운전 및 보안 유지
 
  commissioner과 Matter 기기간의 통신은 암호 인증 세션 프로토콜(PASE)을 통해 보호됨.  
@@ -208,33 +226,39 @@ Matter
  커미셔닝이 완료되면 새 장치가 네트워크(thread, wifi)에 추가되고 ble 세션이 닫힌다.   
  이전에 연결되었던 모든 matter 기기는 이제 새기기와 안전하게 통신할 수 있는 상태가 된다.  
 
+<br/>
+<br/>
+<br/>
 <hr>
-<br/>
-<br/>
-<br/>
 
 ## Matter Certification 
+
+<br/>
+<br/>
+<hr>
 
 ### CSA Certification Tool
 
  ref : https://github.com/project-chip/certification-tool
 
+<br/>
+<br/>
+<br/>
 <hr>
-<br/>
-<br/>
-<br/>
 
 ## Matter Specific 
 
 
+<br/>
+<br/>
+<br/>
 <hr>
-<br/>
-<br/>
-<br/>
-
------
 
 ## Reference
+
+<br/>
+<br/>
+<hr>
 
 ### smartthings hub
 
@@ -263,7 +287,7 @@ Matter
   * 결론 : 지그비를 사용하는 기기들을 묶어서 스마트싱스로 제어할 수 있게 하는 제품.
 
 <br/>
-<br/>
+<hr>
 
 #### **ioter** : Testing Matter Thread Compliant IoT Devices
 
@@ -271,7 +295,7 @@ Matter
 
 
 <br/>
-<br/>
+<hr>
 
 #### Creating a Matter Virtual Device
 
@@ -280,8 +304,7 @@ Matter
 
 <br/>
 <br/>
-<br/>
-  
+<hr> 
 
 ### NXP : MPU / Linux Hosted Matter Development Platform
 
@@ -307,7 +330,7 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
 
 <br/>
 <br/>
-<br/>
+<hr>
 
 ### Commax : Controller 
 
@@ -320,22 +343,23 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
  - A.I voice recognition (Google) 
  - link : https://www.commax.com/en/products/product/productView?seq=3106&nowPage=&prdcate=1
 
-
-
+<br/>
+<br/>
+<br/>
 <hr>
-<br/>
-<br/>
-<br/>
-
 
 ## to do
 
+<br/>
+<br/>
+<br/>
 <hr>
-<br/>
-<br/>
-<br/>
 
 ## Develop
+
+<br/>
+<br/>
+<hr>
 
 ### setup develop environment 
 > vs code를 통한 docker / remote container workflow 
@@ -370,6 +394,7 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
 
 <br/>
 <br/>
+<hr>
 
 ### overview for Matter Hub
 
@@ -377,6 +402,7 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
 
 <br/>
 <br/>
+<hr>
 
 ### homebridge
 ```
@@ -397,6 +423,7 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
 
 <br/>
 <br/>
+<hr>
 
 ### Virtual Device
 
@@ -405,6 +432,7 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
 
 <br/>
 <br/>
+<hr>
 
 ### Building Android
 
@@ -486,6 +514,7 @@ $ ./gradlew build
    
 <br/>
 <br/>
+<hr>
 
 ### Android CHIPTool
 
@@ -498,18 +527,18 @@ $ ./gradlew build
  - CHIP echo server 에게 echo request 전송.  
  - CHIP device 에게 on/off cluster requests 전송.  
 
-
-
-
+<br/>
+<br/>
+<br/>
 <hr>
-<br/>
-<br/>
-<br/>
-
 
 ## SDK example
 
  > SDK 는 SDK 및 Matter 분석에 필요한 다양한 Device 및 Controllers Sample 코드를 제공.  
+
+<br/>
+<br/>
+<hr>
 
 ### Example Devices
 
@@ -518,7 +547,11 @@ $ ./gradlew build
    
  all-clusters-app 은 사용가능한 모든 Cluster를 구현했으며, 특정 장치 유형을 따르지 않는다.  
  this app is not a good starting place for product development.   
-  
+
+<br/>
+<br/>
+<hr>
+ 
 ### Example Controllers
  
  Device 와 interact하는데 사용가능한 2 개의 example controller 가 있음.  
@@ -529,7 +562,11 @@ $ ./gradlew build
  - chip-repl 
    python controller 용 shell 이며,  
    chip-repl 은 test 에 사용되는 python controller framework의 일부  
-  
+
+<br/>
+<br/>
+<hr>
+ 
 ### Building first demo app(lighting)
 
  example directory 는 example device composition .zip 파일을 사용하는 app의 set가 포함되어있다. 
@@ -574,6 +611,10 @@ $ ./gradlew build
 ./out/linux-x64-chip-tool/chip-tool
 
 ```
+
+<br/>
+<br/>
+<hr>
 
 ### Interacting with Matter Examples
   
@@ -689,14 +730,16 @@ $ ./gradlew build
 [1716969376.970550][662009:662011] CHIP:DMG: }
 ```
 
- 
-
+<br/>
+<br/>
+<br/>
 <hr>
-<br/>
-<br/>
-<br/>
 
 ## Analyse
+
+<br/>
+<br/>
+<hr>
 
 ### Analyse:connectedhomeip
 
@@ -705,11 +748,15 @@ $ ./gradlew build
  - Wi-Fi Nodes : chip-tool
  - Controllers : chip-tool, IP Pairing, Automated CASE tests
   
-
 <br/>
 <br/>
+<br/>
+<hr>
 
 ### Analyse:SDK Basic
+
+<br/>
+<hr>
 
 #### Basic SDK Architecture
 
@@ -758,11 +805,8 @@ $ ./gradlew build
   또한 event generation 및 attribute change reporting 을 담당한다.  
   기능이 간단한 Cluster Logic은 Ember Callback function에 작성될 수 있지만, 복잡한 Cluster Logic은 Runtime에 설치된 Interface Layer 에 의해 처리 된다.  
 
-
-
 <br/>
-<br/>
-<br/>
+<hr>
 
 #### SDK Organization 
 
@@ -793,22 +837,27 @@ $ ./gradlew build
  - data_model
    * 파일이 생성되어 spec에 대한 적합성을 확인하는데 사용. (직접 수정 하면 안됨)   
 
+<br/>
+<br/>
+<br/>
 <hr>
-<br/>
-<br/>
-<br/>
-
-
-
 
 ## Note 
+
+<br/>
+<br/>
+<br/>
+<hr>
 
 ### GN (Generate-Ninja)
   
  GN 은 메타 빌드 시스템.  
  Ninja 빌드 파일을 생성하여 Ninja 를사용하여 프로젝트를 빌드할 수 있도록 한다.  
  GN은 원래 Chromium 소스 트리의 일부였으며, 현재는 독립적인 [GN](https://gn.googlesource.com/gn/) 저장소로 분리됨.  
-  
+
+<br/>
+<br/>
+<hr>
 
 ### ZAP (ZCL Advanced Platform) 
   
@@ -818,6 +867,10 @@ $ ./gradlew build
   - Matter 엔드포인트 구성:  
      * Matter 장치와 상호 작용하는데 필요한 Cluster, Attribute, Etc entity 를 구성.  
   
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## ZAP tool  
 
@@ -840,7 +893,9 @@ $ ./gradlew build
 
  TO-DO : Cluster setup, Attribute Reporting 등 확인 해야함. [ZAP Link](https://project-chip.github.io/connectedhomeip-doc/getting_started/zap.html)
 
-  
+<br/>
+<br/>
+<hr>
 
 ### DNS-SD : Host PC에서 Device 검색. (mDNS Scanning)  
 
@@ -853,7 +908,9 @@ $ ./gradlew build
  Host PC에서 mDNS 애플리케이션을 사용하여, Device 를 검색할수 있다.  
  Linux 용 mDNS Program은 Avahi. 
 
-
+<br/>
+<br/>
+<hr>
   
 ### It is currently in use by another Gradle instance
 
