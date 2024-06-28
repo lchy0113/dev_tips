@@ -8,6 +8,7 @@ Matter
  - [Matter Network](#matter-network)  
  - [Matter Certification](#matter-certification)  
  - [Matter Specific](#matter-specific)  
+     - [Matter spec 1.3](#matter-spec-13)  
  
  - [Reference](#reference)  
  - [Develop](#develop)  
@@ -42,7 +43,7 @@ Matter
   
   3. *Interaction model*  
     Interaction model layer에서는 client와 server 장치간에 수행할 수 있는 상호 동작 기능을 정의한다.   
-	예를 들어, 서버 장치에서 속성을 read/write하는 것에 대한 동작을 수행한다.  이러한 상호 동작 기능에 필요한 데이터는 Data model layer에서 정의된 요소에서 동작한다.  
+    예를 들어, 서버 장치에서 속성을 read/write하는 것에 대한 동작을 수행한다.  이러한 상호 동작 기능에 필요한 데이터는 Data model layer에서 정의된 요소에서 동작한다.  
   
   4. *Action framing*  
     Interaction mode을 사용하여 동작이 구성되면 네트워크 전송을 위해 인코딩하기 위해 규적된 압축 바이너리 형식으로 직렬화 한다.  
@@ -131,12 +132,12 @@ Matter
  - *homeBridge*  
    HomeBridge는 Ring 및 Nest 와 같은 브랜드의 HomeKit 세서리를 지원하기 위해 HomeKit을 모조하는 무료 오픈 소스 소프트웨어이다. PC, Mac과 같이 항상 켜져 있는 장치에서 서버 소프트웨어와 추가하려는 액세서리의 종류에 대한 플러그인을 설치해야 한다.  
     site : https://homebridge.io/  
-	study : https://github.com/Orachigami/homebridge-android  
+    study : https://github.com/Orachigami/homebridge-android  
   
-	* Matter 와 HomeBridge관 관계
-	  Matter를 지원하는 장치는 스마트 홈에 연결하기 위해 HomeBridge를 통할 필요가 없다. 
+    * Matter 와 HomeBridge관 관계
+      Matter를 지원하는 장치는 스마트 홈에 연결하기 위해 HomeBridge를 통할 필요가 없다. 
       현재 Matter 표준은 제한된 장치 유형(조명, 도어장금장치, 센서, 스피커 등)만 지원하고 있기때문에, 
-	  HomeBridge를 통해 제한적인 장치를 Matter 플랫폼에 지원 할 수 있도록 할수 있다. 
+      HomeBridge를 통해 제한적인 장치를 Matter 플랫폼에 지원 할 수 있도록 할수 있다. 
   
  - *Third party border router*  
    thrid-party border router 를 사용하면 기존 thread 인터페이스를 제공하지 않는 Hub에서 thread 인터페이스로 연결되는 Matter 장치를 연결할수 있다.  
@@ -146,15 +147,15 @@ Matter
    Matter Cluster는 Matter 애플리케이션의 데이터 모델에서 사용되는 기본 요소.  
    Cluster는 Matter 장치 내에서 단일 기능을 나타냄.  
      e.g. 장치를 켜고 끄는 기능과 같은 기능을 포함한다.   
-	 각 Cluster에는 attribute, command, event 가 포함되어 있으며, 이는 필수적이거나 선택적 일수 있다.  
+     각 Cluster에는 attribute, command, event 가 포함되어 있으며, 이는 필수적이거나 선택적 일수 있다.  
 
    Matter Cluster의 주요 구성 요소.   
      * 속성(Attributes) : Cluster내에서 읽거나 쓸수 있는 변수를 나태남.  
                           이는 장치의 상태, 설정, 또는 다른 정보를 표현하는데 사용.  
      * 명령(Commands) : Cluster에서 특정 동작을 호출하는 기능을 제공.  
-	                    명령은 연관된 매개변수를 가질 수 있다.  
-	 * 이벤트(Events) : Cluster에서 발생하는 이벤트를 나타냄.  
-	                    이벤트는 일반적으로 상태 변경 또는 기타 중요한 사항을 알리는데 사용.  
+                        명령은 연관된 매개변수를 가질 수 있다.  
+     * 이벤트(Events) : Cluster에서 발생하는 이벤트를 나타냄.  
+                        이벤트는 일반적으로 상태 변경 또는 기타 중요한 사항을 알리는데 사용.  
 
 <br/>
 <br/>
@@ -248,6 +249,40 @@ Matter
 
 ## Matter Specific 
 
+ CSA(Connectivity Standards Alliance)는 1년에 2 차례 업데이트 발표.   
+
+<br/>
+<br/>
+<hr>
+
+### Matter spec 1.2
+
+ CSA(Connectivity Standards Alliance)는 1년에 2 차례 업데이트를 발표하고 있으며,   
+ Matter 1.0을 출시 한지 1년만인 2023년 10월 Matter 1.2 spec을 발표.  
+
+ - 로봇 청소기, 냉장고, 세탁기, 식기세척기, 공기질센서, 공기청정기, 에어컨, 선풍기의 표준이 공개. 
+ - 비교적 규모가 작은 도어락과 전구 카테고리에서 실질적인 수익을 창출하는 대형 가전제품으로 까지 Matter 확장.  
+
+<br/>
+<br/>
+<hr>
+
+### Matter spec 1.3
+
+ 2024년 5월에 공개. Matter 1.3 은 거의 모든 주요 가전제품과 함께 센서 및 EV충전기를 추가.  
+> 아직 카메라나 비디오 초인종 같은 기기들은 Matter에 포함되지 않음.  
+
+ - 에너지 관리 지원 : 모든 매터 디바이스는 순간 전력, 전압, 전류 등의 실제 측정값과 예상 측정값을 실시간으로 보고  
+ - 전기차 충전 지원  
+
+
+<br/>
+<br/>
+<hr>
+
+### Matter spec 1.4
+
+ 2024년 가을 예정된 다음 릴리즈에는 히트 펌프와 온수기가 추가될 예정. 태양열 패널 통합 등. 
 
 <br/>
 <br/>
@@ -269,19 +304,19 @@ Matter
 
   * 스마트싱스 IDE사이트 세팅
     - IDE사이트 : https://account.smartthings.com  
-		![](./image/MATTER-01.png)  
-		+ Locations : 계정에 할당된 스마트싱스 플랫폼에 대한 장소.
-		+ Hubs : 스마트싱스허브 장치에 대한 정보 제공.
-		+ Devices : 스마트싱스 플랫폼에 연결된 모든 장치(센서, 가전 등) 정보 제공.
-		+ Installed Apps : 쓰마트싱스 플랫폼 내에서 사용할수 있는 각종 앱 관리.
+        ![](./image/MATTER-01.png)  
+        + Locations : 계정에 할당된 스마트싱스 플랫폼에 대한 장소.
+        + Hubs : 스마트싱스허브 장치에 대한 정보 제공.
+        + Devices : 스마트싱스 플랫폼에 연결된 모든 장치(센서, 가전 등) 정보 제공.
+        + Installed Apps : 쓰마트싱스 플랫폼 내에서 사용할수 있는 각종 앱 관리.
   
     - Github 연동  
         + DTH를 등록하기 위해서는 크게 2가지의 방법이 있음.   
-		  = github 연동.  
-		  = 수동으로 사용자가 등록  
+          = github 연동.  
+          = 수동으로 사용자가 등록  
   
-	    + https://github.com/SmartThingsCommunity/SmartThingsPublic 페이지에 접속하여 fork  
-	    + IDE 사이트에서 연동.   
+        + https://github.com/SmartThingsCommunity/SmartThingsPublic 페이지에 접속하여 fork  
+        + IDE 사이트에서 연동.   
 
 
   * 결론 : 지그비를 사용하는 기기들을 묶어서 스마트싱스로 제어할 수 있게 하는 제품.
@@ -317,12 +352,12 @@ Matter
  - Feature :
    * Target Matter Device Types : 
      + Gateways
-	 + Hubs and Bridges
-	 + Matter Controllers
-	 + Thread Boarder Routers
-	 + Media devices
-	 + Smart Door Locks
-	 + HVAC Controls
+     + Hubs and Bridges
+     + Matter Controllers
+     + Thread Boarder Routers
+     + Media devices
+     + Smart Door Locks
+     + HVAC Controls
 
 
 ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluation-and-development-boards/mpu-linux-hosted-matter-development-platform:MPU-LINUX-MATTER-DEV-PLATFORM
@@ -382,7 +417,7 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
  - **Current base tasks are listed here**  
    * *Main build* : build the default configuation(i.e., Linux OpenSSL)  
    * *Run Unit and Functional Tests* : Test the default cofiguration  
-   * *Build & Test(all)* : Build & Test various configurations (Linux variants, Android, EFR32)	   
+   * *Build & Test(all)* : Build & Test various configurations (Linux variants, Android, EFR32)       
    * *Update compliation database* : Update the databse used by intelliSense  
    * *Bootstrap* : On a clean tree, pull in the third party dependencies required  
                    3rd 에서 사용하는 library빌드   
@@ -410,9 +445,9 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
 
 
     [hub]   <---------------------->    [bridge]
-	(e.g Apple homepod)                 (wallpad with matterbridge)
-	                                    (used HomeBridge?)
-	                                        |
+    (e.g Apple homepod)                 (wallpad with matterbridge)
+                                        (used HomeBridge?)
+                                            |
                                             +-> (rs485)
                                             |      |
                                             |      +-> ks4506 protocol
@@ -449,9 +484,9 @@ ref : https://www.nxp.com/design/design-center/development-boards/i-mx-evaluatio
    - Source files
    - Requirements for building
      - Linux
-	 - MacOS
-	 - ABIs and Target CPU
-	 - Gradle & JDK Version
+     - MacOS
+     - ABIs and Target CPU
+     - Gradle & JDK Version
    - Preparing for build
    - Building Android CHIPTool from scripts
    - Building Android CHIPTool from Android Studio
@@ -622,7 +657,7 @@ $ ./gradlew build
     ./out/linux-x64-light-no-ble/chip-lighting-app  
  2. default로 default discriminator(3840) / passcode(20202021) 로 시작됨.   
     정보를 /temp/chip_kvs에 저장(--help command 참고)   
-	실행 시, setup information을 출력함  
+    실행 시, setup information을 출력함  
 ```bash
 ./out/linux-x64-linux-no-ble/chip-lighting-app
 [1716967542.624757][545111:545111] CHIP:IN: TransportMgr initialized
