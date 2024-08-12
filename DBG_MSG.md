@@ -85,6 +85,39 @@ drivers/iio/light/vcnl4000.c:130 [vcnl4000]vcnl4200_init =p "device id 0x%x"
    * /sys/kernel/debug/dynamic_debug/control : dynamic_debug 인터페이스 경로 .  
 
 
+ - change operation 
+
+```bash
+-    remove the given flags
++    add the given flags
+=    set the flags to the given flags
+```
+
+ - the flags 
+
+```bash
+p    enables the pr_debug() callsite
+f    include the function name in the printed message
+l    include line number in the printed message
+m    include module name in the printed message
+t    include thread id in messages not generated from interrupt context
+_    no flags are set. 
+```
+
+
+ - Debug message during Boot Process
+
+ 부팅 중, debug messages를 활성화 하기 위해선, **dyndbg="QUERY" 를 사용한다. 
+
+ "modprobe foo" 모듈이 호출 될 때, modprobe는 foo.params를 위해 /proc/cmdline을 스캔한다.
+
+```bash
+dyndbg="file drivers/input/sensors/psensor/ps_vcnl4200.c +p"
+setenv bootargs 'storagemedia=emmc androidboot.storagemedia=emmc androidboot.mode=normal  androidboot.dtb_idx=0 androidboot.dtbo_idx=0 dyndbg="file drivers/input/sensors/psensor/ps_vcnl4200.c +p"'
+
+dyndbg="file ec.c +p"
+```
+
  커널 로그에서 확인하지 못한다면 아래 명령어 수행.  
 ```bash
 echo "8 4 1 7" > /proc/sys/kernel/printk
