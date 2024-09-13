@@ -112,10 +112,17 @@ _    no flags are set.
  "modprobe foo" 모듈이 호출 될 때, modprobe는 foo.params를 위해 /proc/cmdline을 스캔한다.
 
 ```bash
+#########
+## for ps_vcnl4200 module
 dyndbg="file drivers/input/sensors/psensor/ps_vcnl4200.c +p"
+
 setenv bootargs 'storagemedia=emmc androidboot.storagemedia=emmc androidboot.mode=normal  androidboot.dtb_idx=0 androidboot.dtbo_idx=0 dyndbg="file drivers/input/sensors/psensor/ps_vcnl4200.c +p"'
 
-dyndbg="file ec.c +p"
+#########
+## for ak7755 module
+dyndbg="file sound/soc/codecs/ak7755.c +p"
+
+setenv bootargs 'storagemedia=emmc androidboot.storagemedia=emmc androidboot.mode=normal  androidboot.dtb_idx=0 androidboot.dtbo_idx=0 dyndbg="file sound/soc/codecs/ak7755.c +p"
 ```
 
  커널 로그에서 확인하지 못한다면 아래 명령어 수행.  
