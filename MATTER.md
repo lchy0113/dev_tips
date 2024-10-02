@@ -902,6 +902,17 @@ $ ./gradlew build
   - Matter 엔드포인트 구성:  
      * Matter 장치와 상호 작용하는데 필요한 Cluster, Attribute, Etc entity 를 구성.  
   
+
+<br/>
+<br/>
+<hr>
+
+### Android 15 Support Matter
+
+ Android 15 could support direct connection to Matter smart home devices
+
+  - Thread mesh networking protocol이 Android 15 에 통합 됨. 
+
 <br/>
 <br/>
 <br/>
