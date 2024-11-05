@@ -145,6 +145,7 @@ Matter
 
  - *Matter Cluster*
    Matter Cluster는 Matter 애플리케이션의 데이터 모델에서 사용되는 기본 요소.  
+   (인터페이스, 서비스, 객체 클래스가 될수 잇으며, 데이터 모델에서 가장 낮은 독립적인 기능적 요소)  
    Cluster는 Matter 장치 내에서 단일 기능을 나타냄.  
      e.g. 장치를 켜고 끄는 기능과 같은 기능을 포함한다.   
      각 Cluster에는 attribute, command, event 가 포함되어 있으며, 이는 필수적이거나 선택적 일수 있다.  
@@ -156,6 +157,10 @@ Matter
                         명령은 연관된 매개변수를 가질 수 있다.  
      * 이벤트(Events) : Cluster에서 발생하는 이벤트를 나타냄.  
                         이벤트는 일반적으로 상태 변경 또는 기타 중요한 사항을 알리는데 사용.  
+
+> Note 
+> To learn more about clusters, See
+>   https://csa-iot.org/developer-resource/specifications-download-request/
 
 <br/>
 <br/>
