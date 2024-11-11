@@ -58,3 +58,28 @@ OTA(Over-The-Air) 업데이트를 제공하는 기능입니다.
 이 메뉴를 통해 네트워크에 간헐적으로 연결되는 장치의 상태를 모니터링하고 관리할 수 있습니다.
 
 
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
+# Develop environment
+
+```
+vscode@kdiwin-nb:/workspaces/connectedhomeip$ echo $ANDROID_HOME 
+/workspaces/Android/Sdk/
+vscode@kdiwin-nb:/workspaces/connectedhomeip$ echo $ANDROID_NDK_HOME 
+/workspaces/Android/Sdk/ndk/23.2.8568313/
+vscode@kdiwin-nb:/workspaces/connectedhomeip$ echo $TARGET_CPU 
+arm64
+vscode@kdiwin-nb:/workspaces/connectedhomeip$ echo $JAVA_HOME 
+/usr/lib/jvm/java-11-openjdk-amd64
+vscode@kdiwin-nb:/workspaces/connectedhomeip$ java -version
+openjdk version "11.0.24" 2024-07-16
+OpenJDK Runtime Environment (build 11.0.24+8-post-Ubuntu-1ubuntu320.04)
+OpenJDK 64-Bit Server VM (build 11.0.24+8-post-Ubuntu-1ubuntu320.04, mixed mode, sharing)
+vscode@kdiwin-nb:/workspaces/connectedhomeip$ echo $PATH
+/usr/lib/kotlinc/bin:/workspaces/connectedhomeip/third_party/pigweed/repo/out/host/host_tools:/home/vscode/pigweed/env/pigweed-venv/bin:/home/vscode/pigweed/env/cipd/packages/arm/bin:/home/vscode/pigweed/env/cipd/packages/arm:/home/vscode/pigweed/env/cipd/packages/zap:/home/vscode/pigweed/env/cipd/packages/pigweed/bin:/home/vscode/pigweed/env/cipd/packages/pigweed:/home/vscode/pigweed/env/cipd:/vscode/vscode-server/bin/linux-x64/65edc4939843c90c34d61f4ce11704f09d3e5cb6/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/kotlinc/bin:/usr/lib/jvm/java-17-openjdk-amd64/bin:/workspaces/Android/Sdk/ndk/23.2.8568313/:/usr/lib/jvm/java-17-openjdk-amd64/bin
+```
+
